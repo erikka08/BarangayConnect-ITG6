@@ -1,0 +1,60 @@
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BarangayConnect - Home</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <header>
+    <h1><i class="fas fa-home"></i>BarangayConnect</h1>
+    <p><i class="fas fa-tachometer-alt"></i> Welcome to the BarangayConnect Dashboard</p>
+  </header>
+
+  <main class="home-container">
+    <h2>Hello, User!</h2>
+    <p>Welcome to the BarangayConnect Home Page. Here you can access all the essential services and stay connected with your community.</p>
+    
+    <div class="features-grid">
+      <div class="feature-card">
+        <i class="fas fa-bullhorn"></i>
+        <h3>Announcements</h3>
+        <p>Stay updated with the latest news and important announcements from your barangay.</p>
+      </div>
+      
+      <div class="feature-card">
+        <i class="fas fa-cogs"></i>
+        <h3>Barangay Services</h3>
+        <p>Access various barangay services and request documents online conveniently.</p>
+      </div>
+      
+      <div class="feature-card">
+        <i class="fas fa-user-edit"></i>
+        <h3>Update Profile</h3>
+        <p>Manage your personal information and keep your profile up to date.</p>
+      </div>
+      
+      <div class="feature-card">
+        <i class="fas fa-headset"></i>
+        <h3>Support</h3>
+        <p>Get help and contact barangay support for any questions or concerns.</p>
+      </div>
+    </div>
+
+    <button class="logout-btn" onclick="logout()">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+  </main>
+
+  <footer>
+    &copy; 2025 BarangayConnect Tambo Parañaque City
+  </footer>
+
+  <script>
+    function logout() {
+      alert("You have been logged out.");
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
