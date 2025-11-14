@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management - BarangayConnect</title>
+  <link rel="stylesheet" href="A_user-management-style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://kit.fontawesome.com/a2e0f1f0c1.js" crossorigin="anonymous"></script>
+  <style>
+    /* Force hide all scrollbars */
+    * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    *::-webkit-scrollbar {
+      display: none !important;
+    }
+    
+    /* Ensure content is not clipped */
+    body {
+      overflow-x: visible !important;
+      min-width: 100% !important;
+      padding-top: 2rem !important;
+      padding-bottom: 2rem !important;
+    }
+    
+    .user-management-container {
+      min-width: 100% !important;
+      overflow: visible !important;
+      padding-top: 1rem !important;
+    }
+    
+    .page-header {
+      min-width: 100% !important;
+      overflow: visible !important;
+      margin-top: 1rem !important;
+      padding: 1rem 0 !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="user-management-container">
+    <!-- Page Header -->
+    <div class="page-header" style="width: 100%; overflow: visible; padding: 0 1rem;">
+      <h1 class="page-title" style="font-size: 2rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; white-space: nowrap; overflow: visible;">
+        <i class="fas fa-users-cog" style="font-size: 1.8rem; color: #92a287; flex-shrink: 0;"></i>
+        <span style="display: inline-block; white-space: nowrap;">User Management</span>
+      </h1>
+    </div>
+
+    <!-- Main Cards Container -->
+    <div class="cards-container">
+      <!-- User Details Card -->
+      <a href="#" class="management-card" onclick="showUserDetails()">
+        <div class="card-icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="card-content">
+          <h3>USER DETAILS</h3>
+          <p>View and manage all registered users</p>
+        </div>
+      </a>
+
+      <!-- Pending Registration Card -->
+      <a href="#" class="management-card" onclick="showPendingUsers()">
+        <div class="card-icon">
+          <i class="fas fa-user-plus"></i>
+        </div>
+        <div class="card-content">
+          <h3>PENDING USERS<br>REGISTRATION</h3>
+          <p>Review and approve new registrations</p>
+        </div>
+      </a>
+    </div>
+
+  </div>
+
+  <script>
+    function showUserDetails() {
+      // Load User Details page in the same iframe
+      window.location.href = 'A_User-Details.html';
+    }
+
+    function showPendingUsers() {
+      window.location.href = 'A_User-Pending Registration.html';
+    }
+  </script>
+</body>
+</html>

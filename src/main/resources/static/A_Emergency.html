@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Emergency - BarangayConnect</title>
+  <link rel="stylesheet" href="A_emergency-style.css"/>
+  <script src="https://kit.fontawesome.com/a2e0f1f0c1.js" crossorigin="anonymous"></script>
+  <style>
+    * { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+    *::-webkit-scrollbar { display: none !important; }
+  </style>
+</head>
+
+<body>
+  <div class="emergency-container">
+    <div class="emergency-header">
+      <h1 class="emergency-title">
+        <i class="fas fa-phone"></i> Emergency Contacts
+      </h1>
+      <p class="emergency-subtitle">Manage emergency contacts and response protocols</p>
+    </div>
+
+    <!-- Emergency Hotlines -->
+    <div class="hotlines-section">
+      <h2 class="section-title">Emergency Hotlines</h2>
+      <div class="hotlines-grid">
+        <!-- Dynamic content loads here -->
+      </div>
+    </div>
+
+    <!-- Emergency Procedures -->
+    <div class="procedures-section">
+      <h2 class="section-title">Emergency Procedures</h2>
+      <div class="procedures-grid">
+        <div class="procedure-card">
+          <div class="procedure-icon"><i class="fas fa-exclamation-triangle"></i></div>
+          <div class="procedure-content">
+            <h3>Fire Emergency</h3>
+            <ol class="procedure-steps">
+              <li>Call 911 or Fire Department immediately</li>
+              <li>Evacuate using nearest exit</li>
+              <li>Do not use elevators</li>
+              <li>Meet at assembly point</li>
+              <li>Account for all personnel</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="procedure-card">
+          <div class="procedure-icon"><i class="fas fa-heartbeat"></i></div>
+          <div class="procedure-content">
+            <h3>Medical Emergency</h3>
+            <ol class="procedure-steps">
+              <li>Call 911 for medical emergency</li>
+              <li>Stay with the person if safe</li>
+              <li>Do not move them unless necessary</li>
+              <li>Provide first aid if trained</li>
+              <li>Keep them calm and comfortable</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="procedure-card">
+          <div class="procedure-icon"><i class="fas fa-cloud-rain"></i></div>
+          <div class="procedure-content">
+            <h3>Natural Disaster</h3>
+            <ol class="procedure-steps">
+              <li>Follow evacuation orders immediately</li>
+              <li>Take emergency supplies</li>
+              <li>Go to evacuation center</li>
+              <li>Stay informed via radio/phone</li>
+              <li>Return only when safe</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="procedure-card">
+          <div class="procedure-icon"><i class="fas fa-shield-alt"></i></div>
+          <div class="procedure-content">
+            <h3>Security Threat</h3>
+            <ol class="procedure-steps">
+              <li>Call Police immediately (911)</li>
+              <li>Lock doors and windows</li>
+              <li>Stay away from windows</li>
+              <li>Hide in secure location</li>
+              <li>Follow police instructions</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Emergency Contacts Management -->
+    <div class="contacts-management">
+      <h2 class="section-title">Emergency Contacts Management</h2>
+      <div class="management-actions">
+        <button class="add-contact-btn"><i class="fas fa-plus"></i> Add New Contact</button>
+        <button class="import-contacts-btn"><i class="fas fa-upload"></i> Import Contacts</button>
+        <button class="export-contacts-btn"><i class="fas fa-download"></i> Export Contacts</button>
+      </div>
+
+      <div class="contacts-table-container">
+        <table class="contacts-table">
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>Contact Number</th>
+              <th>Status</th>
+              <th>Last Updated</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- JS will fill here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Functionality Script -->
+  <script>
+    const BASE_URL = "http://localhost:8080/api/emergency";
+
+    // Load all contacts (for both hotlines and table)
+    async function loadContacts() {
+      try {
+        const res = await fetch(BASE_URL);
+        const contacts = await res.json();
+
+        const hotlinesGrid = document.querySelector(".hotlines-grid");
+        const tableBody = document.querySelector(".contacts-table tbody");
+        hotlinesGrid.innerHTML = "";
+        tableBody.innerHTML = "";
+
+        if (!contacts || contacts.length === 0) {
+          tableBody.innerHTML = "<tr><td colspan='5' style='text-align:center;'>No emergency contacts found.</td></tr>";
+          return;
+        }
+
+        contacts.forEach(c => {
+          // --- Hotlines section ---
+          const hotline = document.createElement("div");
+          hotline.className = "hotline-card" + (c.status === "ACTIVE" ? " critical" : "");
+          hotline.innerHTML = `
+            <div class="hotline-icon"><i class="fas fa-phone"></i></div>
+            <div class="hotline-content">
+              <h3>${c.service}</h3>
+              <div class="hotline-number">${c.phone}</div>
+              <p>${c.status === "ACTIVE" ? "Available 24/7" : "Currently Unavailable"}</p>
+              <div class="hotline-actions">
+                <button class="call-btn" onclick="callNow('${c.phone}')"><i class="fas fa-phone"></i> Call Now</button>
+                <button class="edit-btn" onclick="editContact(${c.id})"><i class="fas fa-edit"></i> Edit</button>
+              </div>
+            </div>
+          `;
+          hotlinesGrid.appendChild(hotline);
+
+          // --- Table section ---
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${c.service}</td>
+            <td>${c.phone}</td>
+            <td><span class="status-badge ${c.status.toLowerCase()}">${c.status}</span></td>
+            <td>${c.lastUpdated ? new Date(c.lastUpdated).toLocaleString() : "—"}</td>
+            <td>
+              <div class="action-buttons">
+                <button class="action-btn edit-btn" onclick="editContact(${c.id})" title="Edit"><i class="fas fa-edit"></i></button>
+                <button class="action-btn test-btn" onclick="callNow('${c.phone}')" title="Call"><i class="fas fa-phone"></i></button>
+                <button class="action-btn delete-btn" onclick="deleteContact(${c.id})" title="Delete"><i class="fas fa-trash"></i></button>
+              </div>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+      } catch (err) {
+        console.error("Error loading contacts:", err);
+      }
+    }
+
+    // Call now - open dialer
+    function callNow(phone) {
+      if (!phone) return alert("No phone number available!");
+      window.location.href = `tel:${phone.replace(/[^0-9+]/g, '')}`;
+    }
+
+    // Add contact
+    async function addContact() {
+      const service = prompt("Enter Service Name:");
+      const phone = prompt("Enter Contact Number:");
+      const status = prompt("Enter Status (ACTIVE / INACTIVE):");
+
+      if (!service || !phone || !status) return alert("All fields are required!");
+
+      try {
+        const res = await fetch(BASE_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ service, phone, status: status.toUpperCase() })
+        });
+        if (res.ok) {
+          alert("Contact added successfully ✅");
+          loadContacts();
+        } else alert("Failed to add contact ❌");
+      } catch (err) {
+        console.error("Error adding contact:", err);
+      }
+    }
+
+    // Edit contact
+    async function editContact(id) {
+      const newPhone = prompt("Enter new phone number:");
+      const newStatus = prompt("Enter new status (ACTIVE / INACTIVE):");
+
+      if (!newPhone || !newStatus) return;
+
+      try {
+        const res = await fetch(`${BASE_URL}/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ phone: newPhone, status: newStatus.toUpperCase() })
+        });
+        if (res.ok) {
+          alert("Contact updated successfully ✅");
+          loadContacts();
+        } else alert("Failed to update contact ❌");
+      } catch (err) {
+        console.error("Error updating contact:", err);
+      }
+    }
+
+    // Delete contact
+    async function deleteContact(id) {
+      if (!confirm("Are you sure you want to delete this contact?")) return;
+      try {
+        const res = await fetch(`${BASE_URL}/${id}`, { method: "DELETE" });
+        if (res.ok) {
+          alert("Contact deleted 🗑️");
+          loadContacts();
+        } else alert("Failed to delete contact ❌");
+      } catch (err) {
+        console.error("Error deleting contact:", err);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelector(".add-contact-btn").addEventListener("click", addContact);
+      loadContacts();
+    });
+  </script>
+</body>
+</html>

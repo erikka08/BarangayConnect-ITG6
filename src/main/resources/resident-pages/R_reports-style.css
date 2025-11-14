@@ -1,0 +1,220 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --clr-1: #35543a; /* dark green */
+  --clr-2: #4a6741; /* medium green */
+  --clr-3: #6b8e6b; /* light green */
+  --clr-4: #f5f5f5; /* light gray */
+  --clr-5: #ffffff; /* white */
+  --clr-6: #2c3e50; /* dark blue-gray */
+  --clr-7: #7f8c8d; /* medium gray */
+  --clr-8: #e8f5e8; /* very light green */
+  --clr-9: #d4edda; /* success green */
+  --clr-10: #f8d7da; /* error red */
+  --clr-11: #fff3cd; /* warning yellow */
+  --clr-12: #d1ecf1; /* info blue */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: var(--clr-4);
+  min-height: 100vh;
+  color: var(--clr-1);
+  line-height: 1.6;
+  padding: 2rem 1rem 1rem 1rem;
+  margin: 0;
+  width: 100%;
+  /* Hide scrollbar but allow scrolling */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+body::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+
+/* Page Header */
+.page-header {
+  margin-bottom: 2rem;
+  padding: 1.5rem 0;
+}
+
+.header-content {
+  text-align: center;
+}
+
+.page-title {
+  color: #2c3e50;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  background: linear-gradient(135deg, #35543a, #4a6741);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.page-title i {
+  color: #35543a;
+  font-size: 2.2rem;
+}
+
+.page-subtitle {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Reports Grid */
+.reports-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.report-card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.report-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.report-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.report-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #35543a, #4a6741);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(53, 84, 58, 0.3);
+}
+
+.report-icon i {
+  color: white;
+  font-size: 1.5rem;
+}
+
+.report-title h3 {
+  color: #2c3e50;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem 0;
+}
+
+.report-title p {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.report-content {
+  margin-bottom: 1.5rem;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.stat-item:last-child {
+  border-bottom: none;
+}
+
+.stat-label {
+  color: #7f8c8d;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.stat-value {
+  color: #2c3e50;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.view-report-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #35543a, #4a6741);
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(53, 84, 58, 0.3);
+}
+
+.view-report-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(53, 84, 58, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 2rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .page-title i {
+    font-size: 1.8rem;
+  }
+  
+  .reports-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .report-header {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 1rem 0.5rem;
+  }
+  
+  .page-title {
+    font-size: 1.8rem;
+  }
+  
+  .report-card {
+    padding: 1rem;
+  }
+}
+

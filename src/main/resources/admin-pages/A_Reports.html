@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports - BarangayConnect</title>
+    <link rel="stylesheet" href="A_reports-style.css">
+    <style>
+      /* Force hide all scrollbars */
+      * {
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+      }
+      *::-webkit-scrollbar {
+        display: none !important;
+      }
+    </style>
+  <script src="https://kit.fontawesome.com/a2e0f1f0c1.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="reports-container">
+    <div class="reports-header">
+      <h1 class="reports-title">
+        <i class="fas fa-file-invoice"></i>
+        Reports Management
+      </h1>
+      <p class="reports-subtitle">Generate and manage barangay reports and documents</p>
+    </div>
+
+    <!-- Report Filters -->
+    <div class="filters-section">
+      <div class="filter-group">
+        <label for="report-type">Report Type:</label>
+        <select id="report-type" class="filter-select">
+          <option value="all">All Reports</option>
+          <option value="population">Population Report</option>
+          <option value="financial">Financial Report</option>
+          <option value="incident">Incident Report</option>
+          <option value="activity">Activity Report</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="date-range">Date Range:</label>
+        <select id="date-range" class="filter-select">
+          <option value="this-month">This Month</option>
+          <option value="last-month">Last Month</option>
+          <option value="this-year">This Year</option>
+          <option value="custom">Custom Range</option>
+        </select>
+      </div>
+      
+      <button class="generate-btn">
+        <i class="fas fa-plus"></i>
+        Generate New Report
+      </button>
+    </div>
+
+    <!-- Reports Grid -->
+    <div class="reports-grid">
+      <div class="report-card">
+        <div class="report-header">
+          <div class="report-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="report-status completed">Completed</div>
+        </div>
+        <div class="report-content">
+          <h3>Population Census Report</h3>
+          <p>Monthly population statistics and demographics</p>
+          <div class="report-meta">
+            <span class="report-date">March 15, 2024</span>
+            <span class="report-author">by Admin User</span>
+          </div>
+        </div>
+        <div class="report-actions">
+          <button class="action-btn view-btn">
+            <i class="fas fa-eye"></i> View
+          </button>
+          <button class="action-btn download-btn">
+            <i class="fas fa-download"></i> Download
+          </button>
+        </div>
+      </div>
+
+      <div class="report-card">
+        <div class="report-header">
+          <div class="report-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="report-status pending">Pending</div>
+        </div>
+        <div class="report-content">
+          <h3>Financial Summary Report</h3>
+          <p>Quarterly financial overview and budget analysis</p>
+          <div class="report-meta">
+            <span class="report-date">March 12, 2024</span>
+            <span class="report-author">by Finance Team</span>
+          </div>
+        </div>
+        <div class="report-actions">
+          <button class="action-btn edit-btn">
+            <i class="fas fa-edit"></i> Edit
+          </button>
+          <button class="action-btn delete-btn">
+            <i class="fas fa-trash"></i> Delete
+          </button>
+        </div>
+      </div>
+
+      <div class="report-card">
+        <div class="report-header">
+          <div class="report-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div class="report-status completed">Completed</div>
+        </div>
+        <div class="report-content">
+          <h3>Incident Report</h3>
+          <p>Security incidents and emergency responses</p>
+          <div class="report-meta">
+            <span class="report-date">March 10, 2024</span>
+            <span class="report-author">by Security Team</span>
+          </div>
+        </div>
+        <div class="report-actions">
+          <button class="action-btn view-btn">
+            <i class="fas fa-eye"></i> View
+          </button>
+          <button class="action-btn download-btn">
+            <i class="fas fa-download"></i> Download
+          </button>
+        </div>
+      </div>
+
+      <div class="report-card">
+        <div class="report-header">
+          <div class="report-icon">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <div class="report-status in-progress">In Progress</div>
+        </div>
+        <div class="report-content">
+          <h3>Activity Report</h3>
+          <p>Community activities and events summary</p>
+          <div class="report-meta">
+            <span class="report-date">March 8, 2024</span>
+            <span class="report-author">by Events Team</span>
+          </div>
+        </div>
+        <div class="report-actions">
+          <button class="action-btn edit-btn">
+            <i class="fas fa-edit"></i> Edit
+          </button>
+          <button class="action-btn view-btn">
+            <i class="fas fa-eye"></i> View
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Report Statistics -->
+    <div class="stats-section">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-file-alt"></i>
+        </div>
+        <div class="stat-content">
+          <h3>Total Reports</h3>
+          <div class="stat-number">156</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-content">
+          <h3>Completed</h3>
+          <div class="stat-number">142</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-content">
+          <h3>Pending</h3>
+          <div class="stat-number">8</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-sync"></i>
+        </div>
+        <div class="stat-content">
+          <h3>In Progress</h3>
+          <div class="stat-number">6</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

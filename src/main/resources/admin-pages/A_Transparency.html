@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transparency - BarangayConnect</title>
+    <link rel="stylesheet" href="A_transparency-style.css">
+    <style>
+      /* Force hide all scrollbars */
+      * {
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+      }
+      *::-webkit-scrollbar {
+        display: none !important;
+      }
+    </style>
+  <script src="https://kit.fontawesome.com/a2e0f1f0c1.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="transparency-container">
+    <div class="transparency-header">
+      <h1 class="transparency-title">
+        <i class="fas fa-balance-scale"></i>
+        Transparency Portal
+      </h1>
+      <p class="transparency-subtitle">Public access to barangay financial records and governance</p>
+    </div>
+
+    <!-- Financial Overview -->
+    <div class="financial-overview">
+      <h2 class="section-title">Financial Overview</h2>
+      <div class="financial-cards">
+        <div class="financial-card">
+          <div class="card-icon">
+            <i class="fas fa-wallet"></i>
+          </div>
+          <div class="card-content">
+            <h3>Total Budget</h3>
+            <div class="amount">₱2,450,000</div>
+            <p>Annual allocation for 2024</p>
+          </div>
+        </div>
+        
+        <div class="financial-card">
+          <div class="card-icon">
+            <i class="fas fa-chart-pie"></i>
+          </div>
+          <div class="card-content">
+            <h3>Expenditures</h3>
+            <div class="amount">₱1,890,000</div>
+            <p>77% of total budget used</p>
+          </div>
+        </div>
+        
+        <div class="financial-card">
+          <div class="card-icon">
+            <i class="fas fa-piggy-bank"></i>
+          </div>
+          <div class="card-content">
+            <h3>Remaining Balance</h3>
+            <div class="amount">₱560,000</div>
+            <p>23% of total budget remaining</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Budget Breakdown -->
+    <div class="budget-breakdown">
+      <h2 class="section-title">Budget Breakdown by Category</h2>
+      <div class="breakdown-grid">
+        <div class="breakdown-item">
+          <div class="breakdown-header">
+            <h3>Infrastructure</h3>
+            <span class="percentage">35%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 35%"></div>
+          </div>
+          <div class="breakdown-amount">₱857,500</div>
+        </div>
+        
+        <div class="breakdown-item">
+          <div class="breakdown-header">
+            <h3>Health Services</h3>
+            <span class="percentage">25%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 25%"></div>
+          </div>
+          <div class="breakdown-amount">₱612,500</div>
+        </div>
+        
+        <div class="breakdown-item">
+          <div class="breakdown-header">
+            <h3>Education</h3>
+            <span class="percentage">20%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 20%"></div>
+          </div>
+          <div class="breakdown-amount">₱490,000</div>
+        </div>
+        
+        <div class="breakdown-item">
+          <div class="breakdown-header">
+            <h3>Social Services</h3>
+            <span class="percentage">15%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 15%"></div>
+          </div>
+          <div class="breakdown-amount">₱367,500</div>
+        </div>
+        
+        <div class="breakdown-item">
+          <div class="breakdown-header">
+            <h3>Administrative</h3>
+            <span class="percentage">5%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 5%"></div>
+          </div>
+          <div class="breakdown-amount">₱122,500</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="transactions-section">
+      <h2 class="section-title">Recent Financial Transactions</h2>
+      <div class="transactions-table-container">
+        <table class="transactions-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Description</th>
+              <th>Category</th>
+              <th>Amount</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>March 15, 2024</td>
+              <td>Road repair - Main Street</td>
+              <td>Infrastructure</td>
+              <td>₱45,000</td>
+              <td><span class="status-badge completed">Completed</span></td>
+            </tr>
+            <tr>
+              <td>March 12, 2024</td>
+              <td>Medical supplies purchase</td>
+              <td>Health Services</td>
+              <td>₱12,500</td>
+              <td><span class="status-badge completed">Completed</span></td>
+            </tr>
+            <tr>
+              <td>March 10, 2024</td>
+              <td>School equipment</td>
+              <td>Education</td>
+              <td>₱8,750</td>
+              <td><span class="status-badge pending">Pending</span></td>
+            </tr>
+            <tr>
+              <td>March 8, 2024</td>
+              <td>Senior citizen assistance</td>
+              <td>Social Services</td>
+              <td>₱25,000</td>
+              <td><span class="status-badge completed">Completed</span></td>
+            </tr>
+            <tr>
+              <td>March 5, 2024</td>
+              <td>Office supplies</td>
+              <td>Administrative</td>
+              <td>₱3,200</td>
+              <td><span class="status-badge completed">Completed</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Public Documents -->
+    <div class="documents-section">
+      <h2 class="section-title">Public Documents</h2>
+      <div class="documents-grid">
+        <div class="document-card">
+          <div class="document-icon">
+            <i class="fas fa-file-pdf"></i>
+          </div>
+          <div class="document-content">
+            <h3>Annual Budget Report 2024</h3>
+            <p>Complete breakdown of barangay budget allocation</p>
+            <div class="document-meta">
+              <span class="document-date">March 1, 2024</span>
+              <span class="document-size">2.4 MB</span>
+            </div>
+          </div>
+          <button class="download-btn">
+            <i class="fas fa-download"></i>
+            Download
+          </button>
+        </div>
+        
+        <div class="document-card">
+          <div class="document-icon">
+            <i class="fas fa-file-excel"></i>
+          </div>
+          <div class="document-content">
+            <h3>Monthly Expenditure Report</h3>
+            <p>Detailed monthly spending breakdown</p>
+            <div class="document-meta">
+              <span class="document-date">March 15, 2024</span>
+              <span class="document-size">1.8 MB</span>
+            </div>
+          </div>
+          <button class="download-btn">
+            <i class="fas fa-download"></i>
+            Download
+          </button>
+        </div>
+        
+        <div class="document-card">
+          <div class="document-icon">
+            <i class="fas fa-file-word"></i>
+          </div>
+          <div class="document-content">
+            <h3>Project Proposals</h3>
+            <p>Approved community development projects</p>
+            <div class="document-meta">
+              <span class="document-date">March 10, 2024</span>
+              <span class="document-size">3.2 MB</span>
+            </div>
+          </div>
+          <button class="download-btn">
+            <i class="fas fa-download"></i>
+            Download
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Information -->
+    <div class="contact-section">
+      <h2 class="section-title">Contact for More Information</h2>
+      <div class="contact-cards">
+        <div class="contact-card">
+          <div class="contact-icon">
+            <i class="fas fa-user-tie"></i>
+          </div>
+          <div class="contact-content">
+            <h3>Barangay Captain</h3>
+            <p>John Dela Cruz</p>
+            <p>Phone: (02) 8XXX-XXXX</p>
+            <p>Email: captain@barangaytambo.ph</p>
+          </div>
+        </div>
+        
+        <div class="contact-card">
+          <div class="contact-icon">
+            <i class="fas fa-calculator"></i>
+          </div>
+          <div class="contact-content">
+            <h3>Treasurer</h3>
+            <p>Maria Santos</p>
+            <p>Phone: (02) 8XXX-XXXX</p>
+            <p>Email: treasurer@barangaytambo.ph</p>
+          </div>
+        </div>
+        
+        <div class="contact-card">
+          <div class="contact-icon">
+            <i class="fas fa-building"></i>
+          </div>
+          <div class="contact-content">
+            <h3>Barangay Office</h3>
+            <p>Tambo, Parañaque City</p>
+            <p>Office Hours: 8:00 AM - 5:00 PM</p>
+            <p>Monday to Friday</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

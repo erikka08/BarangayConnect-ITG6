@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BarangayConnect - Admin Dashboard</title>
+  <link rel="stylesheet" href="admin-style.css" />
+  <script src="https://kit.fontawesome.com/a2e0f1f0c1.js" crossorigin="anonymous"></script>
+  <style>
+    /* Global scrollbar hiding for all elements */
+    * {
+      scrollbar-width: none !important; /* Firefox */
+      -ms-overflow-style: none !important; /* Internet Explorer 10+ */
+    }
+    
+    *::-webkit-scrollbar {
+      display: none !important; /* WebKit */
+    }
+    
+    /* Ensure iframes don't show scrollbars */
+    iframe {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    
+    iframe::-webkit-scrollbar {
+      display: none !important;
+    }
+  </style>
+</head>
+<body class="admin-body">
+
+  <!-- Admin Header -->
+  <header class="admin-header">
+    <div class="header-left">
+      <h1>
+        <span class="brand-logo" aria-hidden="true"><img src="BC_House.png" alt="BarangayConnect logo" /></span>
+        BarangayConnect
+      </h1>
+    </div>
+    <div class="header-right">
+      <div class="settings-dropdown">
+        <button class="header-btn" title="Settings" onclick="toggleSettings()"><i class="fas fa-cog"></i></button>
+        <div class="settings-menu" id="settingsMenu">
+          <a href="#" class="settings-item" onclick="openUpdateProfile()">
+            <i class="fas fa-user-edit"></i>
+            <span>Update Profile</span>
+          </a>
+          <a href="#" class="settings-item" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Log out</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Admin Container -->
+  <div class="admin-container">
+    <!-- Modern Sidebar -->
+    <aside class="modern-sidebar" aria-label="Primary">
+      <div class="sidebar-toggle" onclick="toggleSidebar()">
+        <div class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      
+      <div class="sidebar-content">
+      <div class="sidebar-header">
+          <div class="user-info">
+            <div class="user-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="user-details">
+          <h3>Hello!</h3>
+              <p>Administrator</p>
+            </div>
+          </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+          <ul class="nav-list">
+            <li class="nav-item active">
+              <a href="#" class="nav-link" data-section="dashboard">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" data-section="reports">
+                <i class="fas fa-file-invoice"></i>
+                <span>Reports</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" data-section="requests">
+                <i class="fas fa-file-alt"></i>
+                <span>Requests</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" data-section="transparency">
+                <i class="fas fa-balance-scale"></i>
+                <span>Transparency</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" data-section="announcements">
+                <i class="fas fa-bullhorn"></i>
+                <span>Announcements</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" data-section="users">
+                <i class="fas fa-users"></i>
+                <span>User Management</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" data-section="emergency">
+                <i class="fas fa-phone"></i>
+                <span>Emergency</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-main">
+      <div class="main-content">
+        <!-- Content sections will be loaded dynamically -->
+        <div id="dashboard-section" class="content-section active">
+          <iframe src="A_Home-Dashboard.html" frameborder="0" width="100%" height="100%" style="border: none; height: 100vh; margin: 0; padding: 0; display: block; overflow: hidden;"></iframe>
+        </div>
+
+        <div id="reports-section" class="content-section">
+          <iframe src="A_Reports.html" frameborder="0" width="100%" height="100%" style="border: none; height: 100vh; margin: 0; padding: 0; display: block; overflow: hidden;"></iframe>
+        </div>
+
+        <div id="requests-section" class="content-section">
+          <iframe src="A_Requests.html" frameborder="0" width="100%" height="100%" style="border: none; height: 100vh; margin: 0; padding: 0; display: block; overflow: hidden;"></iframe>
+        </div>
+
+        <div id="transparency-section" class="content-section">
+          <iframe src="A_Transparency.html" frameborder="0" width="100%" height="100%" style="border: none; height: 100vh; margin: 0; padding: 0; display: block; overflow: hidden;"></iframe>
+        </div>
+
+        <div id="announcements-section" class="content-section">
+          <iframe src="A_Announcements.html" frameborder="0" width="100%" height="100%" style="border: none; height: 100vh; margin: 0; padding: 0; display: block; overflow: hidden;"></iframe>
+        </div>
+
+        <div id="users-section" class="content-section">
+          <iframe src="A_User-Management.html" frameborder="0" width="100%" height="100%" style="border: none; height: 100vh; margin: 0; padding: 0; display: block; overflow: hidden;"></iframe>
+        </div>
+
+        <div id="emergency-section" class="content-section">
+          <iframe src="A_Emergency.html" frameborder="0" width="100%" height="100%" style="border: none; height: 100vh; margin: 0; padding: 0; display: block; overflow: hidden;"></iframe>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Navigation functionality
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Remove active class from all nav items
+        document.querySelectorAll('.nav-item').forEach(item => {
+          item.classList.remove('active');
+        });
+        
+        // Add active class to clicked item
+        this.parentElement.classList.add('active');
+        
+        // Hide all content sections
+        document.querySelectorAll('.content-section').forEach(section => {
+          section.classList.remove('active');
+        });
+        
+        // Show selected section
+        const sectionId = this.getAttribute('data-section') + '-section';
+        const targetSection = document.getElementById(sectionId);
+        if (targetSection) {
+          targetSection.classList.add('active');
+        }
+      });
+    });
+
+    // Settings dropdown functionality
+    function toggleSettings() {
+      const settingsMenu = document.getElementById('settingsMenu');
+      settingsMenu.classList.toggle('show');
+    }
+
+    // Close settings menu when clicking outside
+    document.addEventListener('click', function(event) {
+      const settingsDropdown = document.querySelector('.settings-dropdown');
+      const settingsMenu = document.getElementById('settingsMenu');
+      
+      if (!settingsDropdown.contains(event.target)) {
+        settingsMenu.classList.remove('show');
+      }
+    });
+
+    // Update Profile functionality
+    function openUpdateProfile() {
+      alert('Update Profile feature coming soon!');
+      document.getElementById('settingsMenu').classList.remove('show');
+    }
+
+    // Logout functionality
+    function logout() {
+      if (confirm('Are you sure you want to logout?')) {
+        alert('You have been logged out.');
+        window.location.href = '../Front.html';
+      }
+      document.getElementById('settingsMenu').classList.remove('show');
+    }
+
+    // Modern sidebar toggle
+    function toggleSidebar() {
+      document.querySelector('.modern-sidebar').classList.toggle('collapsed');
+    }
+    
+    // Add click event to hamburger menu icon
+    document.addEventListener('DOMContentLoaded', function() {
+      const hamburgerIcon = document.querySelector('.sidebar-toprow i.fa-bars');
+      if (hamburgerIcon) {
+        hamburgerIcon.addEventListener('click', toggleSidebar);
+        hamburgerIcon.style.cursor = 'pointer';
+      }
+    });
+
+    // Compute header height and update CSS variable so sidebar/content align with no gap
+    function setHeaderOffset() {
+      var header = document.querySelector('.admin-header');
+      if (!header) return;
+      var borderBottom = 3; // matches CSS border-bottom thickness
+      var offset = header.offsetHeight + borderBottom;
+      document.documentElement.style.setProperty('--header-offset', offset + 'px');
+    }
+    function setCurrentDate() {
+      var dateElement = document.getElementById('current-date');
+      if (dateElement) {
+        var today = new Date();
+        var options = { 
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        };
+        dateElement.textContent = today.toLocaleDateString('en-US', options);
+      }
+    }
+    
+    window.addEventListener('load', function() {
+      setHeaderOffset();
+      setCurrentDate();
+    });
+    window.addEventListener('resize', setHeaderOffset);
+  </script>
+</body>
+</html>

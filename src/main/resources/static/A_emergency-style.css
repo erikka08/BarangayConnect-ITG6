@@ -1,0 +1,511 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
+:root {
+  --clr-1: #92a287; /* dark sage */
+  --clr-2: #b9ccb5; /* medium sage */
+  --clr-3: #e0edd8; /* light sage */
+  --clr-4: #f2f2f2; /* near white */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f5f5f5;
+  min-height: 100vh;
+  color: var(--clr-1);
+  line-height: 1.6;
+  padding: 2rem;
+  /* Hide scrollbar but allow scrolling */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+body::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+
+.emergency-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.emergency-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem 0;
+}
+
+.emergency-title {
+  color: #2c3e50;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.emergency-title i {
+  color: #e74c3c;
+  font-size: 2rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.emergency-subtitle {
+  color: #7f8c8d;
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 400;
+}
+
+.section-title {
+  color: #2c3e50;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0 0 2rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 3px solid #e74c3c;
+  display: inline-block;
+}
+
+/* Hotlines Section */
+.hotlines-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 3rem;
+}
+
+.hotlines-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.hotline-card {
+  background: #f8f9fa;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.hotline-card.critical {
+  background: linear-gradient(135deg, #fff5f5 0%, #fef5e7 100%);
+  border-color: #fde68a;
+}
+
+.hotline-card.critical::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, #e74c3c 0%, #f39c12 100%);
+}
+
+.hotline-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+}
+
+.hotline-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.hotline-card.critical .hotline-icon {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  animation: pulse 2s infinite;
+}
+
+.hotline-content h3 {
+  color: #2c3e50;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.hotline-number {
+  color: #e74c3c;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  font-family: 'Courier New', monospace;
+}
+
+.hotline-content p {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  margin: 0 0 1.5rem 0;
+}
+
+.hotline-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.call-btn {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  justify-content: center;
+}
+
+.call-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+}
+
+.edit-btn {
+  background: transparent;
+  color: #7f8c8d;
+  border: 1px solid #e0e0e0;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.edit-btn:hover {
+  background: #f39c12;
+  color: white;
+  border-color: #f39c12;
+  transform: translateY(-2px);
+}
+
+/* Procedures Section */
+.procedures-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  margin-bottom: 3rem;
+}
+
+.procedures-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.procedure-card {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.procedure-card:hover {
+  background: #e9ecef;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.procedure-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, var(--clr-1) 0%, var(--clr-2) 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.procedure-content h3 {
+  color: #2c3e50;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+}
+
+.procedure-steps {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  padding-left: 1.5rem;
+}
+
+.procedure-steps li {
+  margin-bottom: 0.5rem;
+}
+
+/* Contacts Management */
+.contacts-management {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.management-actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.add-contact-btn,
+.import-contacts-btn,
+.export-contacts-btn {
+  background: linear-gradient(135deg, var(--clr-1) 0%, var(--clr-2) 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.add-contact-btn:hover,
+.import-contacts-btn:hover,
+.export-contacts-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.16);
+}
+
+.import-contacts-btn {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+}
+
+.export-contacts-btn {
+  background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+}
+
+.contacts-table-container {
+  overflow-x: auto;
+}
+
+.contacts-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.contacts-table th {
+  background: linear-gradient(135deg, var(--clr-1) 0%, var(--clr-2) 100%);
+  color: white;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.contacts-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
+}
+
+.contacts-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.service-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.service-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.service-name {
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+}
+
+.service-type {
+  color: #7f8c8d;
+  font-size: 0.8rem;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.active {
+  background: rgba(46, 204, 113, 0.1);
+  color: #27ae60;
+}
+
+.status-badge.inactive {
+  background: rgba(149, 165, 166, 0.1);
+  color: #95a5a6;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  width: 35px;
+  height: 35px;
+  border: 1px solid #e0e0e0;
+  background: white;
+  color: #7f8c8d;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.edit-btn:hover {
+  background: #f39c12;
+  color: white;
+  border-color: #f39c12;
+}
+
+.test-btn:hover {
+  background: #3498db;
+  color: white;
+  border-color: #3498db;
+}
+
+.delete-btn:hover {
+  background: #e74c3c;
+  color: white;
+  border-color: #e74c3c;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  body {
+    padding: 1rem;
+  }
+  
+  .emergency-title {
+    font-size: 2rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .hotlines-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .procedures-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .management-actions {
+    flex-direction: column;
+  }
+  
+  .add-contact-btn,
+  .import-contacts-btn,
+  .export-contacts-btn {
+    justify-content: center;
+  }
+  
+  .contacts-table-container {
+    overflow-x: auto;
+  }
+  
+  .contacts-table {
+    min-width: 600px;
+  }
+}
+
+@media (max-width: 480px) {
+  .emergency-title {
+    font-size: 1.8rem;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+  }
+  
+  .hotline-actions {
+    flex-direction: column;
+  }
+  
+  .call-btn,
+  .edit-btn {
+    justify-content: center;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .action-btn {
+    width: 100%;
+  }
+}

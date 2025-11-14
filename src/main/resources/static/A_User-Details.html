@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Details - BarangayConnect</title>
+ <link rel="stylesheet" href="../A_user-details-style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+</head>
+
+<body>
+  <div class="user-details-container">
+
+    <!-- Header -->
+    <div class="page-header">
+      <div class="header-content">
+        <button class="back-btn" onclick="window.location.href='A_User-Management.html'">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="header-text">
+          <h1 class="page-title"><i class="fas fa-users"></i> User Details</h1>
+          <p class="page-subtitle">Manage and monitor all registered users and their personal information</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats + Search -->
+    <div class="search-stats-section">
+      <div class="stats-section">
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fas fa-users"></i></div>
+          <div class="stat-content">
+            <h3>Total Users</h3>
+            <div id="totalUsersCount">0</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fas fa-user-check"></i></div>
+          <div class="stat-content">
+            <h3>Active Users</h3>
+            <div id="activeUsersCount">0</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fas fa-user-slash"></i></div>
+          <div class="stat-content">
+            <h3>Offline</h3>
+            <div id="offlineUsersCount">0</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon"><i class="fas fa-user-clock"></i></div>
+          <div class="stat-content">
+            <h3>Pending</h3>
+            <div id="pendingCount">0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="search-group">
+        <input type="text" id="searchInput" placeholder="Search users..." class="search-input" />
+        <button class="search-btn"><i class="fas fa-search"></i></button>
+      </div>
+    </div>
+
+    <!-- User Table -->
+    <div class="user-table" style="margin-top:20px;">
+      <div class="table-header">
+        <div class="table-cell">First Name</div>
+        <div class="table-cell">Last Name</div>
+        <div class="table-cell">Phone</div>
+        <div class="table-cell">Email</div>
+        <div class="table-cell">Status</div>
+        <div class="table-cell">Approved Date</div>
+      </div>
+      <div id="approvedTableBody"></div>
+    </div>
+  </div>
+
+  <script>
+    // ✅ same base setup as pending page
+    const BASE_URL = "http://localhost:8080/api/resident";
+    const APPROVED_URL = `${BASE_URL}/approved`;
+    const COUNTS_URL = `${BASE_URL}/counts`;
+
+    let approvedList = [];
+
+    function escapeHtml(str) {
+      return str ? String(str).replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'
+      }[m])) : '';
+    }
+
+    function renderTable(list) {
+      const tbody = document.getElementById("approvedTableBody");
+      tbody.innerHTML = "";
+
+      if (!list || list.length === 0) {
+        tbody.innerHTML = `
+          <div class="table-row">
+            <div class="table-cell" style="grid-column:1/-1;padding:2rem;color:#777;text-align:center;">
+              No approved users found
+            </div>
+          </div>`;
+        return;
+      }
+
+      list.forEach(u => {
+        const date = u.approvedDateTime ? new Date(u.approvedDateTime).toLocaleString() : "-";
+        const row = document.createElement("div");
+        row.className = "table-row";
+        row.innerHTML = `
+          <div class="table-cell">${escapeHtml(u.firstname)}</div>
+          <div class="table-cell">${escapeHtml(u.lastname)}</div>
+          <div class="table-cell">${escapeHtml(u.phoneNum)}</div>
+          <div class="table-cell">${escapeHtml(u.email || "—")}</div>
+          <div class="table-cell"><span class="status-badge ${u.isLoggedIn ? 'active' : 'offline'}">${u.isLoggedIn ? 'Active' : 'Offline'}</span></div>
+          <div class="table-cell">${date}</div>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    async function loadCounts() {
+      try {
+        const res = await fetch(COUNTS_URL);
+        const data = await res.json();
+        document.getElementById("totalUsersCount").innerText = data.totalUsers ?? 0;
+        document.getElementById("activeUsersCount").innerText = data.activeUsers ?? 0;
+        document.getElementById("offlineUsersCount").innerText = data.offlineUsers ?? 0;
+        document.getElementById("pendingCount").innerText = data.pendingUsers ?? 0;
+      } catch (e) {
+        console.error("Error loading counts:", e);
+      }
+    }
+
+    async function reloadAllData() {
+      try {
+        const res = await fetch(APPROVED_URL);
+        approvedList = await res.json();
+        renderTable(approvedList);
+        await loadCounts();
+      } catch (err) {
+        console.error("Error loading data:", err);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      reloadAllData();
+
+      const searchInput = document.getElementById("searchInput");
+      if (searchInput) {
+        searchInput.addEventListener("input", function() {
+          const term = this.value.toLowerCase().trim();
+          const rows = document.querySelectorAll("#approvedTableBody .table-row");
+          rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(term) ? "grid" : "none";
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>

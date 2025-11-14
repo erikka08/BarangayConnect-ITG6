@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emergency Contacts - BarangayConnect</title>
+  <link rel="stylesheet" href="R_emergency-style.css">
+  <script src="https://kit.fontawesome.com/a2e0f1f0c1.js" crossorigin="anonymous"></script>
+  <style>
+    /* Force hide all scrollbars */
+    * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    *::-webkit-scrollbar {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">
+        <i class="fas fa-phone"></i>
+        Emergency Contacts
+      </h1>
+      <p class="page-subtitle">Quick access to emergency services and important contacts</p>
+    </div>
+  </div>
+
+  <!-- Emergency Numbers -->
+  <div class="emergency-section">
+    <h2 class="section-title">Emergency Numbers</h2>
+    <div class="emergency-grid">
+      <div class="emergency-card critical">
+        <div class="card-icon">
+          <i class="fas fa-ambulance"></i>
+        </div>
+        <div class="card-content">
+          <h3>Emergency Medical</h3>
+          <div class="phone-number">911</div>
+          <p>For medical emergencies and ambulance service</p>
+        </div>
+        <button class="call-btn emergency">
+          <i class="fas fa-phone"></i>
+          Call Now
+        </button>
+      </div>
+
+      <div class="emergency-card critical">
+        <div class="card-icon">
+          <i class="fas fa-fire"></i>
+        </div>
+        <div class="card-content">
+          <h3>Fire Department</h3>
+          <div class="phone-number">911</div>
+          <p>For fire emergencies and rescue operations</p>
+        </div>
+        <button class="call-btn emergency">
+          <i class="fas fa-phone"></i>
+          Call Now
+        </button>
+      </div>
+
+      <div class="emergency-card critical">
+        <div class="card-icon">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <div class="card-content">
+          <h3>Police</h3>
+          <div class="phone-number">911</div>
+          <p>For police assistance and security</p>
+        </div>
+        <button class="call-btn emergency">
+          <i class="fas fa-phone"></i>
+          Call Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Barangay Contacts -->
+  <div class="contacts-section">
+    <h2 class="section-title">Barangay Contacts</h2>
+    <div class="contacts-grid">
+      <div class="contact-card">
+        <div class="contact-header">
+          <div class="contact-icon">
+            <i class="fas fa-user-tie"></i>
+          </div>
+          <div class="contact-info">
+            <h3>Barangay Captain</h3>
+            <div class="contact-role">Hon. Maria Santos</div>
+          </div>
+        </div>
+        <div class="contact-details">
+          <div class="contact-item">
+            <i class="fas fa-phone"></i>
+            <span>(02) 8XXX-XXXX</span>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-mobile-alt"></i>
+            <span>0917-XXX-XXXX</span>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-envelope"></i>
+            <span>captain@tambo.ph</span>
+          </div>
+        </div>
+        <button class="call-btn">
+          <i class="fas fa-phone"></i>
+          Call
+        </button>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-header">
+          <div class="contact-icon">
+            <i class="fas fa-user-md"></i>
+          </div>
+          <div class="contact-info">
+            <h3>Barangay Health Center</h3>
+            <div class="contact-role">Medical Services</div>
+          </div>
+        </div>
+        <div class="contact-details">
+          <div class="contact-item">
+            <i class="fas fa-phone"></i>
+            <span>(02) 8XXX-XXXX</span>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-clock"></i>
+            <span>8:00 AM - 5:00 PM</span>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Barangay Health Center</span>
+          </div>
+        </div>
+        <button class="call-btn">
+          <i class="fas fa-phone"></i>
+          Call
+        </button>
+      </div>
+
+      <div class="contact-card">
+        <div class="contact-header">
+          <div class="contact-icon">
+            <i class="fas fa-home"></i>
+          </div>
+          <div class="contact-info">
+            <h3>Barangay Hall</h3>
+            <div class="contact-role">Administrative Office</div>
+          </div>
+        </div>
+        <div class="contact-details">
+          <div class="contact-item">
+            <i class="fas fa-phone"></i>
+            <span>(02) 8XXX-XXXX</span>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-clock"></i>
+            <span>8:00 AM - 5:00 PM</span>
+          </div>
+          <div class="contact-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Barangay Hall, Tambo</span>
+          </div>
+        </div>
+        <button class="call-btn">
+          <i class="fas fa-phone"></i>
+          Call
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <h2 class="section-title">Quick Actions</h2>
+    <div class="actions-grid">
+      <button class="action-card">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>Report Emergency</span>
+      </button>
+      <button class="action-card">
+        <i class="fas fa-map-marker-alt"></i>
+        <span>Find Nearest Hospital</span>
+      </button>
+      <button class="action-card">
+        <i class="fas fa-phone-alt"></i>
+        <span>Save Emergency Contacts</span>
+      </button>
+      <button class="action-card">
+        <i class="fas fa-info-circle"></i>
+        <span>Emergency Procedures</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Call button functionality
+    const callButtons = document.querySelectorAll('.call-btn');
+    
+    callButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const phoneNumber = this.closest('.emergency-card, .contact-card').querySelector('.phone-number, .contact-item span');
+        if (phoneNumber) {
+          const number = phoneNumber.textContent.trim();
+          if (confirm(`Call ${number}?`)) {
+            window.location.href = `tel:${number}`;
+          }
+        }
+      });
+    });
+
+    // Quick action buttons
+    const actionCards = document.querySelectorAll('.action-card');
+    
+    actionCards.forEach(card => {
+      card.addEventListener('click', function() {
+        const action = this.querySelector('span').textContent;
+        alert(`${action} functionality will be implemented here`);
+      });
+    });
+  </script>
+</body>
+</html>
+

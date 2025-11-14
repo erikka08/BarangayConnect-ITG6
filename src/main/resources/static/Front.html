@@ -1,0 +1,174 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BarangayConnect</title>
+  <link rel="stylesheet" href="front-style.css"/>
+</head>
+<body>
+  <header>
+    <h1><i class="fas fa-home"></i>Welcome to <span>BarangayConnect</span></h1>
+    <p><i class="fas fa-map-marker-alt"></i> Tambo, Parañaque City</p>
+  </header>
+
+  <main>
+    <div class="welcome-section">
+      <p>Experience transparency, efficiency, and connection with BarangayConnect , your trusted platform to stay informed, access services quickly, and engage with the community of Barangay Tambo, Parañaque City.</p>
+    </div>
+    
+    <div class="button-container">
+      <button id="registerBtn" class="main-btn">
+        <i class="fas fa-user-plus"></i> Register
+      </button>
+      <button id="loginBtn" class="main-btn">
+        <i class="fas fa-sign-in-alt"></i> Login
+      </button>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 BarangayConnect Tambo Parañaque City
+  </footer>
+
+  <!-- Register Modal -->
+  <div id="registerModal" class="modal">
+    <div class="modal-content">
+      <span class="close" data-close="registerModal">&times;</span>
+      <h2>Register</h2>
+      <form id="registerForm">
+        <label><i class="fas fa-user"></i> First Name</label>
+        <input type="text" id="regFirstName" placeholder="Enter your first name" required />
+
+        <label><i class="fas fa-user"></i> Last Name</label>
+        <input type="text" id="regLastName" placeholder="Enter your last name" required />
+
+        <label><i class="fas fa-phone"></i> Mobile Number</label>
+        <input type="tel" id="regMobile" placeholder="Enter your mobile number" required />
+
+        <label><i class="fas fa-envelope"></i> Email (Optional)</label>
+        <input type="email" id="regEmail" placeholder="Enter your email" />
+
+        <label><i class="fas fa-lock"></i> Password</label>
+        <input type="password" id="regPassword" placeholder="Enter your password" required />
+
+        <label><i class="fas fa-lock"></i> Confirm Password</label>
+        <input type="password" id="regConfirmPassword" placeholder="Confirm your password" required />
+
+        <label class="show-pass">
+          <input type="checkbox" id="showRegPassword"/> Show Password
+        </label>
+
+        <button type="submit" class="form-btn">Register</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <span class="close" data-close="loginModal">&times;</span>
+      <h2>Login</h2>
+
+      <div class="tabs" role="tablist">
+        <button class="tab-button active" data-target="residentLoginPanel" aria-selected="true">Resident</button>
+        <button class="tab-button" data-target="adminLoginPanel" aria-selected="false">Admin</button>
+      </div>
+
+      <div id="residentLoginPanel" class="tab-panel">
+        <form id="residentLoginForm">
+          <label><i class="fas fa-envelope"></i> Email or Mobile Number</label>
+          <input type="text" id="loginResidentEmail" placeholder="Enter your email or mobile number" required />
+
+          <label><i class="fas fa-lock"></i> Password</label>
+          <input type="password" id="loginResidentPassword" placeholder="Enter your password" required />
+
+          <label class="show-pass">
+            <input type="checkbox" id="showResidentPassword"/> Show Password
+          </label>
+
+          <div class="forgot-password">
+            <a href="#" id="forgotPasswordLink">Forgot Password?</a>
+          </div>
+
+          <button type="submit" class="form-btn">Login as Resident</button>
+        </form>
+      </div>
+
+      <div id="adminLoginPanel" class="tab-panel hidden">
+        <form id="adminLoginForm">
+          <label><i class="fas fa-user-shield"></i> Admin Username or Email</label>
+          <input type="text" id="loginAdminEmail" placeholder="Enter admin username or email" required />
+
+          <label><i class="fas fa-lock"></i> Password</label>
+          <input type="password" id="loginAdminPassword" placeholder="Enter your password" required />
+
+          <label class="show-pass">
+            <input type="checkbox" id="showAdminPassword"/> Show Password
+          </label>
+
+          <button type="submit" class="form-btn">Login as Admin</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div id="forgotPasswordModal" class="modal">
+    <div class="modal-content">
+      <span class="close" data-close="forgotPasswordModal">&times;</span>
+      <h2><i class="fas fa-key"></i> Forgot Password Assistance</h2>
+      <div class="forgot-password-content">
+        <p>Don't worry! Our barangay team is here to help you recover your password. Follow these steps:</p>
+        
+        <div class="steps-container">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h3>Visit the Barangay Office</h3>
+              <p>Go to the BarangayConnect office at Tambo, Parañaque City during office hours (8:00 AM - 5:00 PM, Monday to Friday).</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h3>Bring Valid ID</h3>
+              <p>Bring any government-issued ID (Driver's License, Passport, Postal ID, etc.) to verify your identity.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h3>Provide Account Information</h3>
+              <p>Tell our staff your registered full name and mobile number to locate your account.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <h3>Password Reset</h3>
+              <p>Our staff will assist you in resetting your password securely. You'll be able to set a new password immediately.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-info">
+          <h3><i class="fas fa-phone"></i> Need Help?</h3>
+          <p><strong>Barangay Office:</strong> Tambo, Parañaque City</p>
+          <p><strong>Office Hours:</strong> Monday - Friday, 8:00 AM - 5:00 PM</p>
+          <p><strong>Contact:</strong> Visit our office or call (02) 8XXX-XXXX</p>
+        </div>
+
+        <div class="security-note">
+          <i class="fas fa-shield-alt"></i>
+          <p><strong>Security Note:</strong> For your protection, password resets can only be done in person at our office with proper identification.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Announcements - BarangayConnect</title>
+    <link rel="stylesheet" href="A_announcements-style.css">
+    <style>
+      /* Force hide all scrollbars */
+      * {
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+      }
+      *::-webkit-scrollbar {
+        display: none !important;
+      }
+    </style>
+  <script src="https://kit.fontawesome.com/a2e0f1f0c1.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="announcements-container">
+    <div class="announcements-header">
+      <h1 class="announcements-title">
+        <i class="fas fa-bullhorn"></i>
+        Announcements
+      </h1>
+      <p class="announcements-subtitle">Manage and publish community announcements</p>
+      <button class="create-announcement-btn">
+        <i class="fas fa-plus"></i>
+        Create New Announcement
+      </button>
+    </div>
+
+    <!-- Announcement Filters -->
+    <div class="filters-section">
+      <div class="filter-group">
+        <label for="announcement-status">Status:</label>
+        <select id="announcement-status" class="filter-select">
+          <option value="all">All Announcements</option>
+          <option value="published">Published</option>
+          <option value="draft">Draft</option>
+          <option value="scheduled">Scheduled</option>
+          <option value="archived">Archived</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="announcement-type">Type:</label>
+        <select id="announcement-type" class="filter-select">
+          <option value="all">All Types</option>
+          <option value="general">General</option>
+          <option value="emergency">Emergency</option>
+          <option value="event">Event</option>
+          <option value="maintenance">Maintenance</option>
+        </select>
+      </div>
+      
+      <div class="search-group">
+        <input type="text" placeholder="Search announcements..." class="search-input">
+        <button class="search-btn">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Announcements Grid -->
+    <div class="announcements-grid">
+      <div class="announcement-card featured">
+        <div class="announcement-header">
+          <div class="announcement-badge important">Important</div>
+          <div class="announcement-actions">
+            <button class="action-btn edit-btn" title="Edit">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="action-btn delete-btn" title="Delete">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        <div class="announcement-content">
+          <h3>Community Meeting</h3>
+          <p>Monthly barangay assembly scheduled for March 15, 2024 at 7:00 PM in the community center. All residents are encouraged to attend and participate in the discussion of community matters.</p>
+          <div class="announcement-meta">
+            <div class="announcement-info">
+              <span class="announcement-date">
+                <i class="fas fa-calendar"></i>
+                March 10, 2024
+              </span>
+              <span class="announcement-author">
+                <i class="fas fa-user"></i>
+                Barangay Captain
+              </span>
+            </div>
+            <div class="announcement-status published">Published</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="announcement-card">
+        <div class="announcement-header">
+          <div class="announcement-badge event">Event</div>
+          <div class="announcement-actions">
+            <button class="action-btn edit-btn" title="Edit">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="action-btn delete-btn" title="Delete">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        <div class="announcement-content">
+          <h3>Health Program Launch</h3>
+          <p>Free medical check-up program for senior citizens starts next week. Registration is now open at the barangay health center.</p>
+          <div class="announcement-meta">
+            <div class="announcement-info">
+              <span class="announcement-date">
+                <i class="fas fa-calendar"></i>
+                March 8, 2024
+              </span>
+              <span class="announcement-author">
+                <i class="fas fa-user"></i>
+                Health Committee
+              </span>
+            </div>
+            <div class="announcement-status published">Published</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="announcement-card">
+        <div class="announcement-header">
+          <div class="announcement-badge maintenance">Maintenance</div>
+          <div class="announcement-actions">
+            <button class="action-btn edit-btn" title="Edit">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="action-btn delete-btn" title="Delete">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        <div class="announcement-content">
+          <h3>Road Maintenance</h3>
+          <p>Main street will be closed for maintenance from March 12-14. Please use alternative routes during this period.</p>
+          <div class="announcement-meta">
+            <div class="announcement-info">
+              <span class="announcement-date">
+                <i class="fas fa-calendar"></i>
+                March 7, 2024
+              </span>
+              <span class="announcement-author">
+                <i class="fas fa-user"></i>
+                Infrastructure Team
+              </span>
+            </div>
+            <div class="announcement-status published">Published</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="announcement-card">
+        <div class="announcement-header">
+          <div class="announcement-badge general">General</div>
+          <div class="announcement-actions">
+            <button class="action-btn edit-btn" title="Edit">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="action-btn delete-btn" title="Delete">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        <div class="announcement-content">
+          <h3>New Barangay Services</h3>
+          <p>We are pleased to announce new online services available through our website. Residents can now request documents online.</p>
+          <div class="announcement-meta">
+            <div class="announcement-info">
+              <span class="announcement-date">
+                <i class="fas fa-calendar"></i>
+                March 5, 2024
+              </span>
+              <span class="announcement-author">
+                <i class="fas fa-user"></i>
+                Admin Team
+              </span>
+            </div>
+            <div class="announcement-status draft">Draft</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="announcement-card">
+        <div class="announcement-header">
+          <div class="announcement-badge emergency">Emergency</div>
+          <div class="announcement-actions">
+            <button class="action-btn edit-btn" title="Edit">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="action-btn delete-btn" title="Delete">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        <div class="announcement-content">
+          <h3>Weather Advisory</h3>
+          <p>Heavy rainfall expected this weekend. Please stay indoors and avoid unnecessary travel. Emergency hotline: 911</p>
+          <div class="announcement-meta">
+            <div class="announcement-info">
+              <span class="announcement-date">
+                <i class="fas fa-calendar"></i>
+                March 3, 2024
+              </span>
+              <span class="announcement-author">
+                <i class="fas fa-user"></i>
+                Emergency Team
+              </span>
+            </div>
+            <div class="announcement-status scheduled">Scheduled</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="announcement-card">
+        <div class="announcement-header">
+          <div class="announcement-badge event">Event</div>
+          <div class="announcement-actions">
+            <button class="action-btn edit-btn" title="Edit">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="action-btn delete-btn" title="Delete">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        <div class="announcement-content">
+          <h3>Sports Tournament</h3>
+          <p>Annual basketball tournament registration is now open. Teams can register at the barangay office until March 20.</p>
+          <div class="announcement-meta">
+            <div class="announcement-info">
+              <span class="announcement-date">
+                <i class="fas fa-calendar"></i>
+                March 1, 2024
+              </span>
+              <span class="announcement-author">
+                <i class="fas fa-user"></i>
+                Sports Committee
+              </span>
+            </div>
+            <div class="announcement-status published">Published</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Announcement Statistics -->
+    <div class="stats-section">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-bullhorn"></i>
+        </div>
+        <div class="stat-content">
+          <h3>Total Announcements</h3>
+          <div class="stat-number">24</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-content">
+          <h3>Published</h3>
+          <div class="stat-number">18</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-edit"></i>
+        </div>
+        <div class="stat-content">
+          <h3>Drafts</h3>
+          <div class="stat-number">4</div>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-content">
+          <h3>Scheduled</h3>
+          <div class="stat-number">2</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
