@@ -1,0 +1,205 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>BarangayConnect - Waiting for Approval</title>
+    <link rel="stylesheet" href="R_Waiting.css" />
+    <script src="https://kit.fontawesome.com/a2e0f1f0c1.js" crossorigin="anonymous"></script>
+  </head>
+  <body>
+
+    <!-- Header -->
+    <header class="waiting-header">
+      <div class="header-left">
+        <h1>
+          <span class="brand-logo" aria-hidden="true"><img src="BC_House.png" alt="BarangayConnect logo" /></span>
+          BarangayConnect
+        </h1>
+      </div>
+      <div class="header-right">
+        <div class="settings-dropdown">
+          <button class="header-btn" title="Settings" onclick="toggleSettings()"><i class="fas fa-cog"></i></button>
+          <div class="settings-menu" id="settingsMenu">
+            <a href="#" class="settings-item" onclick="logout()">
+              <i class="fas fa-sign-out-alt"></i>
+              <span>Log out</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="waiting-main">
+      <div class="waiting-container">
+        <div class="waiting-content">
+          <div class="waiting-icon"><i class="fas fa-clock"></i></div>
+          <h2>Waiting for Approval</h2>
+          <p>Your registration is currently pending admin approval.</p>
+        </div>
+
+        <!-- EMERGENCY CONTACTS -->
+        <div class="emergency-section">
+          <div class="emergency-header">
+            <h3>Emergency Services</h3>
+            <p>Quick access to emergency contacts</p>
+          </div>
+
+          <div class="emergency-grid" id="emergencyGrid"></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- LOGOUT MODAL -->
+    <div id="logoutModal" class="logout-modal">
+      <div class="logout-modal-content">
+        <div class="logout-modal-header"><h3>Confirm Logout</h3></div>
+        <div class="logout-modal-body"><p>Are you sure?</p></div>
+
+        <div class="logout-modal-footer">
+          <button onclick="closeLogoutModal()" class="logout-btn cancel-btn">Cancel</button>
+          <button onclick="confirmLogout()" class="logout-btn confirm-btn">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================== WAITING ROOM SCRIPT ================== -->
+    <script>
+
+  /* -----------------------------------------
+    WAITING ROOM – ANTI-BYPASS SYSTEM
+  ----------------------------------------- */
+
+  const residentId = localStorage.getItem("residentId");
+
+  // DO NOT TOUCH — EXACTLY AS YOU WROTE
+  if (!residentId) {
+      console.warn("No residentId found. Redirecting to Front.html…");
+      window.location.href = "../Front.html";
+  }
+
+  async function checkApprovalStatus() {
+      try {
+          const res = await fetch(`http://localhost:8080/api/resident/${residentId}`);
+
+          if (!res.ok) {
+              console.error("Error checking status:", res.status);
+              return;
+          }
+
+          const user = await res.json();
+          console.log("STATUS CHECK:", user.status);
+
+          if (user.status === "PENDING") return;
+
+          if (user.status === "ACTIVE") {
+              window.location.href = "R_Home-Dashboard.html";
+          }
+
+      } catch (err) {
+          console.error("Fetch error:", err);
+      }
+  }
+
+  // DO NOT TOUCH — EXACTLY AS YOU WROTE
+  setInterval(checkApprovalStatus, 4000);
+  checkApprovalStatus();
+
+  /* -----------------------------------------
+    SETTINGS BUTTON — UNCHANGED
+  ----------------------------------------- */
+  function toggleSettings() {
+      const menu = document.getElementById("settingsMenu");
+      menu.classList.toggle("show");
+  }
+
+  function logout() {
+      document.getElementById("logoutModal").classList.add("show");
+  }
+
+  function closeLogoutModal() {
+      document.getElementById("logoutModal").classList.remove("show");
+  }
+
+  function confirmLogout() {
+      localStorage.removeItem("residentId");
+      window.location.href = "../Front.html";
+  }
+
+  /* -----------------------------------------
+    LOAD EMERGENCY CONTACTS – ONLY PART FIXED
+  ----------------------------------------- */
+
+  async function loadEmergencyContacts() {
+      try {
+          const emergencyRes = await fetch("http://localhost:8080/api/emergency/contacts");
+
+          if (!emergencyRes.ok) {
+              console.error("Emergency API Error:", emergencyRes.status);
+              return;
+          }
+
+          const contacts = await emergencyRes.json();
+          console.log("Emergency Contacts:", contacts);
+
+          const grid = document.getElementById("emergencyGrid");
+          grid.innerHTML = "";
+
+          contacts.forEach(c => {
+              const card = document.createElement("div");
+              card.classList.add("emergency-card");
+
+              /* ---------------- FIXED BLOCK ONLY ---------------- */
+              card.innerHTML = `
+                  <div class="card-top">
+                      <div class="emergency-card-icon">
+                          <i class="fas ${c.icon || getIconClass(c.serviceName)}"></i>
+                      </div>
+                  </div>
+
+                  <div class="emergency-card-content">
+                      <h4>${c.serviceName}</h4>
+
+                      <div class="emergency-phone-wrapper">
+                          <i class="fas fa-phone-alt"></i>
+                          <span class="emergency-phone">${c.contactNumber}</span>
+                      </div>
+
+                      <p>${c.description || ""}</p>
+                  </div>
+
+                  <button class="emergency-call-btn" onclick="window.location.href='tel:${c.contactNumber}'">
+                      <i class="fas fa-phone"></i> Call Now
+                  </button>
+              `;
+              /* ---------------- END OF FIX ---------------- */
+
+              grid.appendChild(card);
+          });
+
+      } catch (err) {
+          console.error("Emergency contacts fetch error:", err);
+      }
+  }
+
+  loadEmergencyContacts();
+
+  /* -----------------------------------------
+    ICON HELPER – UNCHANGED
+  ----------------------------------------- */
+  function getIconClass(name) {
+    const s = name.toLowerCase();
+    if (s.includes("medical") || s.includes("ambulance")) return "fa-ambulance";
+    if (s.includes("fire")) return "fa-fire";
+    if (s.includes("police")) return "fa-shield-alt";
+    if (s.includes("barangay")) return "fa-building";
+    if (s.includes("red cross") || s.includes("redcross")) return "fa-heart";
+    if (s.includes("public works")) return "fa-tools";
+    return "fa-phone";
+  }
+
+    </script>
+
+  </body>
+  </html>

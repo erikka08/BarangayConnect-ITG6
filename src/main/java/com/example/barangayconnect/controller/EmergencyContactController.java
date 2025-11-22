@@ -2,38 +2,39 @@ package com.example.barangayconnect.controller;
 
 import com.example.barangayconnect.model.EmergencyContact;
 import com.example.barangayconnect.service.EmergencyContactService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/emergency")
+@RequestMapping("/api/emergency/contacts")
 @CrossOrigin(origins = "*")
 public class EmergencyContactController {
 
-    private final EmergencyContactService service;
-
-    public EmergencyContactController(EmergencyContactService service) {
-        this.service = service;
-    }
+    @Autowired
+    private EmergencyContactService contactService;
 
     @GetMapping
-    public List<EmergencyContact> list() {
-        return service.findAll();
+    public List<EmergencyContact> getAllContacts() {
+        return contactService.getAll();
     }
 
     @PostMapping
-    public EmergencyContact create(@RequestBody EmergencyContact body) {
-        return service.create(body);
+    public EmergencyContact addContact(@RequestBody EmergencyContact contact) {
+        return contactService.save(contact);
     }
 
     @PutMapping("/{id}")
-    public EmergencyContact update(@PathVariable Long id, @RequestBody EmergencyContact body) {
-        return service.update(id, body);
+    public EmergencyContact updateContact(
+            @PathVariable Integer id,
+            @RequestBody EmergencyContact contact
+    ) {
+        return contactService.update(id, contact);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    public void deleteContact(@PathVariable Integer id) {
+        contactService.delete(id);
     }
 }

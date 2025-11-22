@@ -1,44 +1,38 @@
 package com.example.barangayconnect.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "emergencycontacts")
+@Table(name = "emergency_contacts")
 public class EmergencyContact {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    // e.g. "Fire Department", "Police Station", etc.
-    @Column(nullable = false)
-    private String service;
+    private String serviceName;
+    private String contactNumber;
+    private String description;
+    private String lastUpdated;
+    private String icon;
 
-    // e.g. "911" or "(02) 8XXX-XXXX"
-    @Column(nullable = false)
-    private String phone;
+    public EmergencyContact() {}
 
-    // ACTIVE / INACTIVE
-    @Column(nullable = false)
-    private String status = "ACTIVE";
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
 
-    @Column(name = "last_updated")
-    private LocalDateTime lastUpdated = LocalDateTime.now();
+    public String getServiceName() { return serviceName; }
+    public void setServiceName(String serviceName) { this.serviceName = serviceName; }
 
-    /* getters/setters */
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public String getContactNumber() { return contactNumber; }
+    public void setContactNumber(String contactNumber) { this.contactNumber = contactNumber; }
 
-    public String getService() { return service; }
-    public void setService(String service) { this.service = service; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
+    public String getLastUpdated() { return lastUpdated; }
+    public void setLastUpdated(String lastUpdated) { this.lastUpdated = lastUpdated; }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-
-    public LocalDateTime getLastUpdated() { return lastUpdated; }
-    public void setLastUpdated(LocalDateTime lastUpdated) { this.lastUpdated = lastUpdated; }
+    public String getIcon() { return icon; }
+    public void setIcon(String icon) { this.icon = icon; }
 }

@@ -17,15 +17,13 @@
     .btn-small { padding:6px 10px;border-radius:6px;border:0;cursor:pointer;font-size:0.85rem }
     .btn-approve { background:#2e8b57;color:#fff }
     .btn-reject { background:#c0392b;color:#fff;margin-left:8px }
-    .loader { width:18px;height:18px;border:3px solid rgba(0,0,0,0.1);border-left-color:rgba(0,0,0,0.3);border-radius:50%;animation:spin .8s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 
 <body>
   <div class="user-details-container">
 
-    <!-- Page Header -->
+    <!-- Header -->
     <div class="page-header">
       <div class="header-content">
         <button class="back-btn" onclick="goBack()">
@@ -38,10 +36,10 @@
       </div>
     </div>
 
-    <!-- Stats + Search Section -->
+    <!-- Stats Section -->
     <div class="search-stats-section">
       <div class="stats-section">
-        <div class="stat-card clickable-stat">
+        <div class="stat-card">
           <div class="stat-icon"><i class="fas fa-users"></i></div>
           <div class="stat-content">
             <h3>Total Users</h3>
@@ -65,7 +63,7 @@
           </div>
         </div>
 
-        <div class="stat-card clickable-stat">
+        <div class="stat-card">
           <div class="stat-icon"><i class="fas fa-user-clock"></i></div>
           <div class="stat-content">
             <h3>Pending</h3>
@@ -74,16 +72,14 @@
         </div>
       </div>
 
-      <!-- ✅ Search Bar Added -->
+      <!-- Search -->
       <div class="search-group">
         <input type="text" id="pendingSearchInput" placeholder="Search pending users..." class="search-input">
-        <button class="search-btn">
-          <i class="fas fa-search"></i>
-        </button>
+        <button class="search-btn"><i class="fas fa-search"></i></button>
       </div>
     </div>
 
-    <!-- ✅ Pending Users Table -->
+    <!-- Table -->
     <div class="user-table" style="margin-top:20px;">
       <div class="table-header">
         <div class="table-cell">First Name</div>
@@ -97,127 +93,127 @@
     </div>
   </div>
 
-  <script>
-    const BASE_URL = "http://localhost:8080/api/resident";
+<script>
+  const BASE_URL = "http://localhost:8080/api/resident";
 
-    const PENDING_URL = `${BASE_URL}/pending`;
-    const ACTIVE_URL  = `${BASE_URL}/active`;
-    const ALL_URL     = `${BASE_URL}/all`;
-    const APPROVE_URL = (id) => `${BASE_URL}/approve/${id}`;
-    const REJECT_URL  = (id) => `${BASE_URL}/reject/${id}`;
+  const PENDING_URL = `${BASE_URL}/pending`;
+  const COUNTS_URL = `${BASE_URL}/counts`;
+  const APPROVE_URL = (id) => `${BASE_URL}/approve/${id}`;
+  const REJECT_URL = (id) => `${BASE_URL}/reject/${id}`;
 
-    let pendingList = [];
+  let pendingList = [];
 
-    function goBack(){ window.location.href = 'A_User-Management.html'; }
+  function goBack() {
+    window.location.href = "A_User-Management.html";
+  }
 
-    function el(tag, attrs = {}, children = []) {
-      const e = document.createElement(tag);
-      Object.entries(attrs).forEach(([k,v]) => e.setAttribute(k, v));
-      (Array.isArray(children) ? children : [children]).forEach(c => {
-        e.append(typeof c === 'string' ? document.createTextNode(c) : c);
-      });
-      return e;
-    }
-
-    function renderTable(list) {
-      const tbody = document.getElementById('pendingTableBody');
-      tbody.innerHTML = '';
-
-      if (!list || list.length === 0) {
-        tbody.innerHTML = `
-          <div class="table-row">
-            <div class="table-cell" style="grid-column:1/-1;padding:2rem;color:#666;text-align:center;">
-              No pending registrations
-            </div>
-          </div>`;
-        return;
-      }
-
-      list.forEach(res => {
-        const row = el('div',{class:'table-row'}, [
-          el('div',{class:'table-cell'}, escapeHtml(res.firstname)),
-          el('div',{class:'table-cell'}, escapeHtml(res.lastname)),
-          el('div',{class:'table-cell'}, escapeHtml(res.phoneNum)),
-          el('div',{class:'table-cell'}, escapeHtml(res.email || '—')),
-          el('div',{class:'table-cell'}, buildActions(res))
-        ]);
-        tbody.appendChild(row);
-      });
-    }
-
-    function buildActions(res) {
-      const wrap = el('div',{});
-      const approveBtn = el('button',{class:'btn-small btn-approve'}, 'Approve');
-      approveBtn.onclick = () => handleApprove(res.id);
-      wrap.appendChild(approveBtn);
-
-      const rejectBtn = el('button',{class:'btn-small btn-reject'}, 'Reject');
-      rejectBtn.onclick = () => handleReject(res.id);
-      wrap.appendChild(rejectBtn);
-      return wrap;
-    }
-
-    async function handleApprove(id) {
-      if (!confirm("Approve this user?")) return;
-      await fetch(APPROVE_URL(id), { method: "POST" });
-      alert("User approved ✅");
-      await reloadAllData();
-    }
-
-    async function handleReject(id) {
-      if (!confirm("Reject this user?")) return;
-      await fetch(REJECT_URL(id), { method: "POST" });
-      alert("User rejected ❌");
-      await reloadAllData();
-    }
-
-    async function loadCounts() {
-      const pendingRes = await fetch(PENDING_URL);
-      const pendingData = await pendingRes.json();
-      document.getElementById("pendingCount").innerText = pendingData.length;
-
-      const activeRes = await fetch(ACTIVE_URL);
-      const activeData = await activeRes.json();
-      document.getElementById("activeUsersCount").innerText = activeData.length;
-
-      const totalRes = await fetch(ALL_URL);
-      const totalData = await totalRes.json();
-      document.getElementById("totalUsersCount").innerText = totalData.length;
-
-      document.getElementById("offlineUsersCount").innerText =
-        totalData.length - activeData.length;
-    }
-
-    async function reloadAllData() {
-      const res = await fetch(PENDING_URL);
-      pendingList = await res.json();
-      renderTable(pendingList);
-      loadCounts();
-    }
-
-    function escapeHtml(str) {
-      return str ? String(str).replace(/[&<>"']/g, m => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'
-      }[m])) : '';
-    }
-
-    // ✅ Live Search Filtering
-    document.addEventListener('DOMContentLoaded', () => {
-      reloadAllData();
-
-      const searchInput = document.getElementById('pendingSearchInput');
-      if (searchInput) {
-        searchInput.addEventListener('input', function() {
-          const term = this.value.toLowerCase().trim();
-          const rows = document.querySelectorAll('#pendingTableBody .table-row');
-
-          rows.forEach(row => {
-            const text = row.textContent.toLowerCase();
-            row.style.display = text.includes(term) ? 'grid' : 'none';
-          });
-        });
-      }
+  // --------- Build Table ----------
+  function el(tag, attrs = {}, children = []) {
+    const element = document.createElement(tag);
+    Object.entries(attrs).forEach(([k, v]) => element.setAttribute(k, v));
+    (Array.isArray(children) ? children : [children]).forEach(child => {
+      element.append(typeof child === "string" ? document.createTextNode(child) : child);
     });
-  </script>
+    return element;
+  }
+
+  function renderTable(list) {
+    const tbody = document.getElementById("pendingTableBody");
+    tbody.innerHTML = "";
+
+    if (!list || list.length === 0) {
+      tbody.innerHTML = `
+        <div class="table-row">
+          <div class="table-cell" style="grid-column:1/-1;padding:2rem;text-align:center;color:#666;">
+            No pending registrations
+          </div>
+        </div>`;
+      return;
+    }
+
+    list.forEach(res => {
+      const row = el("div", { class: "table-row" }, [
+        el("div", { class: "table-cell" }, escape(res.firstname)),
+        el("div", { class: "table-cell" }, escape(res.lastname)),
+        el("div", { class: "table-cell" }, escape(res.phoneNum)),
+        el("div", { class: "table-cell" }, escape(res.email || "—")),
+        el("div", { class: "table-cell" }, buildActions(res))
+      ]);
+      tbody.appendChild(row);
+    });
+  }
+
+  function escape(str) {
+    return str ? String(str) : "";
+  }
+
+  function buildActions(res) {
+    const wrap = el("div", {});
+    const approveBtn = el("button", { class: "btn-small btn-approve" }, "Approve");
+    approveBtn.onclick = () => handleApprove(res.id);
+
+    const rejectBtn = el("button", { class: "btn-small btn-reject" }, "Reject");
+    rejectBtn.onclick = () => handleReject(res.id);
+
+    wrap.appendChild(approveBtn);
+    wrap.appendChild(rejectBtn);
+    return wrap;
+  }
+
+  // --------- Approve / Reject ----------
+  async function handleApprove(id) {
+    if (!confirm("Approve this user?")) return;
+    await fetch(APPROVE_URL(id), { method: "POST" });
+    alert("User approved!");
+    reloadAllData();
+  }
+
+  async function handleReject(id) {
+    if (!confirm("Reject this user?")) return;
+    await fetch(REJECT_URL(id), { method: "POST" });
+    alert("User rejected.");
+    reloadAllData();
+  }
+
+  // --------- FIXED COUNTERS HERE ----------
+  async function loadCounts() {
+    try {
+      const res = await fetch(COUNTS_URL);
+      const data = await res.json();
+
+      document.getElementById("totalUsersCount").innerText = data.totalUsers;
+      document.getElementById("activeUsersCount").innerText = data.activeUsers;
+      document.getElementById("offlineUsersCount").innerText = data.offlineUsers;
+      document.getElementById("pendingCount").innerText = data.pendingUsers;
+
+    } catch (err) {
+      console.error("Error loading counts:", err);
+    }
+  }
+
+  async function reloadAllData() {
+    const res = await fetch(PENDING_URL);
+    pendingList = await res.json();
+    renderTable(pendingList);
+    loadCounts();
+  }
+
+  // --------- Search Filter ----------
+  document.addEventListener("DOMContentLoaded", () => {
+    reloadAllData();
+
+    const searchInput = document.getElementById("pendingSearchInput");
+    searchInput.addEventListener("input", function () {
+      const term = this.value.toLowerCase().trim();
+      const rows = document.querySelectorAll("#pendingTableBody .table-row");
+
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(term) ? "grid" : "none";
+      });
+    });
+  });
+</script>
+
 </body>
 </html>

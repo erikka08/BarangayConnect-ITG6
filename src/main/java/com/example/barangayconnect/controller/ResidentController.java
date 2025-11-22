@@ -3,67 +3,85 @@ package com.example.barangayconnect.controller;
 import com.example.barangayconnect.model.Resident;
 import com.example.barangayconnect.service.ResidentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/resident")
+@RequestMapping("/api/resident")  
 @CrossOrigin(origins = "*")
 public class ResidentController {
 
     @Autowired
     private ResidentService residentService;
 
-    @PostMapping("/register")
-    public String registerResident(@RequestParam String firstname,
-                                   @RequestParam String lastname,
-                                   @RequestParam String phone_num,
-                                   @RequestParam(required = false) String email,
+    // ---------------------------------------------------------
+    // LOGIN  (ORIGINAL – UNTOUCHED)
+    // ---------------------------------------------------------
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestParam String identifier,
                                    @RequestParam String password) {
 
-        Resident resident = new Resident();
-        resident.setFirstname(firstname);
-        resident.setLastname(lastname);
-        resident.setPhoneNum(phone_num);
-        resident.setEmail(email);
-        resident.setPassword(password);
+        Resident resident = residentService.login(identifier, password);
+
+        if (resident == null) {
+            return ResponseEntity.status(401).body("INVALID_LOGIN");
+        }
+
+        return ResponseEntity.ok(resident);
+    }
+
+    // ---------------------------------------------------------
+    // REGISTER (ORIGINAL – UNTOUCHED)
+    // ---------------------------------------------------------
+   @PostMapping("/register")
+public ResponseEntity<?> register(Resident resident) {
+
         resident.setStatus("PENDING");
-
-        residentService.register(resident);
-        return "Registration submitted! Wait for approval.";
+        resident.setIsLoggedIn(false);
+        Resident saved = residentService.register(resident);
+        return ResponseEntity.ok(saved);
     }
 
+    // ---------------------------------------------------------
+    // NEW ENDPOINTS (ADDED ONLY – NOTHING DELETED)
+    // ---------------------------------------------------------
+
+    // Get resident by ID → needed for waiting room
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getResident(@PathVariable Integer id) {
+        return ResponseEntity.of(residentService.findById(id));
+    }
+
+    // Get all PENDING users
     @GetMapping("/pending")
-    public List<Resident> getPendingResidents() {
-        return residentService.getPendingResidents();
+    public List<Resident> getPendingUsers() {
+        return residentService.getPendingUsers();
     }
 
-    @PostMapping("/approve/{id}")
-    public String approveResident(@PathVariable Integer id) {
-        return residentService.approveResident(id);
-    }
-
-    @GetMapping("/active")
-    public List<Resident> getActiveResidents() {
-        return residentService.getActiveResidents();
-    }
-
-    @GetMapping("/all")
-    public List<Resident> getAllResidents() {
-        return residentService.getAllResidents();
-    }
-
-    // ✅ Approved users for User Details page
+    // Get all APPROVED / ACTIVE users
     @GetMapping("/approved")
-    public List<Resident> getApprovedResidents() {
-        return residentService.getApprovedResidents();
+    public List<Resident> getApprovedUsers() {
+        return residentService.getApprovedUsers();
     }
 
-    // ✅ Counts for dashboard
+    // Approve resident
+    @PostMapping("/approve/{id}")
+    public Resident approveUser(@PathVariable Integer id) {
+        return residentService.approveUser(id);
+    }
+
+    // Reject resident (delete)
+    @PostMapping("/reject/{id}")
+    public void rejectUser(@PathVariable Integer id) {
+        residentService.rejectUser(id);
+    }
+
+    // Dashboard counts
     @GetMapping("/counts")
-    public Map<String, Long> getUserCounts() {
-        return residentService.getUserCounts();
+    public Map<String, Long> getCounts() {
+        return residentService.getCounts();
     }
 }

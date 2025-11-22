@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Dashboard - BarangayConnect</title>
+  <link rel="stylesheet" href="R_home-dashboard-style.css">
+  <script src="https://kit.fontawesome.com/a2e0f1f0c1.js" crossorigin="anonymous"></script>
+  <style>
+    /* Force hide all scrollbars */
+    * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    *::-webkit-scrollbar {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- Dashboard Header -->
+  <div class="dashboard-header">
+    <div class="welcome-section">
+      <h1 class="dashboard-title">Dashboard</h1>
+      <p class="dashboard-subtitle">Here's what's happening in your barangay today</p>
+    </div>
+    <div class="dashboard-date">
+      <i class="fas fa-calendar-alt"></i>
+      <span id="current-date"></span>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="summary-cards">
+    <div class="summary-card residents-card">
+      <div class="card-header">
+        <div class="card-icon">
+          <i class="fas fa-user-check"></i>
+        </div>
+        <div class="card-trend">
+          <i class="fas fa-arrow-up"></i>
+          <span>Active</span>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>My Status</h3>
+        <div class="card-number">Verified</div>
+        <div class="card-description">Community member</div>
+      </div>
+    </div>
+    
+    <div class="summary-card reports-card">
+      <div class="card-header">
+        <div class="card-icon">
+          <i class="fas fa-clipboard-check"></i>
+        </div>
+        <div class="card-trend">
+          <i class="fas fa-arrow-up"></i>
+          <span>+3</span>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>My Requests</h3>
+        <div class="card-number">3</div>
+        <div class="card-description">This month</div>
+      </div>
+    </div>
+    
+    <div class="summary-card requests-card">
+      <div class="card-header">
+        <div class="card-icon">
+          <i class="fas fa-bell"></i>
+        </div>
+        <div class="card-trend">
+          <i class="fas fa-arrow-down"></i>
+          <span>-2</span>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>Notifications</h3>
+        <div class="card-number">5</div>
+        <div class="card-description">Unread messages</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dashboard Grid -->
+  <div class="dashboard-grid">
+    <!-- Announcements -->
+    <div class="announcements-panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <i class="fas fa-bullhorn"></i>
+          <h3>Latest Announcements</h3>
+        </div>
+        <button class="view-all-btn">View All</button>
+      </div>
+      <div class="announcements-list">
+        <div class="announcement-item featured">
+          <div class="announcement-badge">Important</div>
+          <div class="announcement-content">
+            <h4>Community Meeting</h4>
+            <p>Monthly barangay assembly scheduled for March 15, 2024 at 7:00 PM in the community center.</p>
+            <div class="announcement-meta">
+              <span class="announcement-date">March 10, 2024</span>
+              <span class="announcement-author">by Barangay Captain</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="announcement-item">
+          <div class="announcement-content">
+            <h4>Health Program Launch</h4>
+            <p>Free medical check-up program for senior citizens starts next week.</p>
+            <div class="announcement-meta">
+              <span class="announcement-date">March 8, 2024</span>
+              <span class="announcement-author">by Health Committee</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="announcement-item">
+          <div class="announcement-content">
+            <h4>Road Maintenance</h4>
+            <p>Main street will be closed for maintenance from March 12-14.</p>
+            <div class="announcement-meta">
+              <span class="announcement-date">March 7, 2024</span>
+              <span class="announcement-author">by Infrastructure Team</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="activity-panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <i class="fas fa-clock"></i>
+          <h3>Recent Activity</h3>
+        </div>
+        <button class="view-all-btn">View All</button>
+      </div>
+      <div class="activity-list">
+        <div class="activity-item">
+          <div class="activity-avatar">
+            <i class="fas fa-file-alt"></i>
+          </div>
+          <div class="activity-content">
+            <div class="activity-title">Document request submitted</div>
+            <div class="activity-subtitle">Barangay Clearance - Your request</div>
+            <div class="activity-time">2 hours ago</div>
+          </div>
+          <div class="activity-status new">New</div>
+        </div>
+        
+        <div class="activity-item">
+          <div class="activity-avatar">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="activity-content">
+            <div class="activity-title">Certificate approved</div>
+            <div class="activity-subtitle">Certificate of Residency - Ready for pickup</div>
+            <div class="activity-time">4 hours ago</div>
+          </div>
+          <div class="activity-status published">Completed</div>
+        </div>
+        
+        <div class="activity-item">
+          <div class="activity-avatar">
+            <i class="fas fa-bullhorn"></i>
+          </div>
+          <div class="activity-content">
+            <div class="activity-title">New announcement</div>
+            <div class="activity-subtitle">Community Meeting - March 15</div>
+            <div class="activity-time">1 day ago</div>
+          </div>
+          <div class="activity-status published">Published</div>
+        </div>
+        
+        <div class="activity-item">
+          <div class="activity-avatar">
+            <i class="fas fa-phone"></i>
+          </div>
+          <div class="activity-content">
+            <div class="activity-title">Emergency contact updated</div>
+            <div class="activity-subtitle">Your emergency contacts - Updated</div>
+            <div class="activity-time">2 days ago</div>
+          </div>
+          <div class="activity-status updated">Updated</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function setCurrentDate() {
+      var dateElement = document.getElementById('current-date');
+      if (dateElement) {
+        var today = new Date();
+        var options = { 
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        };
+        dateElement.textContent = today.toLocaleDateString('en-US', options);
+      }
+    }
+    
+    window.addEventListener('load', setCurrentDate);
+  </script>
+</body>
+</html>

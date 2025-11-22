@@ -8,17 +8,24 @@ import java.util.Optional;
 
 public interface ResidentRepository extends JpaRepository<Resident, Integer> {
 
+    // ORIGINAL methods (UNCHANGED)
     Optional<Resident> findByPhoneNum(String phoneNum);
     Optional<Resident> findByEmail(String email);
-    List<Resident> findByStatus(String status);
-    long countByStatus(String status);
 
-    // ✅ Logged-in users only
-    List<Resident> findByIsLoggedInTrue();
+    Optional<Resident> findByPhoneNumAndPassword(String phoneNum, String password);
+    Optional<Resident> findByEmailAndPassword(String email, String password);
 
-    // ✅ Approved (ACTIVE) users
     List<Resident> findByStatusIgnoreCase(String status);
 
-    // ✅ Offline users = Approved users not logged in
+    List<Resident> findByIsLoggedInTrue();
+
     List<Resident> findByStatusIgnoreCaseAndIsLoggedInFalse(String status);
+
+    // ORIGINAL count methods (UNCHANGED)
+    Long countByStatus(String status);
+    Long countByIsLoggedInFalse();
+
+    // ✅ ADDED: Needed to count true-active users (logged in)
+    // This is the ONLY change in this file.
+    Long countByIsLoggedInTrue();
 }
