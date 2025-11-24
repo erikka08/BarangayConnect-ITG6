@@ -9,5 +9,8 @@ FROM eclipse-temurin:17-jdk
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
+# IMPORTANT: Tell Spring Boot what port to use
+ENV PORT=8080
 EXPOSE 8080
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
