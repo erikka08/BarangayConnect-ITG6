@@ -6,6 +6,7 @@
   <title>BarangayConnect - Admin Dashboard</title>
   <link rel="stylesheet" href="admin-style.css" />
   <script src="https://kit.fontawesome.com/a2e0f1f0c1.js" crossorigin="anonymous"></script>
+  <script src="../activity-log.js"></script>
   <style>
     /* Global scrollbar hiding for all elements */
     * {
@@ -42,9 +43,9 @@
       <div class="settings-dropdown">
         <button class="header-btn" title="Settings" onclick="toggleSettings()"><i class="fas fa-cog"></i></button>
         <div class="settings-menu" id="settingsMenu">
-          <a href="#" class="settings-item" onclick="openUpdateProfile()">
-            <i class="fas fa-user-edit"></i>
-            <span>Update Profile</span>
+          <a href="#" class="settings-item" onclick="openActivityLog()">
+            <i class="fas fa-history"></i>
+            <span>Activity Log</span>
           </a>
           <a href="#" class="settings-item" onclick="logout()">
             <i class="fas fa-sign-out-alt"></i>
@@ -70,11 +71,8 @@
       <div class="sidebar-content">
       <div class="sidebar-header">
           <div class="user-info">
-            <div class="user-avatar">
-              <i class="fas fa-user"></i>
-            </div>
             <div class="user-details">
-          <h3>Hello!</h3>
+          <h3>Hello, Secretary!</h3>
               <p>Administrator</p>
             </div>
           </div>
@@ -124,6 +122,13 @@
                 <span>Emergency</span>
               </a>
             </li>
+            <li class="nav-item">
+              <a href="#" class="nav-link" data-section="feedback">
+                <i class="fas fa-star"></i>
+                <span>Feedback</span>
+              </a>
+            </li>
+
           </ul>
         </nav>
         
@@ -143,7 +148,7 @@
         </div>
 
         <div id="requests-section" class="content-section">
-          <iframe src="A_Requests.html" frameborder="0" width="100%" height="100%" style="border: none; height: 100vh; margin: 0; padding: 0; display: block; overflow: hidden;"></iframe>
+          <iframe src="A_Request-Management.html" frameborder="0" width="100%" height="100%" style="border: none; height: 100vh; margin: 0; padding: 0; display: block; overflow: hidden;"></iframe>
         </div>
 
         <div id="transparency-section" class="content-section">
@@ -161,8 +166,46 @@
         <div id="emergency-section" class="content-section">
           <iframe src="A_Emergency.html" frameborder="0" width="100%" height="100%" style="border: none; height: 100vh; margin: 0; padding: 0; display: block; overflow: hidden;"></iframe>
         </div>
+        <div id="feedback-section" class="content-section">
+          <iframe src="A_Feedback.html" frameborder="0" width="100%" height="100%" style="border: none; height: 100vh; margin: 0; padding: 0; display: block; overflow: hidden;"></iframe>
+        </div>
+
       </div>
     </main>
+  </div>
+
+  <!-- Activity Log Modal -->
+  <div id="activityLogModal" class="modal">
+    <div class="modal-content activity-log-modal">
+      <span class="close" data-close="activityLogModal">&times;</span>
+      <h2><i class="fas fa-history"></i> Activity Log</h2>
+      
+      <div class="activity-log-filters">
+        <select id="activityLogFilter" onchange="filterActivityLog()">
+          <option value="ALL">All Activities</option>
+          <option value="LOGIN">Login</option>
+          <option value="LOGOUT">Logout</option>
+          <option value="FAILED_LOGIN">Failed Login</option>
+          <option value="PASSWORD_CHANGE">Password Change</option>
+          <option value="PROFILE_UPDATE">Profile Update</option>
+        </select>
+        <div class="activity-log-search">
+          <input type="text" id="activityLogSearch" placeholder="Search activities..." onkeyup="searchActivityLog()" />
+          <button type="button" onclick="searchActivityLog()" class="search-btn" title="Search">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+      
+      <div class="activity-log-container" id="activityLogContainer">
+        <!-- Activity log entries will be inserted here -->
+      </div>
+      
+      <div class="activity-log-empty" id="activityLogEmpty" style="display: none;">
+        <i class="fas fa-inbox"></i>
+        <p>No activity logs found</p>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -209,15 +252,141 @@
       }
     });
 
-    // Update Profile functionality
-    function openUpdateProfile() {
-      alert('Update Profile feature coming soon!');
+    // Activity Log functionality
+    function openActivityLog() {
       document.getElementById('settingsMenu').classList.remove('show');
+      const modal = document.getElementById('activityLogModal');
+      if (modal) {
+        modal.style.display = 'block';
+        // Clear search input when opening
+        const searchInput = document.getElementById('activityLogSearch');
+        if (searchInput) searchInput.value = '';
+        // Small delay to ensure modal is visible before loading
+        setTimeout(() => {
+          loadActivityLog();
+        }, 100);
+      } else {
+        console.error('Activity log modal not found');
+      }
+    }
+
+    function closeActivityLog() {
+      document.getElementById('activityLogModal').style.display = 'none';
+    }
+
+    function loadActivityLog(filterType = 'ALL', searchTerm = '') {
+      const container = document.getElementById('activityLogContainer');
+      const emptyState = document.getElementById('activityLogEmpty');
+      
+      // Check if functions are available
+      if (typeof getAllActivityLog === 'undefined' || typeof getActivityLogByType === 'undefined') {
+        console.error('Activity log functions not loaded. Please ensure activity-log.js is loaded.');
+        if (container) container.innerHTML = '<div style="padding: 2rem; text-align: center; color: #e74c3c;">Error: Activity log functions not available. Please refresh the page.</div>';
+        if (emptyState) emptyState.style.display = 'none';
+        return;
+      }
+      
+      let activities;
+      if (filterType === 'ALL') {
+        activities = getAllActivityLog(100);
+      } else {
+        activities = getActivityLogByType(filterType, 100);
+      }
+      
+      // Apply search filter if search term is provided
+      if (searchTerm) {
+        const searchLower = searchTerm.toLowerCase();
+        activities = activities.filter(activity => {
+          const userName = (activity.userName || '').toLowerCase();
+          const userId = (activity.userId || '').toLowerCase();
+          const activityType = (activity.activityType || '').toLowerCase();
+          const userType = (activity.userType || '').toLowerCase();
+          const typeInfo = getActivityTypeInfo(activity.activityType);
+          const activityName = (typeInfo.name || '').toLowerCase();
+          
+          return userName.includes(searchLower) ||
+                 userId.includes(searchLower) ||
+                 activityType.includes(searchLower) ||
+                 userType.includes(searchLower) ||
+                 activityName.includes(searchLower);
+        });
+      }
+      
+      if (!container || !emptyState) {
+        console.error('Activity log container elements not found');
+        return;
+      }
+      
+      if (activities.length === 0) {
+        container.innerHTML = '';
+        emptyState.style.display = 'block';
+        return;
+      }
+      
+      emptyState.style.display = 'none';
+      
+      // Check if helper functions are available
+      if (typeof getActivityTypeInfo === 'undefined' || typeof formatActivityTimestamp === 'undefined' || typeof formatFullTimestamp === 'undefined') {
+        console.error('Activity log helper functions not loaded.');
+        container.innerHTML = '<div style="padding: 2rem; text-align: center; color: #e74c3c;">Error: Activity log helper functions not available. Please refresh the page.</div>';
+        return;
+      }
+      
+      container.innerHTML = activities.map(activity => {
+        const typeInfo = getActivityTypeInfo(activity.activityType);
+        const relativeTime = formatActivityTimestamp(activity.timestamp);
+        const fullTimestamp = formatFullTimestamp(activity.timestamp);
+        const userInfo = activity.userName || activity.userId || 'Unknown User';
+        
+        return `
+          <div class="activity-log-entry">
+            <div class="activity-icon" style="background-color: ${typeInfo.color}20; color: ${typeInfo.color};">
+              <i class="fas ${typeInfo.icon}"></i>
+            </div>
+            <div class="activity-content">
+              <div class="activity-header">
+                <span class="activity-type" style="color: ${typeInfo.color};">${typeInfo.name}</span>
+                <span class="activity-time" title="${fullTimestamp}">${fullTimestamp}</span>
+              </div>
+              <div class="activity-meta">
+                <span class="activity-user">${userInfo} (${activity.userType})</span>
+                <span class="activity-relative-time">${relativeTime}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function filterActivityLog() {
+      const filterType = document.getElementById('activityLogFilter').value;
+      const searchTerm = document.getElementById('activityLogSearch')?.value.trim() || '';
+      loadActivityLog(filterType, searchTerm);
+    }
+
+    function searchActivityLog() {
+      const filterType = document.getElementById('activityLogFilter').value;
+      const searchTerm = document.getElementById('activityLogSearch')?.value.trim() || '';
+      loadActivityLog(filterType, searchTerm);
     }
 
     // Logout functionality
     function logout() {
       if (confirm('Are you sure you want to logout?')) {
+        // Get current admin user info before logout
+        const admins = JSON.parse(localStorage.getItem('admins')) || [];
+        const adminUsers = JSON.parse(localStorage.getItem('adminUsers')) || [];
+        const currentAdmin = adminUsers.find(a => a.isLoggedIn) || admins.find(a => a.isLoggedIn);
+        
+        if (currentAdmin) {
+          recordActivity(
+            'LOGOUT',
+            'ADMIN',
+            currentAdmin.email || currentAdmin.username || 'admin',
+            currentAdmin.name || currentAdmin.username || 'Administrator'
+          );
+        }
+        
         alert('You have been logged out.');
         window.location.href = '../Front.html';
       }
@@ -263,8 +432,39 @@
     window.addEventListener('load', function() {
       setHeaderOffset();
       setCurrentDate();
+      
+      // Record admin login on page load
+      const admins = JSON.parse(localStorage.getItem('admins')) || [];
+      const adminUsers = JSON.parse(localStorage.getItem('adminUsers')) || [];
+      const currentAdmin = adminUsers.find(a => a.isLoggedIn) || admins.find(a => a.isLoggedIn);
+      
+      if (currentAdmin && !sessionStorage.getItem('adminLoginRecorded')) {
+        recordActivity(
+          'LOGIN',
+          'ADMIN',
+          currentAdmin.email || currentAdmin.username || 'admin',
+          currentAdmin.name || currentAdmin.username || 'Administrator'
+        );
+        sessionStorage.setItem('adminLoginRecorded', 'true');
+      }
     });
     window.addEventListener('resize', setHeaderOffset);
+
+    // Drag-safe overlay handling for Activity Log modal
+    (function() {
+      const modal = document.getElementById('activityLogModal');
+      const box = modal ? modal.querySelector('.modal-content') : null;
+      if (!modal) return;
+      let overlayMouseDown = false;
+      modal.addEventListener('mousedown', (e) => { overlayMouseDown = (e.target === modal); });
+      modal.addEventListener('mouseup', (e) => {
+        if (overlayMouseDown && e.target === modal) closeActivityLog();
+        overlayMouseDown = false;
+      });
+      if (box) ['mousedown','mouseup','click'].forEach(evt => box.addEventListener(evt, (e) => e.stopPropagation()));
+      const closer = document.querySelector('[data-close="activityLogModal"]');
+      if (closer) closer.addEventListener('click', closeActivityLog);
+    })();
   </script>
 </body>
 </html>

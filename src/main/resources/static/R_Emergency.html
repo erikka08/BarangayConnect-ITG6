@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emergency - BarangayConnect</title>
+  <link rel="stylesheet" href="R_emergency-style.css">
+  <script src="https://kit.fontawesome.com/a2e0f1f0c1.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div class="emergency-container">
+    <div class="emergency-header">
+      <h1 class="emergency-title">Emergency</h1>
+    </div>
+
+    <!-- Emergency Hotlines -->
+    <div class="hotlines-section">
+      <h2 class="section-title">Emergency Hotlines</h2>
+      <div class="hotlines-grid">
+
+        <div class="hotline-card critical" data-id="medical">
+          <div class="hotline-icon"><i class="fas fa-ambulance"></i></div>
+          <div class="hotline-content">
+            <h3 class="hotline-name">Medical Emergency</h3>
+            <div class="hotline-number">911</div>
+            <p class="hotline-description">24/7 Emergency Medical Services</p>
+            <div class="hotline-actions">
+              <a href="tel:911"><button class="call-btn"><i class="fas fa-phone"></i> Call</button></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="hotline-card critical" data-id="fire">
+          <div class="hotline-icon"><i class="fas fa-fire"></i></div>
+          <div class="hotline-content">
+            <h3 class="hotline-name">Fire Department</h3>
+            <div class="hotline-number">(02) 8XXX-XXXX</div>
+            <p class="hotline-description">Fire and Rescue Services</p>
+            <div class="hotline-actions">
+              <a href="tel:0280000000"><button class="call-btn"><i class="fas fa-phone"></i> Call</button></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="hotline-card critical" data-id="police">
+          <div class="hotline-icon"><i class="fas fa-shield-alt"></i></div>
+          <div class="hotline-content">
+            <h3 class="hotline-name">Police Station</h3>
+            <div class="hotline-number">(02) 8XXX-XXXX</div>
+            <p class="hotline-description">Police Emergency Response</p>
+            <div class="hotline-actions">
+              <a href="tel:0280000000"><button class="call-btn"><i class="fas fa-phone"></i> Call</button></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="hotline-card" data-id="barangay">
+          <div class="hotline-icon"><i class="fas fa-building"></i></div>
+          <div class="hotline-content">
+            <h3 class="hotline-name">Barangay Office</h3>
+            <div class="hotline-number">(02) 8XXX-XXXX</div>
+            <p class="hotline-description">Local Government Emergency</p>
+            <div class="hotline-actions">
+              <a href="tel:0280000000"><button class="call-btn"><i class="fas fa-phone"></i> Call</button></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="hotline-card" data-id="redcross">
+          <div class="hotline-icon"><i class="fas fa-heart"></i></div>
+          <div class="hotline-content">
+            <h3 class="hotline-name">Red Cross</h3>
+            <div class="hotline-number">(02) 8XXX-XXXX</div>
+            <p class="hotline-description">Disaster Relief Services</p>
+            <div class="hotline-actions">
+              <a href="tel:0280000000"><button class="call-btn"><i class="fas fa-phone"></i> Call</button></a>
+            </div>
+          </div>
+        </div>
+
+        <div class="hotline-card" data-id="publicworks">
+          <div class="hotline-icon"><i class="fas fa-tools"></i></div>
+          <div class="hotline-content">
+            <h3 class="hotline-name">Public Works</h3>
+            <div class="hotline-number">(02) 8XXX-XXXX</div>
+            <p class="hotline-description">Infrastructure Emergency</p>
+            <div class="hotline-actions">
+              <a href="tel:0280000000"><button class="call-btn"><i class="fas fa-phone"></i> Call</button></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Emergency Procedures -->
+    <div class="procedures-section">
+      <div class="section-title-wrapper">
+        <h2 class="section-title">Emergency Procedures</h2>
+      </div>
+
+      <div class="procedures-grid" id="proceduresGrid"></div>
+    </div>
+
+  </div>
+
+  <!-- Confirmation Modal (unused but kept as you originally had) -->
+  <div class="modal-overlay" id="confirmModalOverlay" style="display:none;">
+    <div class="modal-wrapper" style="max-width:450px;">
+      <div class="modal-header">
+        <h3><i class="fas fa-exclamation-triangle"></i> Confirm Action</h3>
+        <button class="modal-close" id="confirmModalClose"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-form">
+        <p id="confirmMessage"></p>
+        <div class="form-actions">
+          <button type="button" class="secondary-btn" id="confirmCancelBtn">Cancel</button>
+          <button type="button" class="primary-btn" id="confirmOkBtn">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ <script>
+// ===============================
+//   LOAD EMERGENCY CONTACTS
+// ===============================
+async function loadEmergencyContacts() {
+  try {
+    const response = await fetch("http://localhost:8080/api/emergency/contacts");
+    const contacts = await response.json();
+
+    const grid = document.querySelector(".hotlines-grid");
+    grid.innerHTML = ""; // Remove static cards
+
+    contacts.forEach(c => {
+      grid.innerHTML += `
+        <div class="hotline-card">
+          <div class="hotline-icon"><i class="fas ${c.icon}"></i></div>
+          <div class="hotline-content">
+            <h3 class="hotline-name">${c.serviceName}</h3>
+            <div class="hotline-number">${c.contactNumber}</div>
+            <p class="hotline-description">${c.description}</p>
+
+            <div class="hotline-actions">
+              <a href="tel:${c.contactNumber}">
+                <button class="call-btn">
+                  <i class="fas fa-phone"></i> Call
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+  } catch (error) {
+    console.error("Error loading contacts:", error);
+  }
+}
+
+
+
+// ===============================
+//   LOAD EMERGENCY PROCEDURES
+// ===============================
+async function loadEmergencyProcedures() {
+  try {
+    const response = await fetch("http://localhost:8080/api/emergency/procedures");
+    const procedures = await response.json();
+
+    const grid = document.getElementById("proceduresGrid");
+    grid.innerHTML = "";
+
+    procedures.forEach(p => {
+      // steps: "[\"step1\", \"step2\"]"
+      let stepsList;
+
+      try {
+        stepsList = JSON.parse(p.steps);  
+      } catch (e) {
+        stepsList = [p.steps]; // fallback (should not happen)
+      }
+
+      grid.innerHTML += `
+        <div class="procedure-card">
+          <div class="procedure-icon"><i class="fas ${p.icon}"></i></div>
+          <h3 class="procedure-title">${p.title}</h3>
+
+          <ol class="procedure-steps">
+            ${stepsList.map(s => `<li>${s}</li>`).join("")}
+          </ol>
+        </div>
+      `;
+    });
+
+  } catch (error) {
+    console.error("Error loading procedures:", error);
+  }
+}
+
+
+// ===============================
+//   RUN ON PAGE LOAD
+// ===============================
+document.addEventListener("DOMContentLoaded", function () {
+  loadEmergencyContacts();
+  loadEmergencyProcedures();
+});
+</script>

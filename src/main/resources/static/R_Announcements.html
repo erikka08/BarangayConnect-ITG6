@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Announcements - BarangayConnect</title>
+  <link rel="stylesheet" href="R_announcements-style.css">
+  <script src="https://kit.fontawesome.com/a2e0f1f0c1.js" crossorigin="anonymous"></script>
+  <style>
+    /* Force hide all scrollbars */
+    * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    *::-webkit-scrollbar {
+      display: none !important;
+    }
+  </style>
+</head>
+<body>
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">
+        <i class="fas fa-bullhorn"></i>
+        Community Announcements
+      </h1>
+      <p class="page-subtitle">Stay informed about important updates and events in your barangay</p>
+    </div>
+  </div>
+
+  <!-- Filter and Search -->
+  <div class="filter-section">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search announcements..." id="searchInput">
+    </div>
+    <div class="filter-buttons">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="important">Important</button>
+      <button class="filter-btn" data-filter="events">Events</button>
+      <button class="filter-btn" data-filter="services">Services</button>
+    </div>
+  </div>
+
+  <!-- Announcements List -->
+  <div class="announcements-container">
+    <div class="announcement-card featured">
+      <div class="announcement-header">
+        <div class="announcement-badge important">Important</div>
+        <div class="announcement-date">March 10, 2024</div>
+      </div>
+      <div class="announcement-content">
+        <h3>Monthly Barangay Assembly</h3>
+        <p>Join us for our monthly barangay assembly on March 15, 2024 at 7:00 PM in the community center. We will discuss important community matters, upcoming projects, and address resident concerns.</p>
+        <div class="announcement-details">
+          <div class="detail-item">
+            <i class="fas fa-calendar"></i>
+            <span>March 15, 2024 at 7:00 PM</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Community Center, Barangay Tambo</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-user"></i>
+            <span>Barangay Captain</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="announcement-card">
+      <div class="announcement-header">
+        <div class="announcement-badge event">Event</div>
+        <div class="announcement-date">March 8, 2024</div>
+      </div>
+      <div class="announcement-content">
+        <h3>Free Medical Check-up Program</h3>
+        <p>Free medical check-up program for senior citizens starts next week. This program is designed to provide regular health monitoring for our elderly community members.</p>
+        <div class="announcement-details">
+          <div class="detail-item">
+            <i class="fas fa-calendar"></i>
+            <span>March 18-22, 2024</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Barangay Health Center</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-user"></i>
+            <span>Health Committee</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="announcement-card">
+      <div class="announcement-header">
+        <div class="announcement-badge service">Service</div>
+        <div class="announcement-date">March 7, 2024</div>
+      </div>
+      <div class="announcement-content">
+        <h3>Road Maintenance Schedule</h3>
+        <p>Main street will be closed for maintenance from March 12-14. Please use alternative routes during this period. We apologize for any inconvenience.</p>
+        <div class="announcement-details">
+          <div class="detail-item">
+            <i class="fas fa-calendar"></i>
+            <span>March 12-14, 2024</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Main Street, Barangay Tambo</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-user"></i>
+            <span>Infrastructure Team</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="announcement-card">
+      <div class="announcement-header">
+        <div class="announcement-badge important">Important</div>
+        <div class="announcement-date">March 5, 2024</div>
+      </div>
+      <div class="announcement-content">
+        <h3>Water Service Interruption</h3>
+        <p>There will be a scheduled water service interruption on March 12 from 8:00 AM to 4:00 PM for system maintenance. Please store water in advance.</p>
+        <div class="announcement-details">
+          <div class="detail-item">
+            <i class="fas fa-calendar"></i>
+            <span>March 12, 2024 (8:00 AM - 4:00 PM)</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Entire Barangay Area</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-user"></i>
+            <span>Water District</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="announcement-card">
+      <div class="announcement-header">
+        <div class="announcement-badge event">Event</div>
+        <div class="announcement-date">March 3, 2024</div>
+      </div>
+      <div class="announcement-content">
+        <h3>Community Clean-up Drive</h3>
+        <p>Join us for our monthly community clean-up drive on March 20. Let's work together to keep our barangay clean and beautiful.</p>
+        <div class="announcement-details">
+          <div class="detail-item">
+            <i class="fas fa-calendar"></i>
+            <span>March 20, 2024 at 6:00 AM</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Meet at Barangay Hall</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-user"></i>
+            <span>Environment Committee</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+const container = document.querySelector(".announcements-container");
+const searchInput = document.getElementById('searchInput');
+const filterButtons = document.querySelectorAll('.filter-btn');
+
+let announcementsData = [];
+
+// -------------------------------
+// FETCH ANNOUNCEMENTS FROM BACKEND
+// -------------------------------
+async function loadAnnouncements() {
+  try {
+    const res = await fetch("http://localhost:8080/api/announcements");
+    announcementsData = await res.json();
+    renderAnnouncements(announcementsData);
+  } catch (err) {
+    console.error("Failed to load announcements:", err);
+  }
+}
+
+// -------------------------------
+// RENDER ANNOUNCEMENTS
+// -------------------------------
+function renderAnnouncements(list) {
+  container.innerHTML = "";
+
+  list.forEach(a => {
+    const badgeType = mapTypeToBadge(a.type);
+    const formattedDate = formatDate(a.announcementDate);
+
+    container.innerHTML += `
+      <div class="announcement-card ${a.featured ? 'featured' : ''}">
+        
+        <div class="announcement-header">
+          <div class="announcement-badge ${badgeType}">${capitalize(a.type)}</div>
+          <div class="announcement-date">${formattedDate}</div>
+        </div>
+
+        <div class="announcement-content">
+          <h3>${a.title}</h3>
+          <p>${a.description}</p>
+
+          <div class="announcement-details">
+            <div class="detail-item">
+              <i class="fas fa-calendar"></i>
+              <span>${formattedDate}</span>
+            </div>
+
+            <div class="detail-item">
+              <i class="fas fa-user"></i>
+              <span>${a.author || "Barangay Office"}</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    `;
+  });
+}
+
+// -------------------------------
+// MAP TYPE TO BADGE CLASS
+// -------------------------------
+function mapTypeToBadge(type) {
+  switch (type.toLowerCase()) {
+    case "important": return "important";
+    case "event": return "event";
+    case "service":
+    case "services": return "service";
+    case "emergency": return "important"; // treat emergency as important
+    case "maintenance": return "service"; // optional mapping
+    default: return "general";
+  }
+}
+
+// -------------------------------
+// FORMAT DATE
+// -------------------------------
+function formatDate(raw) {
+  const date = new Date(raw);
+  return date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+}
+
+// -------------------------------
+// FILTER BUTTONS
+// -------------------------------
+filterButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    filterButtons.forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    const filter = btn.getAttribute("data-filter");
+
+    if (filter === "all") {
+      renderAnnouncements(announcementsData);
+    } else {
+      const filtered = announcementsData.filter(a => a.type.toLowerCase() === filter);
+      renderAnnouncements(filtered);
+    }
+  });
+});
+
+// -------------------------------
+// SEARCH FUNCTIONALITY
+// -------------------------------
+searchInput.addEventListener("input", () => {
+  const term = searchInput.value.toLowerCase();
+
+  const filtered = announcementsData.filter(a =>
+    a.title.toLowerCase().includes(term) ||
+    a.description.toLowerCase().includes(term)
+  );
+
+  renderAnnouncements(filtered);
+});
+
+// Capitalize first letter
+function capitalize(s) {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+// -------------------------------
+// INITIAL LOAD
+// -------------------------------
+loadAnnouncements();
+</script>

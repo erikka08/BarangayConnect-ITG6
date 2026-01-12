@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Dashboard - BarangayConnect</title>
+  <link rel="stylesheet" href="A_home-dashboard-style.css">
+  <script src="https://kit.fontawesome.com/a2e0f1f0c1.js" crossorigin="anonymous"></script>
+  <style>
+    /* Force hide all scrollbars */
+    * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    *::-webkit-scrollbar {
+      display: none !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Dashboard Header -->
+  <div class="dashboard-header">
+    <div class="welcome-section">
+      <h1 class="dashboard-title">Dashboard</h1>
+      <p class="dashboard-subtitle">Here's what's happening in your barangay today</p>
+    </div>
+    <div class="dashboard-date">
+      <i class="fas fa-calendar-alt"></i>
+      <span id="current-date"></span>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="summary-cards">
+
+    <!-- ✅ Total Residents -->
+    <div class="summary-card residents-card">
+      <div class="card-header">
+        <div class="card-icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="card-trend">
+          <i class="fas fa-arrow-up" id="residentsArrow"></i>
+          <span id="residentsTrend">0%</span>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>Total Residents</h3>
+        <div class="card-number" id="totalResidentsNumber">Loading...</div>
+        <div class="card-description">Active community members</div>
+      </div>
+    </div>
+
+    <!-- ✅ Reports Generated -->
+    <div class="summary-card reports-card">
+      <div class="card-header">
+        <div class="card-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <div class="card-trend">
+          <i class="fas fa-arrow-up" id="reportsArrow"></i>
+          <span id="reportsTrend">0%</span>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>Reports Generated</h3>
+        <div class="card-number" id="reportsGeneratedNumber">Loading...</div>
+        <div class="card-description">This month</div>
+      </div>
+    </div>
+
+    <!-- ✅ Pending Requests -->
+    <div class="summary-card requests-card">
+      <div class="card-header">
+        <div class="card-icon">
+          <i class="fas fa-clipboard-check"></i>
+        </div>
+        <div class="card-trend">
+          <i class="fas fa-arrow-up" id="requestsArrow"></i>
+          <span id="requestsTrend">0%</span>
+        </div>
+      </div>
+      <div class="card-content">
+        <h3>Pending Requests</h3>
+        <div class="card-number" id="pendingRequestsNumber">Loading...</div>
+        <div class="card-description">Awaiting approval</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Dashboard Grid -->
+  <div class="dashboard-grid">
+
+    <!-- Announcements -->
+    <div class="announcements-panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <i class="fas fa-bullhorn"></i>
+          <h3>Latest Announcements</h3>
+        </div>
+        <button class="view-all-btn">View All</button>
+      </div>
+
+      <div class="announcements-list" id="adminAnnouncementsList">
+        <!-- ✅ Announcements will be loaded dynamically -->
+      </div>
+    </div>
+
+    <!-- ✅ Recent Activity (NOW DYNAMIC) -->
+    <div class="activity-panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <i class="fas fa-clock"></i>
+          <h3>Recent Activity</h3>
+        </div>
+        <button class="view-all-btn">View All</button>
+      </div>
+
+      <!-- ✅ ONLY THIS SECTION CHANGED -->
+      <div class="activity-list" id="recentActivityList">
+        <p style="padding:10px;">Loading recent activity...</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function setCurrentDate() {
+      var dateElement = document.getElementById('current-date');
+      if (dateElement) {
+        var today = new Date();
+        var options = {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        };
+        dateElement.textContent = today.toLocaleDateString('en-US', options);
+      }
+    }
+
+    function formatNumber(num) {
+      try {
+        return Number(num || 0).toLocaleString('en-US');
+      } catch (e) {
+        return String(num || 0);
+      }
+    }
+
+    function updateTrend(arrowId, trendId, value) {
+      const arrow = document.getElementById(arrowId);
+      const trendText = document.getElementById(trendId);
+
+      if (!arrow || !trendText) return;
+
+      value = Number(value || 0);
+
+      if (value === 0) {
+        arrow.style.display = "none";
+        trendText.textContent = "0%";
+        return;
+      }
+
+      arrow.style.display = "inline-block";
+
+      if (value > 0) {
+        arrow.className = "fas fa-arrow-up";
+        trendText.textContent = `+${value}%`;
+      }
+
+      if (value < 0) {
+        arrow.className = "fas fa-arrow-down";
+        trendText.textContent = `${value}%`;
+      }
+    }
+
+    function loadAdminDashboardKpis() {
+      fetch("http://localhost:8080/api/admin/dashboard")
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById("totalResidentsNumber").textContent = formatNumber(data.totalResidents);
+          document.getElementById("reportsGeneratedNumber").textContent = formatNumber(data.reportsGenerated);
+          document.getElementById("pendingRequestsNumber").textContent = formatNumber(data.pendingRequests);
+
+          updateTrend("residentsArrow", "residentsTrend", data.residentsTrend);
+          updateTrend("reportsArrow", "reportsTrend", data.reportsTrend);
+          updateTrend("requestsArrow", "requestsTrend", data.requestsTrend);
+        })
+        .catch(error => {
+          console.error("Admin KPI Error:", error);
+
+          document.getElementById("totalResidentsNumber").textContent = "0";
+          document.getElementById("reportsGeneratedNumber").textContent = "0";
+          document.getElementById("pendingRequestsNumber").textContent = "0";
+
+          updateTrend("residentsArrow", "residentsTrend", 0);
+          updateTrend("reportsArrow", "reportsTrend", 0);
+          updateTrend("requestsArrow", "requestsTrend", 0);
+        });
+    }
+
+    function loadAdminAnnouncements() {
+      fetch("http://localhost:8080/api/announcements/latest")
+        .then(response => response.json())
+        .then(data => {
+          const list = document.getElementById("adminAnnouncementsList");
+          list.innerHTML = "";
+
+          if (!data || data.length === 0) {
+            list.innerHTML = "<p style='padding:10px;'>No announcements available.</p>";
+            return;
+          }
+
+          data.forEach(announcement => {
+            const date = announcement.announcementDate
+              ? new Date(announcement.announcementDate).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric"
+                })
+              : "";
+
+            const featuredClass = announcement.featured ? "featured" : "";
+            const featuredBadge = announcement.featured
+              ? `<div class="announcement-badge">Important</div>`
+              : "";
+
+            list.innerHTML += `
+              <div class="announcement-item ${featuredClass}">
+                ${featuredBadge}
+                <div class="announcement-content">
+                  <h4>${announcement.title}</h4>
+                  <p>${announcement.description}</p>
+                  <div class="announcement-meta">
+                    <span class="announcement-date">${date}</span>
+                    <span class="announcement-author">by ${announcement.author}</span>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+        })
+        .catch(error => console.error("Admin Announcement Error:", error));
+    }
+
+    /* ✅ ADDED ONLY FOR RECENT ACTIVITY */
+    function loadAdminRecentActivity() {
+      fetch("http://localhost:8080/api/admin/recent-activity")
+        .then(res => res.json())
+        .then(data => {
+          const list = document.getElementById("recentActivityList");
+          list.innerHTML = "";
+
+          if (!data || data.length === 0) {
+            list.innerHTML = "<p style='padding:10px;'>No recent activity.</p>";
+            return;
+          }
+
+          data.forEach(activity => {
+            list.innerHTML += `
+              <div class="activity-item">
+                <div class="activity-avatar">
+                  <i class="fas ${activity.icon || "fa-info-circle"}"></i>
+                </div>
+
+                <div class="activity-content">
+                  <div class="activity-title">${activity.title}</div>
+                  <div class="activity-subtitle">${activity.subtitle}</div>
+                  <div class="activity-time">${activity.timeAgo}</div>
+                </div>
+
+                <div class="activity-status ${activity.status.toLowerCase()}">
+                  ${activity.status}
+                </div>
+              </div>
+            `;
+          });
+        })
+        .catch(err => {
+          console.error("Recent Activity Error:", err);
+          document.getElementById("recentActivityList").innerHTML =
+            "<p style='padding:10px; color:red;'>Failed to load recent activity.</p>";
+        });
+    }
+
+    window.addEventListener('load', function() {
+      setCurrentDate();
+      loadAdminDashboardKpis();
+      loadAdminAnnouncements();
+      loadAdminRecentActivity();   /* ✅ ONLY ADDED THIS */
+    });
+  </script>
+
+</body>
+</html>

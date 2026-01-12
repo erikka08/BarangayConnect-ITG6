@@ -2,33 +2,314 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BarangayConnect</title>
+  <title>BarangayConnect - Home</title>
   <link rel="stylesheet" href="front-style.css"/>
 </head>
 <body>
-  <header>
-    <h1><i class="fas fa-home"></i>Welcome to <span>BarangayConnect</span></h1>
-    <p><i class="fas fa-map-marker-alt"></i> Tambo, Parañaque City</p>
-  </header>
-
-  <main>
-    <div class="welcome-section">
-      <p>Experience transparency, efficiency, and connection with BarangayConnect , your trusted platform to stay informed, access services quickly, and engage with the community of Barangay Tambo, Parañaque City.</p>
+  <!-- Header with Register/Login on top right -->
+  <header class="homepage-header">
+    <div class="header-left">
+      <h1><span>BarangayConnect</span></h1>
+      <p><i class="fas fa-map-marker-alt"></i> Tambo, Parañaque City</p>
     </div>
-    
-    <div class="button-container">
-      <button id="registerBtn" class="main-btn">
+    <div class="header-right">
+      <button id="registerBtn" class="header-action-btn register-btn">
         <i class="fas fa-user-plus"></i> Register
       </button>
-      <button id="loginBtn" class="main-btn">
+      <button id="loginBtn" class="header-action-btn login-btn">
         <i class="fas fa-sign-in-alt"></i> Login
       </button>
     </div>
+  </header>
+
+  <main class="homepage-main">
+    <!-- Introduction Section -->
+    <section class="introduction-section">
+      <div class="intro-content">
+        <h2 class="intro-title">Welcome to <span>BarangayConnect</span></h2>
+        <p class="intro-description">
+          Experience transparency, efficiency, and connection with BarangayConnect, your trusted platform to stay informed, 
+          access services quickly, and engage with the community of Barangay Tambo, Parañaque City. 
+          Connect with your barangay, access essential services, and stay updated with the latest announcements and information.
+        </p>
+        <div class="intro-features">
+          <div class="feature-badge">
+            <i class="fas fa-shield-alt"></i>
+            <span>Secure & Reliable</span>
+          </div>
+          <div class="feature-badge">
+            <i class="fas fa-clock"></i>
+            <span>24/7 Access</span>
+          </div>
+          <div class="feature-badge">
+            <i class="fas fa-users"></i>
+            <span>Community Focused</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Announcements Section -->
+    <section class="homepage-section announcements-section">
+      <div class="section-header">
+        <h3 class="section-title">
+          <i class="fas fa-bullhorn"></i>
+          Community Announcements
+        </h3>
+        <p class="section-subtitle">Stay informed about important updates and events in your barangay</p>
+      </div>
+
+      <!-- Filter and Search -->
+      <div class="filter-section">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search announcements..." id="announcementSearchInput">
+        </div>
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="important">Important</button>
+          <button class="filter-btn" data-filter="event">Events</button>
+          <button class="filter-btn" data-filter="service">Services</button>
+        </div>
+      </div>
+
+      <!-- Announcements List -->
+      <div class="announcements-container" id="announcementsContainer">
+        <!-- Announcements will be dynamically loaded here -->
+      </div>
+    </section>
+
+    <!-- Emergency Contacts Section -->
+    <section class="homepage-section emergency-section">
+      <div class="section-header">
+        <h3 class="section-title">
+          <i class="fas fa-phone"></i>
+          Emergency Contacts
+        </h3>
+        <p class="section-subtitle">Quick access to emergency services and important contacts</p>
+      </div>
+
+     <!-- Emergency Numbers -->
+<div class="emergency-content-section">
+  <h4 class="subsection-title">Emergency Numbers</h4>
+
+  <!-- ✅ This will be filled dynamically -->
+  <div class="emergency-grid" id="emergencyGrid">
+    <p style="color: gray; text-align: center;">Loading emergency contacts...</p>
+  </div>
+</div>
+
+<!-- Barangay Contacts -->
+<div class="contacts-content-section">
+  <h4 class="subsection-title">Barangay Contacts</h4>
+
+  <!-- ✅ This will be filled dynamically -->
+  <div class="contacts-grid" id="barangayContactsGrid">
+    <p style="color: gray; text-align: center;">Loading barangay contacts...</p>
+  </div>
+</div>
+
+</section>
+
+
+    <!-- FAQs & Feedback Section -->
+    <section class="homepage-section faqs-section">
+      <div class="section-header">
+        <h3 class="section-title">
+          <i class="fas fa-circle-question"></i>
+          Frequently Asked Questions
+        </h3>
+        <p class="section-subtitle">Find answers to common questions about the BarangayConnect system</p>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question">
+            What is BarangayConnect?
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>
+              BarangayConnect is a web-based barangay management system that allows residents
+              to access barangay services, announcements, reports, transparency records,
+              and emergency information online.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            Who can use the BarangayConnect system?
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>
+              The system is designed for residents and barangay administrators.
+              Residents can submit requests and reports, while administrators manage approvals
+              and barangay information.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            Why is my account pending approval?
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>
+              New registrations are placed under pending approval to allow barangay officials
+              to verify resident information for security and accuracy.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            What services can I request through the system?
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>
+              Residents can request barangay documents such as clearance, certificates,
+              permits, and endorsements through the Requests section.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            How can I submit a report or complaint?
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>
+              Reports can be submitted through the Reports section by describing
+              the issue or concern within the community.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            Can I track my requests and reports?
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>
+              Yes. The system allows residents to track the status of submitted
+              requests and reports such as pending, approved, or completed.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            What is the Transparency section for?
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>
+              The Transparency section shows barangay projects, programs,
+              and fund utilization to promote openness and accountability.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            Can I update my personal information?
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>
+              Yes. Residents can update their profile and emergency contact
+              details through the Update Profile option in the settings menu.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            Is my information secure in the system?
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>
+              Yes. BarangayConnect ensures that resident information is only accessible
+              to authorized barangay administrators.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Send Feedback Section -->
+      <div class="feedback-section">
+        <h4 class="subsection-title">Send Us Your Feedback</h4>
+        <p>Are you satisfied with the BarangayConnect system?</p>
+
+        <div class="feedback-icons">
+          <div class="feedback-option" data-value="Satisfied">
+            <i class="fas fa-face-smile"></i>
+            <span>Satisfied</span>
+          </div>
+
+          <div class="feedback-option" data-value="Not Satisfied">
+            <i class="fas fa-face-frown"></i>
+            <span>Not Satisfied</span>
+          </div>
+        </div>
+
+        <textarea id="feedbackMessage" placeholder="Write your feedback here..."></textarea>
+        <button class="feedback-btn">Submit Feedback</button>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta-section">
+      <div class="cta-content">
+        <h3>Ready to Get Started?</h3>
+        <p>Join BarangayConnect today and experience seamless access to barangay services and information.</p>
+        <div class="cta-buttons">
+          <button id="registerBtn2" class="cta-btn primary">
+            <i class="fas fa-user-plus"></i> Create Account
+          </button>
+          <button id="loginBtn2" class="cta-btn secondary">
+            <i class="fas fa-sign-in-alt"></i> Log In
+          </button>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer>
-    &copy; 2025 BarangayConnect Tambo Parañaque City
+    <div class="footer-left">
+      &copy; 2025 BarangayConnect Tambo Parañaque City
+    </div>
+    <div class="footer-links">
+      <a href="terms.html" target="_blank" rel="noopener">Terms &amp; Conditions</a>
+      <span aria-hidden="true">•</span>
+      <a href="terms.html#privacy" target="_blank" rel="noopener">Privacy</a>
+    </div>
   </footer>
+
+  <!-- Top Notification Popup -->
+  <div id="topNotification" class="top-notification">
+    <div class="notification-backdrop"></div>
+    <div class="notification-content">
+      <div class="notification-text">
+        <div class="notification-title">Login Successful!</div>
+        <div class="notification-message" id="notificationMessage"></div>
+        <div class="loading-indicator" id="loadingIndicator">
+          <div class="spinner"></div>
+          <span class="loading-text">Redirecting... Please wait</span>
+        </div>
+      </div>
+      <div class="notification-button-container" id="notificationButtonContainer">
+        <button class="notification-ok-btn" id="notificationOkBtn">OK</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Register Modal -->
   <div id="registerModal" class="modal">
@@ -58,6 +339,11 @@
           <input type="checkbox" id="showRegPassword"/> Show Password
         </label>
 
+        <label class="terms-consent">
+          <input type="checkbox" id="regTermsCheckbox" />
+          <span>I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms &amp; Conditions</a> of BarangayConnect.</span>
+        </label>
+
         <button type="submit" class="form-btn">Register</button>
       </form>
     </div>
@@ -77,8 +363,7 @@
       <div id="residentLoginPanel" class="tab-panel">
         <form id="residentLoginForm">
           <label><i class="fas fa-envelope"></i> Email or Mobile Number</label>
-          <input type="text" id="loginResidentPhone"
- placeholder="Enter your email or mobile number" required />
+          <input type="text" id="loginResidentEmail" placeholder="Enter your email or mobile number" required />
 
           <label><i class="fas fa-lock"></i> Password</label>
           <input type="password" id="loginResidentPassword" placeholder="Enter your password" required />
@@ -170,6 +455,255 @@
     </div>
   </div>
 
+  <!-- Custom Alert Popup -->
+  <div id="customAlert" class="custom-alert-modal">
+    <div class="custom-alert-backdrop"></div>
+    <div class="custom-alert-content">
+      <div class="custom-alert-message" id="customAlertMessage"></div>
+      <div class="custom-alert-button-container">
+        <button class="custom-alert-ok-btn" id="customAlertOkBtn">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="activity-log.js"></script>
   <script src="script.js"></script>
-</body>
-</html>
+  
+  <!-- Homepage Sections JavaScript -->
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  // ===============================
+  // MODAL OPEN
+  // ===============================
+  const registerModal = document.getElementById("registerModal");
+  const loginModal = document.getElementById("loginModal");
+  const forgotModal = document.getElementById("forgotPasswordModal");
+
+  document.getElementById("registerBtn")?.addEventListener("click", () => registerModal.style.display = "block");
+  document.getElementById("registerBtn2")?.addEventListener("click", () => registerModal.style.display = "block");
+  document.getElementById("loginBtn")?.addEventListener("click", () => loginModal.style.display = "block");
+  document.getElementById("loginBtn2")?.addEventListener("click", () => loginModal.style.display = "block");
+
+  // ===============================
+  // MODAL CLOSE
+  // ===============================
+  document.querySelectorAll(".close").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const modalId = btn.getAttribute("data-close");
+      document.getElementById(modalId).style.display = "none";
+    });
+  });
+
+  // ===============================
+  // FORGOT PASSWORD MODAL
+  // ===============================
+  document.getElementById("forgotPasswordLink")?.addEventListener("click", (e) => {
+    e.preventDefault();
+    forgotModal.style.display = "block";
+  });
+
+  // ===============================
+  // SHOW PASSWORD TOGGLES
+  // ===============================
+  const togglePassword = (checkboxId, inputIds) => {
+    const checkbox = document.getElementById(checkboxId);
+    checkbox?.addEventListener("change", () => {
+      inputIds.forEach(id => {
+        const field = document.getElementById(id);
+        if (field) field.type = checkbox.checked ? "text" : "password";
+      });
+    });
+  };
+
+  togglePassword("showRegPassword", ["regPassword", "regConfirmPassword"]);
+  togglePassword("showResidentPassword", ["loginResidentPassword"]);
+  togglePassword("showAdminPassword", ["loginAdminPassword"]);
+
+  // ===============================
+  // LOGIN TAB SWITCH (Resident/Admin)
+  // ===============================
+  const tabButtons = document.querySelectorAll(".tab-button");
+  const residentPanel = document.getElementById("residentLoginPanel");
+  const adminPanel = document.getElementById("adminLoginPanel");
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      tabButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      const target = btn.dataset.target;
+      residentPanel.classList.toggle("hidden", target !== "residentLoginPanel");
+      adminPanel.classList.toggle("hidden", target !== "adminLoginPanel");
+    });
+  });
+
+  // ===============================
+  // ANNOUNCEMENTS (BACKEND)
+  // ===============================
+  const ANNOUNCEMENTS_API = "http://localhost:8080/api/announcements";
+  let allAnnouncements = [];
+
+  async function loadAnnouncements() {
+    try {
+      const res = await fetch(ANNOUNCEMENTS_API);
+      allAnnouncements = await res.json();
+      renderAnnouncements();
+    } catch {
+      console.error("Failed to load announcements");
+    }
+  }
+
+  function formatDate(dateString) {
+    if (!dateString) return "";
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric", month: "long", day: "numeric"
+    });
+  }
+
+  function mapAnnouncementType(type) {
+    const map = { important: "important", event: "event", service: "service", maintenance: "service" };
+    return map[type?.toLowerCase()] || "important";
+  }
+
+  function getBadgeLabel(type) {
+    const map = { important: "Important", event: "Event", service: "Service", maintenance: "Service" };
+    return map[type?.toLowerCase()] || "Important";
+  }
+
+  function renderAnnouncements() {
+    const container = document.getElementById("announcementsContainer");
+    const searchTerm = document.getElementById("announcementSearchInput")?.value.toLowerCase() || "";
+    const filter = document.querySelector(".filter-btn.active")?.dataset.filter || "all";
+
+    const published = allAnnouncements.filter(a => a.status === "published");
+
+    const filtered = published.filter(a => {
+      const type = mapAnnouncementType(a.type);
+      const matchType = filter === "all" || type === filter;
+      const matchSearch = !searchTerm || a.title.toLowerCase().includes(searchTerm) || (a.description || "").toLowerCase().includes(searchTerm);
+      return matchType && matchSearch;
+    });
+
+    if (filtered.length === 0) {
+      container.innerHTML = `<p style="text-align:center;color:gray;">No announcements found.</p>`;
+      return;
+    }
+
+    container.innerHTML = filtered.map(a => `
+      <div class="announcement-card">
+        <div class="announcement-header">
+          <div class="announcement-badge ${mapAnnouncementType(a.type)}">${getBadgeLabel(a.type)}</div>
+          <div class="announcement-date">${formatDate(a.announcementDate)}</div>
+        </div>
+        <div class="announcement-content">
+          <h3>${a.title}</h3>
+          <p>${a.description || ""}</p>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  document.getElementById("announcementSearchInput")?.addEventListener("input", renderAnnouncements);
+  document.querySelectorAll(".filter-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderAnnouncements();
+    });
+  });
+
+  loadAnnouncements();
+  setInterval(loadAnnouncements, 5000);
+
+  // ===============================
+  // EMERGENCY CONTACTS (BACKEND)
+  // ===============================
+  const CONTACTS_API = "http://localhost:8080/api/emergency/contacts";
+
+  async function loadEmergencyContacts() {
+    try {
+      const res = await fetch(CONTACTS_API);
+      const contacts = await res.json();
+
+      const emergencyGrid = document.getElementById("emergencyGrid");
+      const barangayGrid = document.getElementById("barangayContactsGrid");
+
+      emergencyGrid.innerHTML = "";
+      barangayGrid.innerHTML = "";
+
+      contacts.forEach(contact => {
+        const card = `
+          <div class="emergency-card">
+            <h3>${contact.serviceName}</h3>
+            <div class="phone-number">${contact.contactNumber}</div>
+            <p>${contact.description || ""}</p>
+          </div>
+        `;
+
+        if ((contact.serviceName || "").toLowerCase().includes("barangay")) {
+          barangayGrid.innerHTML += card;
+        } else {
+          emergencyGrid.innerHTML += card;
+        }
+      });
+
+    } catch (err) {
+      console.error("Failed to load contacts:", err);
+    }
+  }
+
+  loadEmergencyContacts();
+
+  // ===============================
+  // FAQ ACCORDION
+  // ===============================
+  document.querySelectorAll(".faq-question").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const item = btn.parentElement;
+      document.querySelectorAll(".faq-item").forEach(i => i.classList.remove("active"));
+      item.classList.add("active");
+    });
+  });
+
+  // ===============================
+  // FEEDBACK (BACKEND ONLY)
+  // ===============================
+  const FEEDBACK_API = "http://localhost:8080/api/feedbacks/add";
+  let selectedFeedback = "";
+
+  document.querySelectorAll(".feedback-option").forEach(option => {
+    option.addEventListener("click", () => {
+      document.querySelectorAll(".feedback-option").forEach(o => o.classList.remove("active"));
+      option.classList.add("active");
+      selectedFeedback = option.dataset.value;
+    });
+  });
+
+  document.querySelector(".feedback-btn")?.addEventListener("click", async () => {
+    const message = document.getElementById("feedbackMessage").value.trim();
+
+    if (!selectedFeedback) return alert("Please select Satisfied or Not Satisfied.");
+    if (!message) return alert("Please write your feedback.");
+
+    try {
+      const res = await fetch(FEEDBACK_API, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: selectedFeedback, message })
+      });
+
+      if (!res.ok) throw new Error();
+
+      alert("✅ Feedback submitted!");
+      document.getElementById("feedbackMessage").value = "";
+      document.querySelectorAll(".feedback-option").forEach(o => o.classList.remove("active"));
+      selectedFeedback = "";
+
+    } catch {
+      alert("❌ Failed to submit feedback.");
+    }
+  });
+
+});
+</script>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Reportss - BarangayConnect</title>
+  <link rel="stylesheet" href="R_Reports-style.css">
+  <script src="https://kit.fontawesome.com/a2e0f1f0c1.js" crossorigin="anonymous"></script>
+
+  <style>
+    * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    *::-webkit-scrollbar {
+      display: none !important;
+    }
+
+    #reportForm, .modal {
+      z-index: 9999 !important;
+      background: rgba(0,0,0,0.4) !important;
+    }
+    .modal-content {
+      z-index: 10000 !important;
+      position: relative !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">
+        <i class="fas fa-clipboard-list"></i>
+        My Report
+      </h1>
+      <p class="page-subtitle">Your voice matters in keeping our barangay safe, clean, and well-informed.
+
+We encourage all residents to report environmental issues such as improper waste disposal, flooding, pollution, damaged drainage, or any other concerns affecting our community. You may also report sensitive matters that you believe the barangay should be aware of for the safety and well-being of everyone.
+
+All reports are completely anonymous.
+You are not required to provide your name or personal information. Any information you share will be treated with confidentiality and handled with care.
+By reporting issues, you help us:
+Respond quickly to environmental problems, Improve community safety and cleanliness, Address concerns responsibly and respectfully.
+
+Thank you for taking part in building a better, safer, and more caring barangay for everyone.</p>
+    </div>
+  </div>
+
+  <!-- SUBMIT REPORT BUTTON -->
+  <div class="new-reports-section">
+    <button class="new-reports-btn" id="openReportForm">
+      <i class="fas fa-plus"></i>
+      Submit Report
+    </button>
+  </div>
+
+  <!-- REPORT FORM POPUP -->
+  <div class="modal" id="reportForm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><i class="fas fa-file-alt"></i> Submit Report</h2>
+        <button class="close-btn" onclick="closeReportForm()">&times;</button>
+      </div>
+
+      <form class="reports-form">
+        <div class="form-group">
+          <label><i class="fas fa-heading"></i> Issue Title</label>
+          <input type="text" id="reportTitle" placeholder="Enter issue title">
+        </div>
+
+        <div class="form-group" style="display: flex; gap: 1rem;">
+          <div style="flex: 1;">
+            <label><i class="fas fa-list"></i> Category</label>
+            <select id="reportCategory">
+              <option value="" disabled selected>Select category</option>
+              <option>Garbage</option>
+              <option>Streetlight</option>
+              <option>Road Damage</option>
+              <option>Noise Complaint</option>
+              <option>Others</option>
+            </select>
+          </div>
+
+          <div style="flex: 1;">
+            <label><i class="fas fa-map-marker-alt"></i> Location</label>
+            <input type="text" id="reportLocation" placeholder="Enter location">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-align-left"></i> Description</label>
+          <textarea id="reportDescription" placeholder="Provide details of your report" style="max-height: 150px; overflow-y: auto;"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label><i class="fas fa-image"></i> Upload Image</label>
+          <input type="file" id="reportImage">
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" onclick="closeReportForm()">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+          <button type="button" class="btn-submit" onclick="submitReport()">
+            <i class="fas fa-paper-plane"></i> Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- REPORT LIST -->
+  <div id="reportList" class="reports-container"></div>
+<script>
+/* OPEN / CLOSE REPORT FORM */
+document.getElementById("openReportForm").onclick = () => {
+  document.getElementById("reportForm").classList.add("active");
+};
+
+function closeReportForm() {
+  document.getElementById("reportForm").classList.remove("active");
+}
+
+/* LOAD REPORTS */
+document.addEventListener("DOMContentLoaded", loadReports);
+
+function loadReports() {
+  fetch("http://localhost:8080/api/reports/all")
+    .then(res => res.json())
+    .then(data => {
+      const list = document.getElementById("reportList");
+      list.innerHTML = "";
+
+      data.reverse().forEach(report => {
+        list.appendChild(createReportCard(report));
+      });
+    });
+}
+
+/* ===============================
+   🔥 FIXED EVENT DELEGATION
+   CHANGE:
+   - normalize e.target (TEXT NODE FIX)
+================================ */
+document.getElementById("reportList").addEventListener("click", function (e) {
+
+  // ✅ FIX ADDED: convert TEXT node → ELEMENT
+  const target =
+    e.target.nodeType === Node.TEXT_NODE
+      ? e.target.parentElement
+      : e.target;
+
+  /* VIEW DETAILS */
+  const viewBtn = target.closest(".view");
+  if (viewBtn) {
+    const card = viewBtn.closest(".reports-card");
+    const id = card.dataset.id;
+
+    fetch(`http://localhost:8080/api/reports/${id}`)
+      .then(res => res.json())
+      .then(report => {
+        showReportPopup(
+          report.title,
+          report.description,
+          report.category,
+          report.location,
+          new Date(report.dateSubmitted).toLocaleDateString(),
+          report.imageBase64
+
+        );
+      });
+    return;
+  }
+
+  /* CANCEL REPORT */
+  const cancelBtn = target.closest(".cancel");
+  if (cancelBtn) {
+    const card = cancelBtn.closest(".reports-card");
+    const id = card.dataset.id;
+
+    if (!confirm("Cancel this report?")) return;
+
+    fetch(`http://localhost:8080/api/reports/cancel/${id}`, {
+      method: "PUT"
+    })
+    .then(res => res.text())
+    .then(result => {
+      if (result === "SUCCESS") {
+        loadReports();
+      } else {
+        alert("Failed to cancel.");
+      }
+    });
+  }
+});
+
+/* CREATE REPORT CARD */
+function createReportCard(report) {
+  const formattedDate = new Date(report.dateSubmitted).toLocaleDateString();
+
+  const card = document.createElement("div");
+  card.className = "reports-card pending";
+  card.dataset.id = report.reportId;
+
+  card.innerHTML = `
+    <div class="reports-header">
+      <div class="reports-info">
+        <h3>${report.title}</h3>
+        <p>${report.description.substring(0, 80)}...</p>
+      </div>
+      <div class="reports-status pending">
+        ${report.status}
+      </div>
+    </div>
+
+    <div class="reports-details">
+      <p><b>Category:</b> ${report.category}</p>
+      <p><b>Location:</b> ${report.location}</p>
+      <p><b>Submitted:</b> ${formattedDate}</p>
+    </div>
+
+    <div class="reports-actions">
+      <button class="action-btn view">View Details</button>
+      <button class="action-btn cancel">Cancel Report</button>
+    </div>
+  `;
+  return card;
+}
+
+/* SUBMIT REPORT */
+function submitReport() {
+  let title = document.getElementById("reportTitle").value;
+  let category = document.getElementById("reportCategory").value;
+  let location = document.getElementById("reportLocation").value;
+  let description = document.getElementById("reportDescription").value;
+  let image = document.getElementById("reportImage").files[0];
+
+  if (!title || !category || !location || !description) {
+    alert("Please fill out all fields.");
+    return;
+  }
+
+  let formData = new FormData();
+  let data = { title, category, location, description };
+
+  formData.append(
+    "data",
+    new Blob([JSON.stringify(data)], { type: "application/json" })
+  );
+  if (image) formData.append("image", image);
+
+  fetch("http://localhost:8080/api/reports/submit", {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.text())
+  .then(result => {
+    if (result === "SUCCESS") {
+      alert("Your report has been submitted!");
+      closeReportForm();
+      loadReports();
+    } else {
+      alert("Error submitting report.");
+    }
+  });
+}
+
+/* VIEW DETAILS MODAL */
+/* ===============================
+   VIEW DETAILS MODAL
+   CHANGE:
+   - Added image rendering using Base64
+================================ */
+/* ===============================
+   VIEW DETAILS MODAL (REDESIGNED)
+   CHANGE:
+   - Matches Admin "Review Report" UI
+   - NO backend changes
+================================ */
+function showReportPopup(title, desc, category, location, date, imageBase64) {
+
+  const imageSection = imageBase64
+    ? `<img 
+         src="data:image/jpeg;base64,${imageBase64}" 
+         class="report-image"
+         alt="Report Image"
+       >`
+    : `<div class="no-image">No image uploaded</div>`;
+
+  const popup = document.createElement("div");
+  popup.className = "modal active";
+
+  popup.innerHTML = `
+    <div class="modal-content report-review">
+
+      <div class="modal-header">
+        <h2>Report Details</h2>
+        <button class="close-btn" onclick="this.closest('.modal').remove()">×</button>
+      </div>
+
+      ${imageSection}
+
+      <div class="report-section">
+        <div class="report-row">
+          <span class="label">Title</span>
+          <span class="value">${title}</span>
+        </div>
+
+        <div class="report-row">
+          <span class="label">Category</span>
+          <span class="value">${category}</span>
+        </div>
+
+        <div class="report-row">
+          <span class="label">Location</span>
+          <span class="value">${location}</span>
+        </div>
+
+        <div class="report-row">
+          <span class="label">Date Reported</span>
+          <span class="value">${date}</span>
+        </div>
+      </div>
+
+      <div class="report-section">
+        <span class="label">Description</span>
+        <div class="description-box">
+          ${desc}
+        </div>
+      </div>
+
+    </div>
+  `;
+
+  document.body.appendChild(popup);
+}
+</script>
+

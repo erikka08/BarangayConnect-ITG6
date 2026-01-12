@@ -37,14 +37,20 @@
         <div class="card-icon">
           <i class="fas fa-user-check"></i>
         </div>
+
+        <!-- ✅ CHANGED: Added IDs so we can control arrow + text -->
         <div class="card-trend">
-          <i class="fas fa-arrow-up"></i>
-          <span>Active</span>
+          <i class="fas fa-arrow-up" id="statusArrow"></i>
+          <span id="statusTrend">Active</span>
         </div>
+
       </div>
       <div class="card-content">
         <h3>My Status</h3>
-        <div class="card-number">Verified</div>
+
+        <!-- ✅ Dynamic -->
+        <div class="card-number" id="statusValue">Loading...</div>
+
         <div class="card-description">Community member</div>
       </div>
     </div>
@@ -54,14 +60,20 @@
         <div class="card-icon">
           <i class="fas fa-clipboard-check"></i>
         </div>
+
+        <!-- ✅ CHANGED: Added IDs -->
         <div class="card-trend">
-          <i class="fas fa-arrow-up"></i>
-          <span>+3</span>
+          <i class="fas fa-arrow-up" id="requestArrow"></i>
+          <span id="requestTrend">0</span>
         </div>
+
       </div>
       <div class="card-content">
         <h3>My Requests</h3>
-        <div class="card-number">3</div>
+
+        <!-- ✅ Dynamic -->
+        <div class="card-number" id="requestsValue">Loading...</div>
+
         <div class="card-description">This month</div>
       </div>
     </div>
@@ -71,14 +83,20 @@
         <div class="card-icon">
           <i class="fas fa-bell"></i>
         </div>
+
+        <!-- ✅ CHANGED: Added IDs -->
         <div class="card-trend">
-          <i class="fas fa-arrow-down"></i>
-          <span>-2</span>
+          <i class="fas fa-arrow-up" id="notifArrow"></i>
+          <span id="notifTrend">0</span>
         </div>
+
       </div>
       <div class="card-content">
         <h3>Notifications</h3>
-        <div class="card-number">5</div>
+
+        <!-- ✅ Dynamic -->
+        <div class="card-number" id="notifValue">Loading...</div>
+
         <div class="card-description">Unread messages</div>
       </div>
     </div>
@@ -95,40 +113,11 @@
         </div>
         <button class="view-all-btn">View All</button>
       </div>
-      <div class="announcements-list">
-        <div class="announcement-item featured">
-          <div class="announcement-badge">Important</div>
-          <div class="announcement-content">
-            <h4>Community Meeting</h4>
-            <p>Monthly barangay assembly scheduled for March 15, 2024 at 7:00 PM in the community center.</p>
-            <div class="announcement-meta">
-              <span class="announcement-date">March 10, 2024</span>
-              <span class="announcement-author">by Barangay Captain</span>
-            </div>
-          </div>
-        </div>
-        
-        <div class="announcement-item">
-          <div class="announcement-content">
-            <h4>Health Program Launch</h4>
-            <p>Free medical check-up program for senior citizens starts next week.</p>
-            <div class="announcement-meta">
-              <span class="announcement-date">March 8, 2024</span>
-              <span class="announcement-author">by Health Committee</span>
-            </div>
-          </div>
-        </div>
-        
-        <div class="announcement-item">
-          <div class="announcement-content">
-            <h4>Road Maintenance</h4>
-            <p>Main street will be closed for maintenance from March 12-14.</p>
-            <div class="announcement-meta">
-              <span class="announcement-date">March 7, 2024</span>
-              <span class="announcement-author">by Infrastructure Team</span>
-            </div>
-          </div>
-        </div>
+
+      <!-- ✅ CHANGED: Removed hardcoded announcements -->
+      <!-- ✅ ADDED: ID so announcements can be injected dynamically -->
+      <div class="announcements-list" id="announcementsList">
+        <!-- Announcements will load here -->
       </div>
     </div>
 
@@ -207,8 +196,81 @@
         dateElement.textContent = today.toLocaleDateString('en-US', options);
       }
     }
-    
-    window.addEventListener('load', setCurrentDate);
+
+    /* ✅ Fetch dashboard data from Spring Boot API */
+    function loadDashboardData() {
+      const residentId = "1"; // ✅ TEMP
+
+      fetch(`http://localhost:8080/api/dashboard/${residentId}`)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById("statusValue").textContent = data.status;
+          document.getElementById("requestsValue").textContent = data.requestsCount;
+          document.getElementById("notifValue").textContent = data.notificationsCount;
+
+          document.getElementById("requestTrend").textContent = data.requestsCount;
+          document.getElementById("notifTrend").textContent = data.notificationsCount;
+
+          if (data.requestsCount == 0) {
+            document.getElementById("requestArrow").style.display = "none";
+          } else {
+            document.getElementById("requestArrow").style.display = "inline-block";
+          }
+
+          if (data.notificationsCount == 0) {
+            document.getElementById("notifArrow").style.display = "none";
+          } else {
+            document.getElementById("notifArrow").style.display = "inline-block";
+          }
+        })
+        .catch(error => console.error("Dashboard Error:", error));
+    }
+
+    /* ✅ ADDED: Fetch announcements from Spring Boot API */
+    function loadAnnouncements() {
+      fetch("http://localhost:8080/api/announcements/latest")
+        .then(response => response.json())
+        .then(data => {
+          const list = document.getElementById("announcementsList");
+          list.innerHTML = "";
+
+          if (data.length === 0) {
+            list.innerHTML = "<p style='padding:10px;'>No announcements available.</p>";
+            return;
+          }
+
+          data.forEach((announcement, index) => {
+            const featuredClass = index === 0 ? "featured" : "";
+
+            // ✅ format date safely
+            const date = announcement.datePosted
+              ? new Date(announcement.datePosted).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+              : "";
+
+            list.innerHTML += `
+              <div class="announcement-item ${featuredClass}">
+                ${index === 0 ? `<div class="announcement-badge">Important</div>` : ""}
+                <div class="announcement-content">
+                  <h4>${announcement.title}</h4>
+                  <p>${announcement.message}</p>
+                  <div class="announcement-meta">
+                    <span class="announcement-date">${date}</span>
+                    <span class="announcement-author">by ${announcement.author}</span>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+        })
+        .catch(error => console.error("Announcement Error:", error));
+    }
+
+    /* ✅ Runs everything */
+    window.addEventListener('load', function() {
+      setCurrentDate();
+      loadDashboardData();
+      loadAnnouncements(); // ✅ ADDED
+    });
   </script>
 </body>
 </html>

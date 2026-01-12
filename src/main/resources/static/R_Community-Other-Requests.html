@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Community & Other Requests - BarangayConnect</title>
+  <link rel="stylesheet" href="R_Community-Other-Requests-style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://kit.fontawesome.com/a2e0f1f0c1.js" crossorigin="anonymous"></script>
+  <style>
+    * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    *::-webkit-scrollbar {
+      display: none !important;
+    }
+    body {
+      overflow-x: visible !important;
+      min-width: 100% !important;
+      padding-top: 2rem !important;
+      padding-bottom: 2rem !important;
+    }
+    .request-container {
+      min-width: 100% !important;
+      overflow: visible !important;
+      padding-top: 1rem !important;
+    }
+    .page-header {
+      min-width: 100% !important;
+      overflow: visible !important;
+      margin-top: 1rem !important;
+      padding: 1rem 0 !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="request-container">
+
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="header-content">
+        <button class="back-btn" onclick="goBack()" title="Back to Request Management">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="header-text">
+          <h1 class="page-title">
+            <i class="fas fa-people-group"></i>
+            Community & Other Requests
+          </h1>
+          <p class="page-subtitle">Request permits, certifications, and other community-related documents</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-wrapper">
+      <!-- Request Form Section -->
+      <div class="form-section">
+        <div class="form-card">
+          <h2 class="form-title"><i class="fas fa-file-signature"></i> Request Form</h2>
+
+          <form id="requestForm" class="request-form">
+
+            <!-- Document Type Selection -->
+            <div class="form-group">
+              <label for="documentType" class="form-label">
+                <i class="fas fa-file-alt"></i> Document Type <span class="required">*</span>
+              </label>
+              <select id="documentType" name="documentType" class="form-select" required>
+                <option value="">Select a document type...</option>
+                <option value="event-permit">Barangay Event Permit</option>
+                <option value="facility-use">Use of Barangay Facilities</option>
+                <option value="road-closure">Road Closure Request</option>
+                <option value="good-moral">Certificate of Good Moral Character</option>
+                <option value="project-request">Barangay Project Request</option>
+              </select>
+            </div>
+
+            <!-- Personal Information -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="firstName" class="form-label">
+                  <i class="fas fa-user"></i> First Name <span class="required">*</span>
+                </label>
+                <input type="text" id="firstName" name="firstName" class="form-input" required>
+              </div>
+
+              <div class="form-group">
+                <label for="lastName" class="form-label">
+                  <i class="fas fa-user"></i> Last Name <span class="required">*</span>
+                </label>
+                <input type="text" id="lastName" name="lastName" class="form-input" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="label-row">
+                <label for="middleName" class="form-label"><i class="fas fa-user"></i> Middle Name</label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="middleNameNA" name="middleNameNA">
+                  <span>N/A</span>
+                </label>
+              </div>
+              <input type="text" id="middleName" name="middleName" class="form-input">
+            </div>
+
+            <div class="form-group">
+              <label for="address" class="form-label">
+                <i class="fas fa-map-marker-alt"></i> Complete Address <span class="required">*</span>
+              </label>
+              <textarea id="address" name="address" class="form-textarea" rows="3" required></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="contactNumber" class="form-label">
+                  <i class="fas fa-phone"></i> Contact Number <span class="required">*</span>
+                </label>
+                <input type="tel" id="contactNumber" name="contactNumber" class="form-input" placeholder="+63 XXX XXX XXXX" required>
+              </div>
+
+              <div class="form-group">
+                <label for="email" class="form-label">
+                  <i class="fas fa-envelope"></i> Email Address
+                </label>
+                <input type="email" id="email" name="email" class="form-input">
+              </div>
+            </div>
+
+            <!-- Event / Request Details -->
+            <div class="form-group">
+              <label for="purpose" class="form-label">
+                <i class="fas fa-bullseye"></i> Purpose of request <span class="required">*</span>
+              </label>
+              <textarea id="purpose" name="purpose" class="form-textarea" rows="3" required></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="eventDate" class="form-label">
+                  <i class="fas fa-calendar-day"></i> Event date
+                </label>
+                <input type="date" id="eventDate" name="eventDate" class="form-input">
+              </div>
+
+              <div class="form-group">
+                <label for="eventTime" class="form-label">
+                  <i class="fas fa-clock"></i> Event time
+                </label>
+                <input type="time" id="eventTime" name="eventTime" class="form-input">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="eventPlace" class="form-label">
+                <i class="fas fa-location-dot"></i> Event place / location
+              </label>
+              <input type="text" id="eventPlace" name="eventPlace" class="form-input">
+            </div>
+
+            <div class="form-group">
+              <label for="organizationName" class="form-label">
+                <i class="fas fa-users"></i> Community organization name
+              </label>
+              <input type="text" id="organizationName" name="organizationName" class="form-input">
+            </div>
+
+            <!-- File Uploads -->
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-upload"></i> Upload Requirements <span class="required">*</span></label>
+              <div class="upload-section">
+                <div class="upload-item">
+                  <label for="validId" class="upload-label"><i class="fas fa-id-badge"></i> Valid ID</label>
+                  <input type="file" id="validId" name="validId" class="file-input" accept="image/*,.pdf" required>
+                  <span class="file-hint">Any government-issued or valid ID</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Additional Notes -->
+            <div class="form-group">
+              <label for="notes" class="form-label"><i class="fas fa-comment-alt"></i> Additional notes</label>
+              <textarea id="notes" name="notes" class="form-textarea" rows="3"></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" onclick="goBack()"><i class="fas fa-times"></i> Cancel</button>
+              <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Submit Request</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <div class="info-card payment-card">
+        <h2 class="section-title"><i class="fas fa-money-bill-wave"></i> Payment Fee</h2>
+        <div class="payment-info">
+          <p class="payment-note">Payment fee will be determined based on the selected document type.</p>
+          <p class="payment-contact">Please contact the barangay office for exact fee amounts.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+  function goBack() {
+    window.location.href = 'R_Request-management.html';
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('requestForm');
+    if (!form) return;
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const documentType = document.getElementById('documentType').value;
+      if (!documentType) return alert('Please select a document type.');
+
+      const residentId = localStorage.getItem("residentId");
+      if (!residentId) {
+        alert("Error: No logged-in resident found.");
+        return;
+      }
+
+      const validIdFile = document.getElementById('validId').files[0];
+      if (!validIdFile) return alert("Please upload a Valid ID.");
+
+      /* ======================================================
+         ✅ BUILD REQUEST DATA (JSON PART ONLY)
+         - NO FILE DATA HERE
+         - EXACTLY like Reports architecture
+      ====================================================== */
+      const documentTypeMap = {
+        'event-permit': 'Barangay Event Permit',
+        'facility-use': 'Use of Barangay Facilities',
+        'road-closure': 'Road Closure Request',
+        'good-moral': 'Certificate of Good Moral Character',
+        'project-request': 'Barangay Project Request'
+      };
+
+      const requestData = {
+        residentId: residentId,
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        middleName: document.getElementById('middleName').value || '',
+        email: document.getElementById('email').value || '',
+        mobile: document.getElementById('contactNumber').value,
+        address: document.getElementById('address').value,
+        documentType: documentTypeMap[documentType] || documentType,
+        purpose: document.getElementById('purpose').value,
+        eventDate: document.getElementById('eventDate').value || '',
+        eventTime: document.getElementById('eventTime').value || '',
+        eventPlace: document.getElementById('eventPlace').value || '',
+        organizationName: document.getElementById('organizationName').value || '',
+        requestNotes: document.getElementById('notes').value || '',
+        submissionDate: new Date().toISOString()
+      };
+
+      /* ======================================================
+         ✅ BUILD FORMDATA (MULTIPART)
+         - data  → JSON
+         - files → REAL FILE BYTES
+      ====================================================== */
+      const formData = new FormData();
+
+      formData.append(
+        "data",
+        new Blob([JSON.stringify(requestData)], { type: "application/json" })
+      );
+
+      // IMPORTANT: backend expects List<MultipartFile>
+      formData.append("files", validIdFile);
+
+      /* ======================================================
+         ✅ SEND TO BACKEND (REPORTS STYLE)
+      ====================================================== */
+      fetch("http://localhost:8080/api/requests/submit", {
+        method: "POST",
+        body: formData
+      })
+        .then(res => {
+  if (!res.ok) throw new Error("Failed to submit request");
+  return res.text(); // ✅ backend returns "SUCCESS"
+})
+.then(result => {
+  if (result === "SUCCESS") {
+    alert("Your request has been submitted successfully!");
+    window.location.href = "R_Request-management.html";
+  } else {
+    throw new Error("Backend error");
+  }
+})
+
+    });
+
+    /* ================= FILE UI FEEDBACK (UNCHANGED) ================= */
+    document.querySelectorAll('.file-input').forEach(input => {
+      input.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+          const label = this.closest('.upload-item').querySelector('.upload-label');
+          if (label) {
+            const name =
+              file.name.length > 30
+                ? file.name.substring(0, 30) + '...'
+                : file.name;
+            label.innerHTML = `<i class="fas fa-check-circle"></i> ${name}`;
+            label.style.color = 'var(--clr-1)';
+          }
+        }
+      });
+    });
+
+    /* ================= MIDDLE NAME N/A LOGIC (UNCHANGED) ================= */
+    const middleNameNA = document.getElementById('middleNameNA');
+    if (middleNameNA) {
+      middleNameNA.addEventListener('change', function () {
+        const input = document.getElementById('middleName');
+        if (!input) return;
+
+        if (this.checked) {
+          input.value = 'N/A';
+          input.disabled = true;
+          input.style.backgroundColor = '#f8f9fa';
+        } else {
+          input.value = '';
+          input.disabled = false;
+          input.style.backgroundColor = 'white';
+        }
+      });
+    }
+  });
+</script>

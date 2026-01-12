@@ -1,0 +1,263 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resident Feedback</title>
+
+  <link rel="stylesheet" href="A_Feedback.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Page Header -->
+  <div class="feedback-page-header">
+    <h1><i class="fas fa-comments"></i> Resident Feedback</h1>
+    <p>View feedback submitted by residents</p>
+  </div>
+
+  <!-- Filters Box -->
+  <div class="filters-section">
+    <div class="filter-group">
+      <label>Status</label>
+      <select id="feedback-status" class="filter-select">
+        <option value="all">All</option>
+        <option value="Satisfied">Satisfied</option>
+        <option value="Not Satisfied">Not Satisfied</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Date</label>
+      <select id="feedback-date" class="filter-select">
+        <option value="all">All Time</option>
+        <option value="7weeks">Last 7 Weeks</option>
+        <option value="1month">Last Month</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Feedback List -->
+  <div class="feedback-container">
+    <div id="feedbackList" class="feedback-list"></div>
+  </div>
+
+  <!-- Feedback Modal -->
+  <div id="feedbackModal" class="feedback-modal">
+    <div class="feedback-modal-content">
+      <div class="feedback-modal-header">
+        <div id="modalStatus" class="feedback-modal-status">
+          <i class="fas fa-comment"></i>
+          <span id="modalStatusText"></span>
+        </div>
+      </div>
+      <div id="modalMessage" class="feedback-modal-message"></div>
+      <div id="modalDate" class="feedback-modal-date"></div>
+      <div class="feedback-modal-actions">
+        <button class="done-btn" onclick="closeFeedbackModal()">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script>
+    const feedbackList = document.getElementById('feedbackList');
+    const statusFilter = document.getElementById('feedback-status');
+    const dateFilter = document.getElementById('feedback-date');
+
+    // ===========================
+    // ✅ CHANGED: Use database instead of localStorage
+    // ===========================
+    const API_BASE = "http://localhost:8080/api/feedbacks";
+
+    let feedbacks = [];
+
+    // ✅ ADDED: Fetch feedbacks from database
+    async function loadFeedbacksFromDB() {
+      try {
+        const response = await fetch(`${API_BASE}/all`);
+        if (!response.ok) throw new Error("Failed to fetch feedbacks");
+
+        const data = await response.json();
+
+        // ✅ Normalize API fields into the same structure your UI expects
+        feedbacks = data.map(fb => ({
+          id: fb.id,
+          status: fb.status,
+          message: fb.message,
+          // If backend returns ISO date, format it for display
+          date: fb.date ? new Date(fb.date).toLocaleString() : "",
+          // ✅ IMPORTANT: backend field is readStatus (boolean)
+          read: fb.readStatus === true
+        }));
+
+        renderFeedbacks();
+      } catch (error) {
+        console.error(error);
+        feedbackList.innerHTML = `
+          <div class="no-feedback">
+            <i class="fas fa-triangle-exclamation"></i>
+            <p>Error loading feedbacks. Check your backend connection.</p>
+          </div>`;
+      }
+    }
+
+    function renderFeedbacks() {
+      feedbackList.innerHTML = '';
+
+      let filtered = feedbacks.filter(fb => !fb.read);
+      const now = new Date();
+
+      // Status filter
+      if (statusFilter.value !== 'all') {
+        filtered = filtered.filter(fb => fb.status === statusFilter.value);
+      }
+
+      // Date filter
+      if (dateFilter.value !== 'all') {
+        filtered = filtered.filter(fb => {
+          const fbDate = new Date(fb.date);
+          if (dateFilter.value === '7weeks') {
+            const d = new Date(); d.setDate(now.getDate() - 49);
+            return fbDate >= d;
+          }
+          if (dateFilter.value === '1month') {
+            const d = new Date(); d.setMonth(now.getMonth() - 1);
+            return fbDate >= d;
+          }
+          return true;
+        });
+      }
+
+      if (!filtered.length) {
+        feedbackList.innerHTML = `
+          <div class="no-feedback">
+            <i class="fas fa-inbox"></i>
+            <p>No feedback found.</p>
+          </div>`;
+        return;
+      }
+
+      filtered.reverse().forEach(fb => {
+        const fbId = fb.id != null ? fb.id.toString() : '';
+        feedbackList.innerHTML += `
+          <div class="feedback-card">
+            <div class="feedback-status ${fb.status === 'Satisfied' ? 'happy' : 'sad'}">
+              <i class="fas ${fb.status === 'Satisfied' ? 'fa-face-smile' : 'fa-face-frown'}"></i>
+              ${fb.status}
+            </div>
+
+            <div class="feedback-message" title="${fb.message}">
+              "${fb.message}"
+            </div>
+
+            <div class="feedback-footer">
+              <div class="feedback-date">${fb.date}</div>
+              <div class="feedback-buttons">
+                <button class="read-btn" data-id="${fbId}" ${fb.read ? 'disabled' : ''}>
+                  ${fb.read ? 'Read ✓' : 'Read'}
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // ✅ ADDED: Update "read" status in database
+    async function markFeedbackAsReadInDB(id) {
+      try {
+        const response = await fetch(`${API_BASE}/read/${id}`, {
+          method: "PUT"
+        });
+
+        if (!response.ok) throw new Error("Failed to mark feedback as read");
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    // Read button - show modal with full message
+    document.addEventListener('click', async e => {
+      if (e.target.classList.contains('read-btn') && !e.target.disabled) {
+        const id = e.target.dataset.id;
+
+        // Find the feedback
+        const feedback = feedbacks.find(fb => {
+          const fbId = fb.id != null ? fb.id.toString() : null;
+          return fbId === id;
+        });
+
+        if (feedback) {
+          // Show modal with full message
+          showFeedbackModal(feedback);
+
+          // ✅ CHANGED: mark read in DB instead of localStorage
+          await markFeedbackAsReadInDB(id);
+
+          // Update local UI state
+          feedbacks = feedbacks.map(fb => {
+            const fbId = fb.id != null ? fb.id.toString() : null;
+            return fbId === id ? { ...fb, read: true } : fb;
+          });
+
+          // Re-render to update the UI
+          renderFeedbacks();
+        }
+      }
+    });
+
+    // Show feedback modal
+    function showFeedbackModal(feedback) {
+      const modal = document.getElementById('feedbackModal');
+      const modalStatus = document.getElementById('modalStatus');
+      const modalStatusText = document.getElementById('modalStatusText');
+      const modalMessage = document.getElementById('modalMessage');
+      const modalDate = document.getElementById('modalDate');
+
+      // Set status
+      modalStatusText.textContent = feedback.status;
+      modalStatus.className = 'feedback-modal-status ' + (feedback.status === 'Satisfied' ? 'happy' : 'sad');
+      modalStatus.querySelector('i').className = 'fas ' + (feedback.status === 'Satisfied' ? 'fa-face-smile' : 'fa-face-frown');
+
+      // Set message
+      modalMessage.textContent = feedback.message;
+
+      // Set date
+      modalDate.textContent = feedback.date;
+
+      // Show modal
+      modal.classList.add('show');
+    }
+
+    // Close feedback modal
+    function closeFeedbackModal() {
+      const modal = document.getElementById('feedbackModal');
+      modal.classList.remove('show');
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('feedbackModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeFeedbackModal();
+      }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeFeedbackModal();
+      }
+    });
+
+    statusFilter.addEventListener('change', renderFeedbacks);
+    dateFilter.addEventListener('change', renderFeedbacks);
+
+    // ✅ CHANGED: Load from DB instead of localStorage
+    loadFeedbacksFromDB();
+  </script>
+
+</body>
+</html>
+```

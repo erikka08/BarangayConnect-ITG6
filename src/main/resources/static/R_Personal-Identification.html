@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personal Identification & Residency - BarangayConnect</title>
+  <link rel="stylesheet" href="R_Personal-Identification-style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://kit.fontawesome.com/a2e0f1f0c1.js" crossorigin="anonymous"></script>
+  <style>
+    * { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+    *::-webkit-scrollbar { display: none !important; }
+    body {
+      overflow-x: visible !important;
+      min-width: 100% !important;
+      padding-top: 2rem !important;
+      padding-bottom: 2rem !important;
+    }
+    .request-container { min-width: 100% !important; overflow: visible !important; padding-top: 1rem !important; }
+    .page-header { min-width: 100% !important; overflow: visible !important; margin-top: 1rem !important; padding: 1rem 0 !important; }
+  </style>
+</head>
+<body>
+  <div class="request-container">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div class="header-content">
+        <button class="back-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i></button>
+        <div class="header-text">
+          <h1 class="page-title"><i class="fas fa-id-card"></i> Personal Identification & Residency</h1>
+          <p class="page-subtitle">Request certificates and identification documents</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-wrapper">
+      <!-- FORM SECTION -->
+      <div class="form-section">
+        <div class="form-card">
+          <h2 class="form-title"><i class="fas fa-file-signature"></i> Request Form</h2>
+
+          <form id="requestForm" class="request-form">
+            
+            <!-- DOCUMENT TYPE -->
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-file-alt"></i> Document Type <span class="required">*</span></label>
+              <select id="documentType" name="documentType" class="form-select" required>
+                <option value="">Select a document type...</option>
+                <option value="barangay-clearance">Barangay Clearance</option>
+                <option value="certificate-residency">Barangay Certificate of Residency</option>
+                <option value="indigency-certificate">Barangay Indigency Certificate</option>
+                <option value="barangay-id">Barangay ID</option>
+              </select>
+            </div>
+
+            <!-- PERSONAL DETAILS -->
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label"><i class="fas fa-user"></i> First Name <span class="required">*</span></label>
+                <input type="text" id="firstName" name="firstName" class="form-input" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label"><i class="fas fa-user"></i> Last Name <span class="required">*</span></label>
+                <input type="text" id="lastName" name="lastName" class="form-input" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="label-row">
+                <label class="form-label"><i class="fas fa-user"></i> Middle Name</label>
+                <label class="checkbox-label"><input type="checkbox" id="middleNameNA"> <span>N/A</span></label>
+              </div>
+              <input type="text" id="middleName" name="middleName" class="form-input">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-calendar"></i> Birthdate <span class="required">*</span></label>
+              <input type="date" id="birthdate" name="birthdate" class="form-input" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-map-marker-alt"></i> Complete Address <span class="required">*</span></label>
+              <textarea id="address" name="address" class="form-textarea" required></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label"><i class="fas fa-phone"></i> Contact Number <span class="required">*</span></label>
+                <input type="tel" id="contactNumber" name="contactNumber" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label"><i class="fas fa-envelope"></i> Email Address</label>
+                <input type="email" id="email" name="email" class="form-input">
+              </div>
+            </div>
+
+            <!-- FILE UPLOADS -->
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-upload"></i> Upload Requirements <span class="required">*</span></label>
+              
+              <div class="upload-section">
+
+                <div class="upload-item">
+                  <label class="upload-label" for="validId"><i class="fas fa-id-badge"></i> Valid ID</label>
+                  <input type="file" id="validId" name="validId" class="file-input" required>
+                </div>
+
+                <div class="upload-item">
+                  <label class="upload-label" for="proofResidency"><i class="fas fa-home"></i> Proof of Residency</label>
+                  <input type="file" id="proofResidency" name="proofResidency" class="file-input" required>
+                </div>
+
+                <div class="upload-item">
+                  <label class="upload-label" for="photo"><i class="fas fa-image"></i> 1×1 or 2×2 Photo</label>
+                  <input type="file" id="photo" name="photo" class="file-input">
+                </div>
+
+              </div>
+            </div>
+
+            <!-- NOTES -->
+            <div class="form-group">
+              <label class="form-label"><i class="fas fa-comment-alt"></i> Additional Notes</label>
+              <textarea id="notes" name="notes" class="form-textarea"></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" onclick="goBack()" class="btn btn-secondary"><i class="fas fa-times"></i> Cancel</button>
+              <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Submit Request</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <!-- PAYMENT -->
+      <div class="info-card payment-card">
+        <h2 class="section-title"><i class="fas fa-money-bill-wave"></i> Payment Fee</h2>
+        <p class="payment-note">Payment fee will be determined based on the selected document type.</p>
+        <p class="payment-contact">Please contact the barangay office for exact fee amounts.</p>
+      </div>
+
+    </div>
+  </div>
+
+ <script>
+function goBack() { 
+  window.location.href = 'R_Request-management.html'; 
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+
+  const form = document.getElementById('requestForm');
+  if (!form) return;
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const residentId = localStorage.getItem("residentId");
+    if (!residentId) {
+      alert("Error: No logged-in resident found.");
+      return;
+    }
+
+    // ===============================
+    // ✅ BUILD REQUEST DTO (JSON PART)
+    // ===============================
+    const map = {
+      'barangay-clearance': 'Barangay Clearance',
+      'certificate-residency': 'Barangay Certificate of Residency',
+      'indigency-certificate': 'Barangay Indigency Certificate',
+      'barangay-id': 'Barangay ID'
+    };
+
+    const dataPayload = {
+      residentId: residentId,
+      firstName: document.getElementById('firstName').value,
+      middleName: document.getElementById('middleName').value || "",
+      lastName: document.getElementById('lastName').value,
+      email: document.getElementById('email').value || "",
+      mobile: document.getElementById('contactNumber').value,
+      address: document.getElementById('address').value,
+      birthdate: document.getElementById('birthdate').value,
+      documentType: map[document.getElementById('documentType').value],
+      requestNotes: document.getElementById('notes').value || "",
+      submissionDate: new Date().toISOString(),
+      status: "pending"
+    };
+
+    // ===============================
+    // ✅ BUILD MULTIPART FORM DATA
+    // ===============================
+    const multipart = new FormData();
+
+    // JSON → Blob (CRITICAL)
+    multipart.append(
+      "data",
+      new Blob([JSON.stringify(dataPayload)], { type: "application/json" })
+    );
+
+    // REAL FILES (CRITICAL)
+    const validId = document.getElementById('validId').files[0];
+    const proofResidency = document.getElementById('proofResidency').files[0];
+    const photo = document.getElementById('photo').files[0];
+
+    if (!validId || !proofResidency) {
+      alert("Please upload both Valid ID and Proof of Residency.");
+      return;
+    }
+
+    multipart.append("files", validId);
+    multipart.append("files", proofResidency);
+    if (photo) multipart.append("files", photo);
+
+    // ===============================
+    // ✅ SEND TO BACKEND (OPTION A)
+    // ===============================
+    try {
+      const res = await fetch("http://localhost:8080/api/requests/submit", {
+        method: "POST",
+        body: multipart
+      });
+
+      if (!res.ok) throw new Error("Submission failed");
+
+      alert("Your request has been submitted successfully!");
+      window.location.href = "R_Request-management.html";
+
+    } catch (err) {
+      console.error(err);
+      alert("There was an error submitting your request.");
+    }
+  });
+
+  // ===============================
+  // FILE NAME DISPLAY (UNCHANGED)
+  // ===============================
+  document.querySelectorAll('.file-input').forEach(input => {
+    input.addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        const label = this.closest('.upload-item').querySelector('.upload-label');
+        const name = file.name.length > 30 ? file.name.substring(0, 30) + "..." : file.name;
+        label.innerHTML = `<i class="fas fa-check-circle"></i> ${name}`;
+        label.style.color = "var(--clr-1)";
+      }
+    });
+  });
+
+  // ===============================
+  // MIDDLE NAME N/A (UNCHANGED)
+  // ===============================
+  const na = document.getElementById('middleNameNA');
+  if (na) {
+    na.addEventListener('change', function () {
+      const input = document.getElementById('middleName');
+      if (this.checked) {
+        input.value = "N/A";
+        input.disabled = true;
+      } else {
+        input.value = "";
+        input.disabled = false;
+      }
+    });
+  }
+
+});
+</script>

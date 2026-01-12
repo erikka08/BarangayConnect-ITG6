@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property, Construction & Business - BarangayConnect</title>
+  <link rel="stylesheet" href="R_Property-Construction-Business-style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://kit.fontawesome.com/a2e0f1f0c1.js" crossorigin="anonymous"></script>
+  <style>
+    /* Force hide all scrollbars */
+    * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    *::-webkit-scrollbar {
+      display: none !important;
+    }
+    
+    /* Ensure content is not clipped */
+    body {
+      overflow-x: visible !important;
+      min-width: 100% !important;
+      padding-top: 2rem !important;
+      padding-bottom: 2rem !important;
+    }
+    
+    .request-container {
+      min-width: 100% !important;
+      overflow: visible !important;
+      padding-top: 1rem !important;
+    }
+    
+    .page-header {
+      min-width: 100% !important;
+      overflow: visible !important;
+      margin-top: 1rem !important;
+      padding: 1rem 0 !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="request-container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="header-content">
+        <button class="back-btn" onclick="goBack()" title="Back to Request Management">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="header-text">
+          <h1 class="page-title">
+            <i class="fas fa-building"></i>
+            Property, Construction & Business
+          </h1>
+          <p class="page-subtitle">Request business permits, construction certificates, and property documents</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-wrapper">
+      <!-- Request Form Section -->
+      <div class="form-section">
+        <div class="form-card">
+          <h2 class="form-title">
+            <i class="fas fa-file-signature"></i>
+            Request Form
+          </h2>
+          
+          <form id="requestForm" class="request-form">
+            <!-- Document Type Selection -->
+            <div class="form-group">
+              <label for="documentType" class="form-label">
+                <i class="fas fa-file-alt"></i>
+                Document Type <span class="required">*</span>
+              </label>
+              <select id="documentType" name="documentType" class="form-select" required>
+                <option value="">Select a document type...</option>
+                <option value="business-clearance">Barangay Business Clearance</option>
+                <option value="land-ownership">Certificate of Land Ownership (or supporting documents)</option>
+                <option value="construction-permit">Certificate for Construction, Renovation, or Building Permit Endorsement</option>
+                <option value="business-permit">Barangay Business Permit (endorsement before LGU issues main permit)</option>
+              </select>
+            </div>
+
+            <!-- Personal Information -->
+            <div class="form-row">
+              <div class="form-group">
+                <label for="firstName" class="form-label">
+                  <i class="fas fa-user"></i>
+                  First Name <span class="required">*</span>
+                </label>
+                <input type="text" id="firstName" name="firstName" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label for="lastName" class="form-label">
+                  <i class="fas fa-user"></i>
+                  Last Name <span class="required">*</span>
+                </label>
+                <input type="text" id="lastName" name="lastName" class="form-input" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="label-row">
+                <label for="middleName" class="form-label">
+                  <i class="fas fa-user"></i>
+                  Middle Name
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="middleNameNA" name="middleNameNA">
+                  <span>N/A</span>
+                </label>
+              </div>
+              <input type="text" id="middleName" name="middleName" class="form-input">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="contactNumber" class="form-label">
+                  <i class="fas fa-phone"></i>
+                  Contact Number <span class="required">*</span>
+                </label>
+                <input type="tel" id="contactNumber" name="contactNumber" class="form-input" placeholder="+63 XXX XXX XXXX" required>
+              </div>
+              <div class="form-group">
+                <label for="email" class="form-label">
+                  <i class="fas fa-envelope"></i>
+                  Email Address
+                </label>
+                <input type="email" id="email" name="email" class="form-input" placeholder="your.email@example.com">
+              </div>
+            </div>
+
+            <!-- Property Address -->
+            <div class="form-group">
+              <label for="propertyAddress" class="form-label">
+                <i class="fas fa-map-marker-alt"></i>
+                Exact Property Address <span class="required">*</span>
+              </label>
+              <textarea id="propertyAddress" name="propertyAddress" class="form-textarea" rows="3" required></textarea>
+            </div>
+
+            <!-- Business Information (conditional) -->
+            <div id="businessInfo" style="display: none;">
+              <div class="form-group">
+                <label for="businessName" class="form-label">
+                  <i class="fas fa-store"></i>
+                  Business Name <span class="required">*</span>
+                </label>
+                <input type="text" id="businessName" name="businessName" class="form-input">
+              </div>
+              <div class="form-group">
+                <label for="businessLocation" class="form-label">
+                  <i class="fas fa-map-pin"></i>
+                  Business Location <span class="required">*</span>
+                </label>
+                <textarea id="businessLocation" name="businessLocation" class="form-textarea" rows="2"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="dtiSecRegistration" class="form-label">
+                  <i class="fas fa-certificate"></i>
+                  DTI or SEC Registration (if applicable)
+                </label>
+                <input type="text" id="dtiSecRegistration" name="dtiSecRegistration" class="form-input" placeholder="Enter registration number if available">
+              </div>
+            </div>
+
+            <!-- Construction Information (conditional) -->
+            <div id="constructionInfo" style="display: none;">
+              <div class="form-group">
+                <label for="constructionPurpose" class="form-label">
+                  <i class="fas fa-tools"></i>
+                  Purpose <span class="required">*</span>
+                </label>
+                <select id="constructionPurpose" name="constructionPurpose" class="form-select">
+                  <option value="">Select purpose...</option>
+                  <option value="repair">Repair</option>
+                  <option value="renovate">Renovate</option>
+                  <option value="build">Build</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- File Uploads -->
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-upload"></i>
+                Upload Requirements <span class="required">*</span>
+              </label>
+              <div class="upload-section">
+                <div class="upload-item">
+                  <label for="validId" class="upload-label">
+                    <i class="fas fa-id-badge"></i>
+                    Valid ID
+                  </label>
+                  <input type="file" id="validId" name="validId" class="file-input" accept="image/*,.pdf" required>
+                  <span class="file-hint">Any government-issued identification</span>
+                </div>
+                <div class="upload-item" id="dtiSecUpload">
+                  <label for="dtiSecDocument" class="upload-label">
+                    <i class="fas fa-certificate"></i>
+                    DTI or SEC Registration Document
+                  </label>
+                  <input type="file" id="dtiSecDocument" name="dtiSecDocument" class="file-input" accept="image/*,.pdf">
+                  <span class="file-hint">DTI or SEC Registration document (if applicable) - <strong>For Business</strong></span>
+                </div>
+                <div class="upload-item" id="sketchPlanUpload">
+                  <label for="sketchPlan" class="upload-label">
+                    <i class="fas fa-drafting-compass"></i>
+                    Sketch or Plan
+                  </label>
+                  <input type="file" id="sketchPlan" name="sketchPlan" class="file-input" accept="image/*,.pdf">
+                  <span class="file-hint">Sketch or plan - <strong>For Construction</strong></span>
+                </div>
+                <div class="upload-item" id="proofOwnershipUpload">
+                  <label for="proofOwnership" class="upload-label">
+                    <i class="fas fa-file-contract"></i>
+                    Proof of Ownership
+                  </label>
+                  <input type="file" id="proofOwnership" name="proofOwnership" class="file-input" accept="image/*,.pdf">
+                  <span class="file-hint">Tax declaration, contract, deed of sale, etc. - <strong>For Construction</strong></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Additional Notes -->
+            <div class="form-group">
+              <label for="notes" class="form-label">
+                <i class="fas fa-comment-alt"></i>
+                Additional Notes
+              </label>
+              <textarea id="notes" name="notes" class="form-textarea" rows="3" placeholder="Any additional information or special requests..."></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" onclick="goBack()">
+                <i class="fas fa-times"></i>
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-paper-plane"></i>
+                Submit Request
+              </button>
+            </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Payment Fee Section -->
+        <div class="info-card payment-card">
+          <h2 class="section-title">
+            <i class="fas fa-money-bill-wave"></i>
+            Payment Fee
+          </h2>
+          <div class="payment-info">
+            <p class="payment-note">Payment fee will be determined based on the selected document type.</p>
+            <p class="payment-contact">Please contact the barangay office for exact fee amounts.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+ <script>
+function goBack() {
+  window.location.href = 'R_Request-management.html';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('requestForm');
+  const documentTypeSelect = document.getElementById('documentType');
+  const businessInfo = document.getElementById('businessInfo');
+  const constructionInfo = document.getElementById('constructionInfo');
+
+  if (!form) return;
+
+  // ==============================================================
+  // ⭐ SAME SHOW/HIDE BEHAVIOR — NOT MODIFIED
+  // ==============================================================
+  documentTypeSelect.addEventListener('change', function() {
+    const type = this.value;
+
+    businessInfo.style.display = 'none';
+    constructionInfo.style.display = 'none';
+
+    document.getElementById('businessName').removeAttribute('required');
+    document.getElementById('businessLocation').removeAttribute('required');
+    document.getElementById('constructionPurpose').removeAttribute('required');
+    document.getElementById('sketchPlan').removeAttribute('required');
+    document.getElementById('proofOwnership').removeAttribute('required');
+
+    if (type === 'business-clearance' || type === 'business-permit') {
+      businessInfo.style.display = 'block';
+      document.getElementById('businessName').setAttribute('required', 'required');
+      document.getElementById('businessLocation').setAttribute('required', 'required');
+    }
+
+    if (type === 'construction-permit') {
+      constructionInfo.style.display = 'block';
+      document.getElementById('constructionPurpose').setAttribute('required', 'required');
+      document.getElementById('sketchPlan').setAttribute('required', 'required');
+      document.getElementById('proofOwnership').setAttribute('required', 'required');
+    }
+
+    if (type === 'land-ownership') {
+      document.getElementById('proofOwnership').setAttribute('required', 'required');
+    }
+  });
+
+  // ==============================================================
+  // ⭐ MAIN FORM SUBMIT HANDLER — NOW CONNECTED TO BACKEND
+  // ==============================================================
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    const documentType = formData.get('documentType');
+    const firstName = formData.get('firstName');
+    const lastName = formData.get('lastName');
+    const propertyAddress = formData.get('propertyAddress');
+    const contactNumber = formData.get('contactNumber');
+
+    const validIdFile = document.getElementById('validId').files[0];
+
+    if (!documentType || !firstName || !lastName || !propertyAddress || !contactNumber) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
+    if (!validIdFile) {
+      alert("Please upload Valid ID.");
+      return;
+    }
+
+    // ==============================================================
+    // ⭐ VALIDATE CONDITIONAL FIELDS (unchanged)
+    // ==============================================================
+
+    if (documentType === 'business-clearance' || documentType === 'business-permit') {
+      if (!formData.get('businessName') || !formData.get('businessLocation')) {
+        alert("Please fill in all business information fields.");
+        return;
+      }
+    }
+
+    if (documentType === 'construction-permit') {
+      const sketchPlan = document.getElementById("sketchPlan").files[0];
+      const proofOwnership = document.getElementById("proofOwnership").files[0];
+      if (!formData.get("constructionPurpose") || !sketchPlan || !proofOwnership) {
+        alert("Please complete construction requirements.");
+        return;
+      }
+    }
+
+    if (documentType === 'land-ownership') {
+      const proofOwnership = document.getElementById("proofOwnership").files[0];
+      if (!proofOwnership) {
+        alert("Proof of Ownership is required.");
+        return;
+      }
+    }
+
+    // ==============================================================
+    // ⭐ GET LOGGED-IN RESIDENT ID
+    // ==============================================================
+    const residentId = localStorage.getItem("residentId"); // ⭐ ADDED
+    if (!residentId) {
+      alert("You must be logged in to submit a request.");
+      return;
+    }
+
+    // ==============================================================
+    // ⭐ REBUILD REQUIREMENTS LIST (same as Personal ID)
+    // ==============================================================
+    const requirements = [];
+
+    function pushRequirement(fieldId, label) {
+      const file = document.getElementById(fieldId)?.files[0];
+      if (file) {
+        requirements.push({
+          label: label,
+          fileName: file.name,
+          fileType: file.type,
+          fileSize: file.size,
+          status: "Submitted"
+        });
+      }
+    }
+
+    pushRequirement("validId", "Valid ID");
+    pushRequirement("proofOwnership", "Proof of Ownership");
+    pushRequirement("sketchPlan", "Sketch or Plan");
+    pushRequirement("dtiSecDocument", "DTI/SEC Registration Document");
+
+    // ==============================================================
+    // ⭐ BUILD REQUEST OBJECT (new backend format)
+    // ==============================================================
+    const requestObject = {
+      residentId: residentId,  // ⭐ NEW: correct resident ID
+      requestId: "",           // ⭐ backend will generate
+      firstName: formData.get("firstName"),
+      lastName: formData.get("lastName"),
+      middleName: formData.get("middleName") || "",
+      email: formData.get("email") || "",
+      mobile: formData.get("contactNumber"),
+      address: propertyAddress,  // ⭐ maps to Request.address
+      documentType: documentTypeSelect.options[documentTypeSelect.selectedIndex].text,
+      requestNotes: formData.get("notes") || "",
+      submissionDate: new Date().toISOString(),
+      status: "pending",
+
+      // ⭐ NEW FIELDS for this category
+      propertyAddress: formData.get("propertyAddress") || "",
+      businessName: formData.get("businessName") || "",
+      businessLocation: formData.get("businessLocation") || "",
+      dtiSecRegistration: formData.get("dtiSecRegistration") || "",
+      constructionPurpose: formData.get("constructionPurpose") || ""
+    };
+const payload = {
+  residentId: residentId,
+  firstName: formData.get("firstName"),
+  lastName: formData.get("lastName"),
+  middleName: formData.get("middleName") || "",
+  email: formData.get("email") || "",
+  mobile: formData.get("contactNumber"),
+  address: propertyAddress,
+  documentType: documentTypeSelect.options[documentTypeSelect.selectedIndex].text,
+  requestNotes: formData.get("notes") || "",
+  submissionDate: new Date().toISOString(),
+
+  uploadedRequirements: requirements,
+  requestStatus: { status: "pending" },
+
+  businessName: formData.get("businessName") || "",
+  businessLocation: formData.get("businessLocation") || "",
+  dtiSecRegistration: formData.get("dtiSecRegistration") || "",
+  constructionPurpose: formData.get("constructionPurpose") || ""
+};
+
+    console.log("Submitting payload:", payload);
+
+    // ==============================================================
+    // ⭐ SEND TO BACKEND
+    // ==============================================================
+    try {
+      const response = await fetch("http://localhost:8080/api/requests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) throw new Error("Server returned an error");
+
+      alert("Your request has been submitted successfully!");
+
+      window.location.href = "R_Request-management.html";
+
+    } catch (err) {
+      console.error(err);
+      alert("Submission failed. Please try again.");
+    }
+  });
+
+  // ==============================================================
+  // ⭐ FILE LABEL HANDLER (unchanged)
+  // ==============================================================
+  document.querySelectorAll('.file-input').forEach(input => {
+    input.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const label = this.closest('.upload-item').querySelector('.upload-label');
+        if (label) {
+          label.innerHTML = `<i class="fas fa-check-circle"></i> ${file.name}`;
+          label.style.color = 'var(--clr-1)';
+        }
+      }
+    });
+  });
+
+  // ==============================================================
+  // ⭐ Middle Name N/A toggle (unchanged)
+  // ==============================================================
+  const middleNameNA = document.getElementById('middleNameNA');
+  middleNameNA.addEventListener('change', function() {
+    const middleNameInput = document.getElementById('middleName');
+    if (this.checked) {
+      middleNameInput.value = 'N/A';
+      middleNameInput.disabled = true;
+    } else {
+      middleNameInput.value = '';
+      middleNameInput.disabled = false;
+    }
+  });
+
+});
+</script>

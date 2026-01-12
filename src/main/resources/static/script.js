@@ -41,14 +41,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // SHOW/HIDE PASSWORD BUTTONS
   // ===============================
   const passwordToggles = [
-    { checkbox: 'showRegPassword', fields: ['regPassword','regConfirmPassword'] },
+    { checkbox: 'showRegPassword', fields: ['regPassword', 'regConfirmPassword'] },
     { checkbox: 'showResidentPassword', fields: ['loginResidentPassword'] },
     { checkbox: 'showAdminPassword', fields: ['loginAdminPassword'] }
   ];
 
   passwordToggles.forEach(item => {
     const checkbox = document.getElementById(item.checkbox);
-    checkbox?.addEventListener('change', function() {
+    checkbox?.addEventListener('change', function () {
       item.fields.forEach(id => {
         const field = document.getElementById(id);
         if (field) field.type = this.checked ? 'text' : 'password';
@@ -70,12 +70,18 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.classList.add('active');
         const target = btn.dataset.target;
 
-        // Show only the selected panel
         residentPanel?.classList.toggle('hidden', target !== 'residentLoginPanel');
         adminPanel?.classList.toggle('hidden', target !== 'adminLoginPanel');
       });
     });
   }
+
+  // ===============================
+  // OPTIONAL ACTIVITY LOG SUPPORT
+  // ===============================
+  // If activity-log.js is loaded BEFORE this script and defines window.recordActivity,
+  // then this will work. Otherwise it safely does nothing.
+  const recordActivity = window.recordActivity;
 
   // ===============================
   // RESIDENT REGISTRATION LOGIC
@@ -85,17 +91,22 @@ document.addEventListener('DOMContentLoaded', () => {
   registerForm?.addEventListener('submit', async e => {
     e.preventDefault();
 
-    // Read user input
     const firstname = document.getElementById("regFirstName")?.value.trim();
     const lastname = document.getElementById("regLastName")?.value.trim();
     const phone = document.getElementById("regMobile")?.value.trim();
     const email = document.getElementById("regEmail")?.value.trim();
     const password = document.getElementById("regPassword")?.value.trim();
     const confirmPassword = document.getElementById("regConfirmPassword")?.value.trim();
+    const termsChecked = document.getElementById('regTermsCheckbox')?.checked;
 
     // Validation
     if (!firstname || !lastname || !phone || !password || !confirmPassword) {
       alert("Please fill in all required fields.");
+      return;
+    }
+
+    if (!termsChecked) {
+      alert("Please agree to the Terms & Conditions before registering.");
       return;
     }
 
@@ -113,24 +124,33 @@ document.addEventListener('DOMContentLoaded', () => {
       formData.append("email", email);
       formData.append("password", password);
 
-      // 🔥 FIXED PART — GET THE RESPONSE
       const response = await fetch("http://localhost:8080/api/resident/register", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: formData
       });
 
-      // 🔥 FIXED — convert to JSON
-      const resident = await response.json();
+      if (!response.ok) {
+        alert("Registration failed. Please check your details.");
+        return;
+      }
 
-      // 🔥 FIXED — SAVE ID so waiting room can check status
+      const resident = await response.json();
       localStorage.setItem("residentId", resident.id);
 
-      // Close modal + reset form
-      document.getElementById('registerModal').style.display = 'none';
-      registerForm.reset();
+      // Activity log: registration success
+      if (typeof recordActivity === "function") {
+        recordActivity(
+          "REGISTER",
+          "RESIDENT",
+          email || phone,
+          `${firstname} ${lastname}`,
+          { status: "PENDING" }
+        );
+      }
 
-      // Redirect to waiting room
+      document.getElementById('registerModal')?.style.setProperty('display', 'none');
+      registerForm.reset();
       window.location.href = "R_Waiting.html";
 
     } catch (err) {
@@ -140,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ===============================
-  // RESIDENT LOGIN (REAL WORKING ONE)
+  // RESIDENT LOGIN
   // ===============================
   const residentLoginForm = document.getElementById('residentLoginForm');
 
@@ -167,6 +187,17 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       if (!res.ok) {
+        // Activity log: failed login
+        if (typeof recordActivity === "function") {
+          recordActivity(
+            "FAILED_LOGIN",
+            "RESIDENT",
+            phone,
+            "Unknown Resident",
+            { reason: "Invalid credentials" }
+          );
+        }
+
         alert("Invalid login credentials!");
         return;
       }
@@ -174,11 +205,23 @@ document.addEventListener('DOMContentLoaded', () => {
       const resident = await res.json();
       localStorage.setItem("residentId", resident.id);
 
-      // Redirect Based on Status
+      // Activity log: successful login
+      if (typeof recordActivity === "function") {
+        recordActivity(
+          "LOGIN",
+          "RESIDENT",
+          phone,
+          `${resident.firstname || ""} ${resident.lastname || ""}`.trim() || "Resident",
+          { status: resident.status }
+        );
+      }
+
       if (resident.status === "PENDING") {
         window.location.href = "R_Waiting.html";
       } else if (resident.status === "ACTIVE") {
-        window.location.href = "R_Home-Dashboard.html";
+        window.location.href = "ResidentPage.html";
+      } else {
+        alert("Your account status is not recognized.");
       }
 
     } catch (err) {
@@ -215,9 +258,31 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       if (response.ok) {
+        // Activity log: admin login success
+        if (typeof recordActivity === "function") {
+          recordActivity(
+            "LOGIN",
+            "ADMIN",
+            identifier,
+            "Admin"
+          );
+        }
+
         alert("Admin login successful!");
-        window.location.href = "AdminPage.html"; // Your admin page
+        window.location.href = "AdminPage.html";
+
       } else {
+        // Activity log: failed admin login
+        if (typeof recordActivity === "function") {
+          recordActivity(
+            "FAILED_LOGIN",
+            "ADMIN",
+            identifier,
+            "Unknown Admin",
+            { reason: "Invalid credentials" }
+          );
+        }
+
         alert("Invalid admin credentials!");
       }
 
@@ -228,9 +293,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 }); // END DOMContentLoaded
-
-
-
 
 // ===============================
 // DRAG-SAFE MODAL OVERLAY SYSTEM
@@ -248,7 +310,7 @@ function attachDragSafeOverlay(modalId, contentSelector, closeFn) {
     dragging = false;
   });
 
-  modal.addEventListener('mousemove', (e) => {
+  modal.addEventListener('mousemove', () => {
     if (startedInsideBox) dragging = true;
   });
 

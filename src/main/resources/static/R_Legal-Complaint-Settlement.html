@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Legal, Complaint & Settlement - BarangayConnect</title>
+  <link rel="stylesheet" href="R_Legal-Complaint-Settlement-style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://kit.fontawesome.com/a2e0f1f0c1.js" crossorigin="anonymous"></script>
+  <style>
+    * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    *::-webkit-scrollbar {
+      display: none !important;
+    }
+    body {
+      overflow-x: visible !important;
+      min-width: 100% !important;
+      padding-top: 2rem !important;
+      padding-bottom: 2rem !important;
+    }
+    .request-container {
+      min-width: 100% !important;
+      overflow: visible !important;
+      padding-top: 1rem !important;
+    }
+    .page-header {
+      min-width: 100% !important;
+      overflow: visible !important;
+      margin-top: 1rem !important;
+      padding: 1rem 0 !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="request-container">
+    <div class="page-header">
+      <div class="header-content">
+        <button class="back-btn" onclick="goBack()" title="Back to Request Management">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="header-text">
+          <h1 class="page-title">
+            <i class="fas fa-scale-balanced"></i>
+            Legal, Complaint & Settlement
+          </h1>
+          <p class="page-subtitle">File complaints, legal certifications, and settlement-related requests</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-wrapper">
+      <!-- Request Form Section -->
+      <div class="form-section">
+        <div class="form-card">
+          <h2 class="form-title">
+            <i class="fas fa-file-signature"></i>
+            Request Form
+          </h2>
+          
+          <form id="requestForm" class="request-form">
+            <div class="form-group">
+              <label for="documentType" class="form-label">
+                <i class="fas fa-file-alt"></i>
+                Document Type <span class="required">*</span>
+              </label>
+              <select id="documentType" name="documentType" class="form-select" required>
+                <option value="">Select a document type...</option>
+                <option value="affidavits">Affidavits (Loss, Undertaking, Residency, Support, etc.)</option>
+                <option value="notarization-endorsement">Notarization endorsements</option>
+                <option value="blotter-copy">Blotter report copy</option>
+                <option value="legal-certification">Certification issued for legal purposes (e.g., for court)</option>
+                <option value="barangay-blotter">Barangay Blotter</option>
+                <option value="kp-summons">Katarungang Pambarangay (KP) Summons</option>
+                <option value="complaint-form">Complaint Form</option>
+                <option value="cfa">Certification to File Action (CFA)</option>
+              </select>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="firstName" class="form-label">
+                  <i class="fas fa-user"></i>
+                  First Name <span class="required">*</span>
+                </label>
+                <input type="text" id="firstName" name="firstName" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label for="lastName" class="form-label">
+                  <i class="fas fa-user"></i>
+                  Last Name <span class="required">*</span>
+                </label>
+                <input type="text" id="lastName" name="lastName" class="form-input" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="label-row">
+                <label for="middleName" class="form-label">
+                  <i class="fas fa-user"></i>
+                  Middle Name
+                </label>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="middleNameNA" name="middleNameNA">
+                  <span>N/A</span>
+                </label>
+              </div>
+              <input type="text" id="middleName" name="middleName" class="form-input">
+            </div>
+
+            <div class="form-group">
+              <label for="birthdate" class="form-label">
+                <i class="fas fa-calendar"></i>
+                Birthdate <span class="required">*</span>
+              </label>
+              <input type="date" id="birthdate" name="birthdate" class="form-input" required>
+            </div>
+
+            <div class="form-group">
+              <label for="address" class="form-label">
+                <i class="fas fa-map-marker-alt"></i>
+                Complete Address <span class="required">*</span>
+              </label>
+              <textarea id="address" name="address" class="form-textarea" rows="3" required></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="contactNumber" class="form-label">
+                  <i class="fas fa-phone"></i>
+                  Contact Number <span class="required">*</span>
+                </label>
+                <input type="tel" id="contactNumber" name="contactNumber" class="form-input" placeholder="+63 XXX XXX XXXX" required>
+              </div>
+              <div class="form-group">
+                <label for="email" class="form-label">
+                  <i class="fas fa-envelope"></i>
+                  Email Address
+                </label>
+                <input type="email" id="email" name="email" class="form-input" placeholder="your.email@example.com">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="incidentDetails" class="form-label">
+                <i class="fas fa-align-left"></i>
+                Detailed description of incident <span class="required">*</span>
+              </label>
+              <textarea id="incidentDetails" name="incidentDetails" class="form-textarea" rows="4" required></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="incidentDate" class="form-label">
+                  <i class="fas fa-calendar-day"></i>
+                  Incident date <span class="required">*</span>
+                </label>
+                <input type="date" id="incidentDate" name="incidentDate" class="form-input" required>
+              </div>
+              <div class="form-group">
+                <label for="incidentLocation" class="form-label">
+                  <i class="fas fa-location-dot"></i>
+                  Incident location <span class="required">*</span>
+                </label>
+                <input type="text" id="incidentLocation" name="incidentLocation" class="form-input" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="partiesInvolved" class="form-label">
+                <i class="fas fa-user-group"></i>
+                Names of involved parties <span class="required">*</span>
+              </label>
+              <textarea id="partiesInvolved" name="partiesInvolved" class="form-textarea" rows="3" required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">
+                <i class="fas fa-upload"></i>
+                Upload Requirements <span class="required">*</span>
+              </label>
+              <div class="upload-section">
+                <div class="upload-item">
+                  <label for="validId" class="upload-label">
+                    <i class="fas fa-id-badge"></i>
+                    Valid ID
+                  </label>
+                  <input type="file" id="validId" name="validId" class="file-input" accept="image/*,.pdf" required>
+                  <span class="file-hint">Any government-issued or valid ID</span>
+                </div>
+                <div class="upload-item">
+                  <label for="writtenComplaint" class="upload-label">
+                    <i class="fas fa-file-alt"></i>
+                    Written complaint / statement
+                  </label>
+                  <input type="file" id="writtenComplaint" name="writtenComplaint" class="file-input" accept="image/*,.pdf">
+                  <span class="file-hint">Scanned or digital copy of your signed complaint</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="notes" class="form-label">
+                <i class="fas fa-comment-alt"></i>
+                Additional notes
+              </label>
+              <textarea id="notes" name="notes" class="form-textarea" rows="3" placeholder="Any additional information or special requests..."></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" onclick="goBack()">
+                <i class="fas fa-times"></i>
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-paper-plane"></i>
+                Submit Request
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="info-card payment-card">
+        <h2 class="section-title">
+          <i class="fas fa-money-bill-wave"></i>
+          Payment Fee
+        </h2>
+        <div class="payment-info">
+          <p class="payment-note">Payment fee will be determined based on the selected document type.</p>
+          <p class="payment-contact">Please contact the barangay office for exact fee amounts.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ <script>
+function goBack() {
+  window.location.href = 'R_Request-management.html';
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('requestForm');
+  if (!form) return;
+
+  /* ===============================
+     MIDDLE NAME N/A (UNCHANGED)
+  =============================== */
+  const middleNameNA = document.getElementById('middleNameNA');
+  const middleNameInput = document.getElementById('middleName');
+
+  middleNameNA.addEventListener('change', function () {
+    if (this.checked) {
+      middleNameInput.value = 'N/A';
+      middleNameInput.disabled = true;
+    } else {
+      middleNameInput.value = '';
+      middleNameInput.disabled = false;
+    }
+  });
+
+  /* ===============================
+     ✅ FILE INPUT VISUAL CHECK FIX
+  =============================== */
+  document.querySelectorAll('.file-input').forEach(input => {
+    input.addEventListener('change', function () {
+      const file = this.files[0];
+      if (!file) return;
+
+      const label = this.closest('.upload-item')?.querySelector('.upload-label');
+      if (!label) return;
+
+      const name =
+        file.name.length > 30
+          ? file.name.substring(0, 30) + "..."
+          : file.name;
+
+      label.innerHTML = `<i class="fas fa-check-circle"></i> ${name}`;
+      label.style.color = "var(--clr-1)";
+    });
+  });
+
+  /* ===============================
+     FORM SUBMIT
+  =============================== */
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    /* ===============================
+       REQUIRED FIELD CHECK
+    =============================== */
+    const requiredIds = [
+      'documentType','firstName','lastName','birthdate',
+      'address','contactNumber','incidentDetails',
+      'incidentDate','incidentLocation','partiesInvolved'
+    ];
+
+    for (let id of requiredIds) {
+      if (!document.getElementById(id).value) {
+        alert("Please fill all required fields.");
+        return;
+      }
+    }
+
+    const validIdFile = document.getElementById('validId').files[0];
+    if (!validIdFile) {
+      alert("Please upload a Valid ID.");
+      return;
+    }
+
+    const residentId = localStorage.getItem("residentId");
+    if (!residentId) {
+      alert("Error: No logged-in resident found.");
+      return;
+    }
+
+    /* ===============================
+       DOCUMENT TYPE MAP (UNCHANGED)
+    =============================== */
+    const documentTypeMap = {
+      'affidavits': 'Affidavits',
+      'notarization-endorsement': 'Notarization endorsements',
+      'blotter-copy': 'Blotter report copy',
+      'legal-certification': 'Legal certification',
+      'barangay-blotter': 'Barangay Blotter',
+      'kp-summons': 'KP Summons',
+      'complaint-form': 'Complaint Form',
+      'cfa': 'Certification to File Action'
+    };
+
+    /* ===============================
+       ✅ JSON DATA (NO FILES)
+    =============================== */
+    const requestData = {
+      residentId,
+      firstName: document.getElementById('firstName').value,
+      middleName: document.getElementById('middleName').value || "",
+      lastName: document.getElementById('lastName').value,
+      birthdate: document.getElementById('birthdate').value,
+      address: document.getElementById('address').value,
+      mobile: document.getElementById('contactNumber').value,
+      email: document.getElementById('email').value || "",
+      documentType: documentTypeMap[document.getElementById('documentType').value],
+      incidentDetails: document.getElementById('incidentDetails').value,
+      incidentDate: document.getElementById('incidentDate').value,
+      incidentLocation: document.getElementById('incidentLocation').value,
+      partiesInvolved: document.getElementById('partiesInvolved').value,
+      requestNotes: document.getElementById('notes').value || "",
+      submissionDate: new Date().toISOString()
+    };
+
+    /* ===============================
+       ✅ MULTIPART FORM DATA
+    =============================== */
+    const multipart = new FormData();
+
+    multipart.append(
+      "data",
+      new Blob([JSON.stringify(requestData)], { type: "application/json" })
+    );
+
+    multipart.append("files", validIdFile);
+
+    const writtenComplaint = document.getElementById('writtenComplaint').files[0];
+    if (writtenComplaint) {
+      multipart.append("files", writtenComplaint);
+    }
+
+    /* ===============================
+       ✅ SEND TO BACKEND (CORRECT)
+    =============================== */
+    try {
+      const res = await fetch("http://localhost:8080/api/requests/submit", {
+        method: "POST",
+        body: multipart
+      });
+
+      if (!res.ok) throw new Error("Submission failed");
+
+      alert("Request submitted successfully!");
+      window.location.href = "R_Request-management.html";
+
+    } catch (err) {
+      console.error(err);
+      alert("Error submitting request.");
+    }
+  });
+});
+</script>

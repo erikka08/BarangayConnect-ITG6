@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>In Progress Request - BarangayConnect</title>
+  <link rel="stylesheet" href="A_InPrgrs-Request-style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* Force hide all scrollbars */
+    * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    *::-webkit-scrollbar {
+      display: none !important;
+    }
+    
+    /* Ensure content is not clipped */
+    body {
+      overflow-x: visible !important;
+      min-width: 100% !important;
+      padding-top: 2rem !important;
+      padding-bottom: 2rem !important;
+    }
+    
+    .user-details-container {
+      min-width: 100% !important;
+      overflow: visible !important;
+      padding-top: 1rem !important;
+    }
+    
+    .page-header {
+      min-width: 100% !important;
+      overflow: visible !important;
+      margin-top: 1rem !important;
+      padding: 1rem 0 !important;
+    }
+  </style>
+  <script src="https://kit.fontawesome.com/a2e0f1f0c1.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="user-details-container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="header-content">
+        <button class="back-btn" onclick="goBack()" title="Back to Request Management">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="header-text">
+          <h1 class="page-title">
+            <i class="fas fa-hourglass-half"></i>
+            In Progress Request
+          </h1>
+          <p class="page-subtitle">Monitor and manage all requests currently being processed</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search and Stats Section -->
+    <div class="search-stats-section">
+      <div class="stats-section">
+        <div class="stat-card clickable-stat" onclick="window.location.href='A_Request.html'">
+          <div class="stat-icon">
+            <i class="fas fa-file-alt"></i>
+          </div>
+          <div class="stat-content">
+            <h3>Requests</h3>
+            <div class="stat-number" id="totalUsersCount">0</div>
+          </div>
+        </div>
+        
+        <div class="stat-card clickable-stat" onclick="window.location.href='A_InPrgrs-Request.html'">
+          <div class="stat-icon">
+            <i class="fas fa-hourglass-half"></i>
+          </div>
+          <div class="stat-content">
+            <h3>In Progress</h3>
+            <div class="stat-number" id="activeUsersCount">0</div>
+          </div>
+        </div>
+        
+        <div class="stat-card clickable-stat" onclick="window.location.href='A_Cmptd-Request.html'">
+          <div class="stat-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <div class="stat-content">
+            <h3>Completed</h3>
+            <div class="stat-number" id="pendingCount">0</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="search-group">
+        <input type="text" placeholder="Search" class="search-input">
+        <button class="search-btn">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="users-table-container">
+      <div class="table-header">
+        <div class="table-cell">REQUEST ID</div>
+        <div class="table-cell">RESIDENT NAME</div>
+        <div class="table-cell">REQUEST TYPE</div>
+        <div class="table-cell">DATE SUBMITTED</div>
+        <div class="table-cell">ACTIONS</div>
+      </div>
+      
+      <div class="table-body">
+        <!-- Rows are rendered dynamically from storage -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Request Details Modal -->
+  <div id="requestDetailsModal" class="request-modal" aria-hidden="true">
+    <div class="request-modal-content" role="dialog" aria-modal="true" aria-labelledby="modalRequestTitle">
+      <button class="request-modal-close" id="requestModalClose" aria-label="Close request details">&times;</button>
+      
+      <div class="request-modal-header">
+        <div>
+          <p class="modal-eyebrow">Review Request</p>
+          <h2 id="modalRequestTitle">Review Request</h2>
+        </div>
+      </div>
+
+      <div class="request-modal-body">
+        <!-- Request Information Section -->
+        <div class="info-section-card">
+          <div class="section-title-wrapper">
+            <h3 class="section-title">Request Information</h3>
+          </div>
+          <div class="info-grid-formal">
+            <div class="info-item">
+              <span class="info-label">Request ID</span>
+              <span class="info-value" id="modalRequestId">—</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Request Type</span>
+              <span class="info-value" id="modalDocumentType">—</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Date Submitted</span>
+              <span class="info-value" id="modalDateSubmitted">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resident Information Section -->
+        <div class="info-section-card">
+          <div class="section-title-wrapper">
+            <h3 class="section-title">Resident Information</h3>
+          </div>
+          <div class="info-grid-formal">
+            <div class="info-item">
+              <span class="info-label">Full Name</span>
+              <span class="info-value" id="modalResidentName">—</span>
+            </div>
+            <div class="info-item" id="modalBirthdateBlock" style="display: none;">
+              <span class="info-label">Birthdate</span>
+              <span class="info-value" id="modalBirthdate">—</span>
+            </div>
+            <div class="info-item full-width" id="modalAddressBlock" style="display: none;">
+              <span class="info-label">Address</span>
+              <span class="info-value" id="modalAddress">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Information Section -->
+        <div class="info-section-card">
+          <div class="section-title-wrapper">
+            <h3 class="section-title">Contact Information</h3>
+          </div>
+          <div class="info-grid-formal">
+            <div class="info-item">
+              <span class="info-label">Contact Number</span>
+              <span class="info-value" id="modalResidentPhone">—</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Email Address</span>
+              <span class="info-value" id="modalResidentEmail">—</span>
+            </div>
+          </div>
+        </div>
+
+        <section class="requirements-section info-section-card">
+          <div class="section-title-wrapper">
+            <h3 class="section-title">Uploaded Requirements</h3>
+          </div>
+          <div id="requirementList" class="requirement-list">
+            <!-- Filled dynamically -->
+          </div>
+        </section>
+
+        <section class="notes-section">
+          <p class="section-eyebrow">Additional Notes from Resident</p>
+          <div class="notes-box" id="residentNotes">No additional notes provided.</div>
+        </section>
+      </div>
+    </div>
+  </div>
+  <script>
+const API_BASE = "http://localhost:8080/api/requests";
+
+/* ================================
+   NAVIGATION
+================================ */
+function goBack() {
+  window.location.href = 'A_Request-Management.html';
+}
+
+/* ================================
+   STATUS UPDATE (IN PROGRESS → COMPLETED)
+================================ */
+async function updateRequestStatus(requestId, newStatus) {
+  try {
+    const res = await fetch(`${API_BASE}/${requestId}/status`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: newStatus })
+    });
+
+    if (!res.ok) throw new Error("Status update failed");
+
+    alert("Request marked as Completed");
+    fetchRequests();
+    window.location.href = "A_Cmptd-Request.html";
+  } catch (err) {
+    console.error(err);
+    alert("Failed to update request status.");
+  }
+}
+
+/* ================================
+   FETCH IN-PROGRESS REQUESTS
+================================ */
+async function fetchRequests() {
+  try {
+    const res = await fetch(API_BASE);
+    const data = await res.json();
+
+    const inProgress = data.filter(r => r.status === "in_progress");
+    renderRequests(inProgress);
+    updateStats(data);
+  } catch (err) {
+    console.error("Failed to fetch requests:", err);
+  }
+}
+
+
+/* ================================
+   RENDER TABLE
+================================ */
+function renderRequests(requests) {
+  const tbody = document.querySelector('.table-body');
+  tbody.innerHTML = '';
+
+  if (!requests.length) {
+    tbody.innerHTML = `<p class="muted">No in-progress requests.</p>`;
+    return;
+  }
+
+  requests.forEach(req => {
+    const fullName = [req.firstName, req.middleName, req.lastName]
+      .filter(Boolean)
+      .join(' ') || '—';
+
+    const date = req.submissionDate
+      ? new Date(req.submissionDate).toLocaleDateString()
+      : '—';
+
+    tbody.insertAdjacentHTML('beforeend', `
+      <div class="table-row" data-id="${req.id}">
+        <div class="table-cell">${req.requestId}</div>
+        <div class="table-cell">${fullName}</div>
+        <div class="table-cell">${req.documentType}</div>
+        <div class="table-cell">${date}</div>
+        <div class="table-cell actions">
+          <button class="view-btn"><i class="fas fa-eye"></i></button>
+          <button class="complete-btn"><i class="fas fa-check-circle"></i></button>
+        </div>
+      </div>
+    `);
+  });
+
+  attachActionHandlers();
+}
+
+/* ================================
+   ACTION HANDLERS
+================================ */
+function attachActionHandlers() {
+  document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.onclick = () => openRequestModal(btn.closest('.table-row'));
+  });
+
+  document.querySelectorAll('.complete-btn').forEach(btn => {
+    btn.onclick = () => {
+      const row = btn.closest('.table-row');
+      const id = row.dataset.id;
+
+      if (confirm("Mark this request as completed?")) {
+        updateRequestStatus(id, "completed");
+
+      }
+    };
+  });
+}
+
+/* ================================
+   OPEN MODAL (VIEW ONLY)
+================================ */
+function openRequestModal(row) {
+  const id = row.dataset.id;
+
+  fetch(`${API_BASE}/${id}`)
+    .then(res => res.json())
+    .then(req => {
+      document.getElementById('modalRequestId').textContent = req.requestId;
+      document.getElementById('modalDocumentType').textContent = req.documentType;
+      document.getElementById('modalDateSubmitted').textContent =
+        req.submissionDate ? new Date(req.submissionDate).toLocaleString() : '—';
+
+      document.getElementById('modalResidentName').textContent =
+        [req.firstName, req.middleName, req.lastName].filter(Boolean).join(' ');
+
+      document.getElementById('modalResidentPhone').textContent = req.mobile || '—';
+      document.getElementById('modalResidentEmail').textContent = req.email || '—';
+      document.getElementById('residentNotes').textContent =
+        req.requestNotes || "No additional notes provided.";
+
+      loadRequestFiles(id);
+
+      const modal = document.getElementById('requestDetailsModal');
+      modal.classList.add('show');
+      modal.removeAttribute('aria-hidden');
+      document.body.style.overflow = 'hidden';
+    });
+}
+
+/* ================================
+   LOAD FILES (OPTION A)
+================================ */
+function loadRequestFiles(requestId) {
+  const container = document.getElementById('requirementList');
+  container.innerHTML = '';
+
+  fetch(`${API_BASE}/${requestId}/files`)
+    .then(res => res.json())
+    .then(files => {
+      if (!files.length) {
+        container.innerHTML = `<p class="muted">No uploaded requirements.</p>`;
+        return;
+      }
+
+      files.forEach(file => {
+        container.insertAdjacentHTML('beforeend', `
+          <div class="requirement-item">
+            <strong>${file.label}</strong>
+            <img
+              src="data:${file.fileType};base64,${file.fileBase64}"
+              style="width:100%;max-height:240px;object-fit:contain;border-radius:10px;margin-top:8px;"
+            />
+          </div>
+        `);
+      });
+    })
+    .catch(() => {
+      container.innerHTML = `<p class="muted">Failed to load files.</p>`;
+    });
+}
+
+/* ================================
+   MODAL CLOSE
+================================ */
+document.getElementById('requestModalClose').onclick = () => {
+  const modal = document.getElementById('requestDetailsModal');
+  modal.classList.remove('show');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+};
+
+/* ================================
+   STATS
+================================ */
+function updateStats(data) {
+  document.getElementById('totalUsersCount').textContent =
+    data.filter(r => r.status === "pending").length;
+
+  document.getElementById('activeUsersCount').textContent =
+    data.filter(r => r.status === "in_progress").length;
+
+  document.getElementById('pendingCount').textContent =
+    data.filter(r => r.status === "completed").length;
+}
+
+
+/* ================================
+   INIT
+================================ */
+document.addEventListener('DOMContentLoaded', fetchRequests);
+</script>

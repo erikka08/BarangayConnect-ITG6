@@ -3,6 +3,7 @@ package com.example.barangayconnect.service;
 import com.example.barangayconnect.model.Resident;
 import com.example.barangayconnect.repository.ResidentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,51 +15,92 @@ public class ResidentService {
     @Autowired
     private ResidentRepository residentRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     // ---------------------------------------------------
-    // LOGIN (UNCHANGED)
+    // ✅ LOGIN (UPDATED FOR HASHED PASSWORDS)
     // ---------------------------------------------------
     public Resident login(String identifier, String password) {
-        Optional<Resident> byPhone =
-                residentRepository.findByPhoneNumAndPassword(identifier, password);
-        if (byPhone.isPresent()) return byPhone.get();
 
-        Optional<Resident> byEmail =
-                residentRepository.findByEmailAndPassword(identifier, password);
-        if (byEmail.isPresent()) return byEmail.get();
+        // ✅ Try login by phone number first
+        Optional<Resident> byPhone = residentRepository.findByPhoneNum(identifier);
+        if (byPhone.isPresent()) {
+            Resident resident = byPhone.get();
+
+            // ✅ Compare raw password to hashed password
+            if (passwordEncoder.matches(password, resident.getPassword())) {
+                return resident;
+            }
+
+            // ✅ OPTIONAL: Support old plain-text passwords temporarily
+            if (password.equals(resident.getPassword())) {
+                // Convert old plain password to hashed automatically
+                resident.setPassword(passwordEncoder.encode(password));
+                residentRepository.save(resident);
+                return resident;
+            }
+        }
+
+        // ✅ Try login by email next
+        Optional<Resident> byEmail = residentRepository.findByEmail(identifier);
+        if (byEmail.isPresent()) {
+            Resident resident = byEmail.get();
+
+            if (passwordEncoder.matches(password, resident.getPassword())) {
+                return resident;
+            }
+
+            // ✅ OPTIONAL: Support old plain-text passwords temporarily
+            if (password.equals(resident.getPassword())) {
+                resident.setPassword(passwordEncoder.encode(password));
+                residentRepository.save(resident);
+                return resident;
+            }
+        }
 
         return null;
     }
 
     // ---------------------------------------------------
-    // REGISTER (UNCHANGED)
+    // ✅ REGISTER (UPDATED FOR HASHING)
     // ---------------------------------------------------
     public Resident register(Resident resident) {
+
+        // ✅ hash password before saving
+        resident.setPassword(passwordEncoder.encode(resident.getPassword()));
+
+        // optional: force pending by default
+        if (resident.getStatus() == null) {
+            resident.setStatus("PENDING");
+        }
+
         return residentRepository.save(resident);
     }
 
     // ---------------------------------------------------
-    // FIND BY ID (UNCHANGED)
+    // FIND BY ID
     // ---------------------------------------------------
     public Optional<Resident> findById(Integer id) {
         return residentRepository.findById(id);
     }
 
     // ---------------------------------------------------
-    // PENDING USERS (UNCHANGED)
+    // PENDING USERS
     // ---------------------------------------------------
     public List<Resident> getPendingUsers() {
         return residentRepository.findByStatusIgnoreCase("PENDING");
     }
 
     // ---------------------------------------------------
-    // APPROVED USERS (UNCHANGED)
+    // APPROVED USERS
     // ---------------------------------------------------
     public List<Resident> getApprovedUsers() {
         return residentRepository.findByStatusIgnoreCase("ACTIVE");
     }
 
     // ---------------------------------------------------
-    // APPROVE USER (UNCHANGED EXCEPT APPROVED TIME)
+    // APPROVE USER
     // ---------------------------------------------------
     public Resident approveUser(Integer id) {
         Resident r = residentRepository.findById(id).orElseThrow();
@@ -68,48 +110,27 @@ public class ResidentService {
     }
 
     // ---------------------------------------------------
-    // REJECT USER (UNCHANGED)
+    // REJECT USER
     // ---------------------------------------------------
     public void rejectUser(Integer id) {
         residentRepository.deleteById(id);
     }
 
     // ---------------------------------------------------
-    // COUNT API (ONLY PART UPDATED)
+    // COUNT API
     // ---------------------------------------------------
     public Map<String, Long> getCounts() {
         Map<String, Long> map = new HashMap<>();
 
-        // ORIGINAL data retrieval (unchanged)
         Long total = residentRepository.count();
         Long pending = residentRepository.countByStatus("PENDING");
         Long approved = residentRepository.countByStatus("ACTIVE");
 
-        // ---------------------------------------------------
-        // ✅ FIXED:
-        // Active users = people who are logged in (isLoggedIn = true)
-        // ---------------------------------------------------
         Long loggedIn = residentRepository.countByIsLoggedInTrue();
 
-        // ---------------------------------------------------
-        // ✔ Active users (for dashboard) = logged-in users only
-        // ---------------------------------------------------
         map.put("activeUsers", loggedIn);
-
-        // ---------------------------------------------------
-        // ✔ Offline = approved users minus logged-in users
-        // This matches your frontend display ("Active" / "Offline")
-        // ---------------------------------------------------
         map.put("offlineUsers", approved - loggedIn);
-
-        // ---------------------------------------------------
-        // Pending logic stays untouched
-        // ---------------------------------------------------
         map.put("pendingUsers", pending);
-
-        // ---------------------------------------------------
-        // Total stays unchanged
-        // ---------------------------------------------------
         map.put("totalUsers", total);
 
         return map;

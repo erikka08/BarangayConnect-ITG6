@@ -85,3 +85,4 @@ public ResponseEntity<?> register(Resident resident) {
         return residentService.getCounts();
     }
 }
+

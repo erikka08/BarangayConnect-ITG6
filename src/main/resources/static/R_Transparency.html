@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transparency - BarangayConnect</title>
+  <link rel="stylesheet" href="R_transparency-style.css">
+
+  <style>
+    * { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+    *::-webkit-scrollbar { display: none !important; }
+  </style>
+
+  <script src="https://kit.fontawesome.com/a2e0f1f0c1.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<main class="transparency-wrapper">
+  <div class="transparency-card">
+
+    <h2>Transparency</h2>
+
+    <!-- ANNUAL BUDGET -->
+    <div class="budget-section">
+      <div class="budget-head">
+        <p class="budget-title">Annual Budget</p>
+      </div>
+
+      <h3 id="annualBudget">₱ 4,500,000</h3>
+
+      <div class="progress-bar">
+        <div class="progress-fill" id="budgetProgress" style="width: 62%"></div>
+      </div>
+
+      <p class="spent-line">
+        Spent: <span id="spentAmount">₱ 2,800,000</span>
+        <span id="remainingFunds">Remaining Funds: ₱ 1,700,000</span>
+      </p>
+    </div>
+
+    <!-- PROJECTS & PROGRAMS (READ ONLY) -->
+    <section class="management-section">
+      <div class="management-header">
+        <h2><i class="fas fa-briefcase"></i> Projects & Programs</h2>
+
+        <div class="management-controls">
+          <div class="filter-group">
+            <select id="statusFilter" class="filter-select">
+              <option value="all">All Status</option>
+              <option value="Ongoing">Ongoing</option>
+              <option value="Completed">Completed</option>
+              <option value="Pending">Pending</option>
+            </select>
+
+            <select id="typeFilter" class="filter-select">
+              <option value="all">All Types</option>
+              <option value="Project">Projects</option>
+              <option value="Program">Programs</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="items-container" id="itemsContainer"></div>
+    </section>
+
+  </div>
+</main>
+<script>
+const peso = n => "₱ " + Number(n).toLocaleString("en-PH");
+
+// -------------------------------
+//   FETCH ITEMS FROM BACKEND
+// -------------------------------
+async function loadItems() {
+  try {
+    const response = await fetch("http://localhost:8080/api/items");
+    const items = await response.json();
+
+    updateBudget(items);
+    renderItems(items);
+
+  } catch (err) {
+    console.error("Error fetching transparency items:", err);
+  }
+}
+
+// -------------------------------
+//   UPDATE BUDGET SUMMARY
+// -------------------------------
+function updateBudget(items) {
+  const totalBudget = 4500000;  // static budget for now
+
+  const totalSpent = items.reduce((sum, item) => sum + (item.spent || 0), 0);
+  const percent = Math.round((totalSpent / totalBudget) * 100);
+
+  document.getElementById("annualBudget").textContent = peso(totalBudget);
+  document.getElementById("spentAmount").textContent = peso(totalSpent);
+  document.getElementById("remainingFunds").textContent = "Remaining Funds: " + peso(totalBudget - totalSpent);
+  document.getElementById("budgetProgress").style.width = percent + "%";
+}
+
+// -------------------------------
+//   RENDER ITEMS (PROJECTS & PROGRAMS)
+// -------------------------------
+function renderItems(items) {
+  const statusFilter = document.getElementById("statusFilter").value;
+  const typeFilter = document.getElementById("typeFilter").value;
+
+  const container = document.getElementById("itemsContainer");
+  container.innerHTML = "";
+
+  const filtered = items.filter(item =>
+    (statusFilter === "all" || item.status === statusFilter) &&
+    (typeFilter === "all" || item.type === typeFilter)
+  );
+
+  filtered.forEach(item => {
+    const percent = Math.round((item.spent / item.budget) * 100);
+
+    // MULTIPLE DOCUMENT FIX — display ALL PDFs
+    let documentButtons = "";
+    if (item.documents && item.documents.length > 0) {
+      documentButtons = item.documents.map(doc => `
+        <a href="http://localhost:8080${doc.filePath.replace('Uploads', 'uploads')}"
+           download
+           class="action-icon view"
+           title="Download ${doc.fileName}">
+           <i class="fas fa-file-download"></i>
+        </a>
+      `).join("");
+    } else {
+      documentButtons = `<span class="no-files">No documents</span>`;
+    }
+
+    container.innerHTML += `
+      <div class="item-card">
+
+        <div class="item-header">
+          <div class="item-title">
+            <h4>${item.name}</h4>
+            <span class="item-type-badge">${item.type}</span>
+          </div>
+          <span class="status-badge ${item.status.toLowerCase()}">${item.status}</span>
+        </div>
+
+        <div class="item-body">
+          <div class="item-metrics">
+
+            <div class="metric">
+              <label>Budget</label>
+              <span class="value">${peso(item.budget)}</span>
+            </div>
+
+            <div class="metric">
+              <label>Spent</label>
+              <span class="value">${peso(item.spent)}</span>
+            </div>
+
+            <div class="metric">
+              <label>Progress</label>
+              <span class="value">${percent}%</span>
+            </div>
+          </div>
+
+          <div class="progress-track">
+            <div class="progress-bar-item" style="width:${percent}%"></div>
+          </div>
+
+          <p class="item-description">${item.description}</p>
+        </div>
+
+        <div class="item-actions">
+          ${documentButtons}
+        </div>
+
+      </div>
+    `;
+  });
+}
+
+// -------------------------------
+//   FILTER LOGIC
+// -------------------------------
+document.getElementById("statusFilter").onchange = loadItems;
+document.getElementById("typeFilter").onchange = loadItems;
+
+// -------------------------------
+//   INITIAL PAGE LOAD
+// -------------------------------
+loadItems();
+</script>

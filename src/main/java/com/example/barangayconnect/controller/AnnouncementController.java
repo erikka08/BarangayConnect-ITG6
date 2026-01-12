@@ -36,4 +36,12 @@ public class AnnouncementController {
     public void deleteAnnouncement(@PathVariable Integer id) {
         announcementService.delete(id);
     }
+
+    /* ✅ CHANGED: Instead of calling announcementRepository (which doesn't exist here),
+       we call announcementService.getLatestAnnouncements() */
+    @GetMapping("/latest")
+    public List<Announcement> getLatestAnnouncements() {
+        return announcementService.getLatestAnnouncements(); // ✅ FIXED
+    }
+
 }

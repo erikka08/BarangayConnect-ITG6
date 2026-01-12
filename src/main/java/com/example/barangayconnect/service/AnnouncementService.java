@@ -39,4 +39,10 @@ public class AnnouncementService {
     public void delete(Integer id) {
         announcementRepository.deleteById(id);
     }
+
+    /* ✅ ADDED: Fetch latest 3 announcements for dashboard */
+    public List<Announcement> getLatestAnnouncements() {
+        // ✅ UPDATED METHOD NAME here
+        return announcementRepository.findTop3ByOrderByAnnouncementDateDesc();
+    }
 }

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports - BarangayConnect</title>
+  <link rel="stylesheet" href="A_reports-style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    *::-webkit-scrollbar {
+      display: none !important;
+    }
+
+    body {
+      overflow-x: visible !important;
+      min-width: 100% !important;
+      padding-top: 2rem !important;
+      padding-bottom: 2rem !important;
+    }
+
+    .reports-container {
+      min-width: 100% !important;
+      overflow: visible !important;
+      padding-top: 1rem !important;
+    }
+
+    .page-header {
+      min-width: 100% !important;
+      overflow: visible !important;
+      margin-top: 1rem !important;
+      padding: 1rem 0 !important;
+    }
+
+    .empty-state {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      background: #f5f7f2;
+      border: 1px dashed #b8c4af;
+      border-radius: 10px;
+      color: #4a5c3a;
+      font-weight: 600;
+    }
+    .empty-state .empty-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      border-radius: 50%;
+      align-items: center;
+      justify-content: center;
+      background: #e3eadc;
+      color: #6c8055;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="reports-container">
+
+    <!-- HEADER -->
+    <div class="page-header">
+      <div class="header-content">
+        <div class="header-text">
+          <h1 class="page-title">
+            <i class="fas fa-file-invoice"></i>
+            Report
+          </h1>
+          <p class="page-subtitle">Track and review all submitted reports and their statuses</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS + SEARCH -->
+    <div class="search-stats-section">
+      <div class="stats-section">
+        
+        <div class="stat-card clickable-stat">
+          <div class="stat-icon"><i class="fas fa-file-alt"></i></div>
+          <div class="stat-content">
+            <h3>Reports</h3>
+            <div class="stat-number" id="totalReportsCount">0</div>
+          </div>
+        </div>
+
+        <div class="stat-card clickable-stat">
+          <div class="stat-icon"><i class="fas fa-hourglass-half"></i></div>
+          <div class="stat-content">
+            <h3>In Progress</h3>
+            <div class="stat-number" id="inProgressReportsCount">0</div>
+          </div>
+        </div>
+
+        <div class="stat-card clickable-stat">
+          <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+          <div class="stat-content">
+            <h3>Resolved</h3>
+            <div class="stat-number" id="resolvedReportsCount">0</div>
+          </div>
+        </div>
+
+      </div>
+<select id="dateFilter" class="search-input">
+  <option value="all">All Time</option>
+  <option value="week">This Week</option>
+  <option value="month">This Month</option>
+  <option value="year">This Year</option>
+</select>
+
+      <div class="search-group">
+        <input type="text" placeholder="Search reporter, issue, or status" class="search-input">
+        <button class="search-btn"><i class="fas fa-search"></i></button>
+      </div>
+    </div>
+
+    <!-- REPORTS TABLE -->
+    <div class="users-table-container">
+      <div class="table-header">
+        <div class="table-cell">REPORTER NAME</div>
+        <div class="table-cell">ISSUE</div>
+        <div class="table-cell">DATE REPORTED</div>
+        <div class="table-cell">TIME</div>
+        <div class="table-cell">STATUS</div>
+        <div class="table-cell">ACTIONS</div>
+      </div>
+
+      <div class="table-body">
+        <div class="empty-state" id="reportsEmptyState">
+          <div class="empty-icon"><i class="fas fa-inbox"></i></div>
+          <div>
+            <div class="empty-title">No reports yet</div>
+            <p class="empty-subtitle">New submissions will appear here automatically.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- VIEW REPORT MODAL -->
+<div id="reportDetailsModal" class="request-modal" aria-hidden="true">
+  <div class="request-modal-content">
+    <button class="request-modal-close" id="reportModalClose">&times;</button>
+
+    <div class="request-modal-header">
+      <p class="modal-eyebrow">Review Report</p>
+      <h2 id="modalReportTitle">Review Report</h2>
+    </div>
+
+    <div class="request-modal-body">
+
+      <!-- REPORT IMAGE (ADMIN VIEW) -->
+      <div id="adminReportImageContainer" style="display:none; margin-bottom:1.5rem;">
+        <img id="adminReportImage"
+             style="width:100%; max-height:320px; object-fit:cover; border-radius:14px;"
+             alt="Report Image">
+      </div>
+
+      <!-- REPORT INFO -->
+      <div class="info-section-card">
+        <h3 class="section-title">Report Information</h3>
+        <div class="info-grid-formal">
+          <div class="info-item">
+            <span class="info-label">Reporter Name</span>
+            <span class="info-value" id="modalReporterName">—</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Issue</span>
+            <span class="info-value" id="modalIssue">—</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Status</span>
+            <span class="info-value" id="modalStatus">—</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Date Reported</span>
+            <span class="info-value" id="modalDateReported">—</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Time</span>
+            <span class="info-value" id="modalTimeReported">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADDITIONAL DETAILS -->
+      <section class="notes-section">
+        <p class="section-eyebrow">Additional Details</p>
+        <div class="notes-box" id="modalAdditionalDetails">
+          No additional details provided.
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+  <!-- SCRIPT WILL BE SENT IN PART 2 -->
+<script>
+
+/* ============================================================
+   LOAD REPORTS ON PAGE OPEN
+============================================================ */
+document.addEventListener("DOMContentLoaded", () => {
+  loadAdminReports();
+  document.getElementById("dateFilter").addEventListener("change", loadAdminReports);
+
+});
+
+// CLOSE MODAL
+document.getElementById('reportModalClose').addEventListener('click', () => {
+  document.getElementById('reportDetailsModal').classList.remove('show');
+});
+
+
+/* ============================================================
+   FETCH ALL REPORTS
+============================================================ */
+function loadAdminReports() {
+  fetch("http://localhost:8080/api/reports/all")
+    .then(res => res.json())
+    .then(data => renderAdminTable(data))
+    .catch(err => console.error("Fetch error:", err));
+}
+
+
+/* ============================================================
+   RENDER TABLE
+============================================================ */
+function renderAdminTable(data) {
+  const tableBody = document.querySelector(".table-body");
+
+  tableBody.innerHTML = ""; // clear safely
+
+  if (!data || data.length === 0) {
+    tableBody.innerHTML = `
+      <div class="empty-state" id="reportsEmptyState">
+        <div class="empty-icon"><i class="fas fa-inbox"></i></div>
+        <div>
+          <div class="empty-title">No reports yet</div>
+          <p class="empty-subtitle">New submissions will appear here automatically.</p>
+        </div>
+      </div>
+    `;
+    updateStats();
+    return;
+  }
+
+  // ✅ SORT newest → oldest
+  data.sort((a, b) => new Date(b.dateSubmitted) - new Date(a.dateSubmitted));
+
+  // ✅ FILTER
+  const filteredReports = filterByDate(data);
+
+  if (filteredReports.length === 0) {
+    tableBody.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon"><i class="fas fa-filter"></i></div>
+        <div>
+          <div class="empty-title">No reports found</div>
+          <p class="empty-subtitle">Try a different date filter.</p>
+        </div>
+      </div>
+    `;
+    updateStats();
+    return;
+  }
+
+  filteredReports.forEach(report => {
+    const d = new Date(report.dateSubmitted);
+    const date = d.toLocaleDateString();
+    const time = d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+    const row = document.createElement("div");
+    row.className = "table-row";
+
+    row.dataset.id = report.reportId;
+    row.dataset.issue = report.title;
+    row.dataset.status = report.status;
+
+    row.innerHTML = `
+      <div class="table-cell">Anonymous</div>
+      <div class="table-cell">${report.title}</div>
+      <div class="table-cell">${date}</div>
+      <div class="table-cell">${time}</div>
+      <div class="table-cell">
+        ${
+          report.status === "Cancelled"
+            ? `<span style="color:red;font-weight:600;">Cancelled</span>`
+            : `
+              <select class="status-select">
+                <option ${report.status === "Pending" ? "selected" : ""}>Pending</option>
+                <option ${report.status === "In Progress" ? "selected" : ""}>In Progress</option>
+                <option ${report.status === "Resolved" ? "selected" : ""}>Resolved</option>
+              </select>
+            `
+        }
+      </div>
+      <div class="table-cell">
+        <button class="view-btn">View</button>
+      </div>
+    `;
+
+    tableBody.appendChild(row);
+  });
+
+  attachReportActions();
+  updateStats();
+}
+
+
+function filterByDate(reports) {
+  const filter = document.getElementById("dateFilter").value;
+  const now = new Date();
+
+  return reports.filter(report => {
+    const reportDate = new Date(report.dateSubmitted);
+
+   if (filter === "week") {
+  const startOfWeek = new Date(now);
+  startOfWeek.setDate(now.getDate() - now.getDay()); // Sunday start
+  startOfWeek.setHours(0, 0, 0, 0);
+  return reportDate >= startOfWeek;
+}
+
+
+    if (filter === "month") {
+      return (
+        reportDate.getMonth() === now.getMonth() &&
+        reportDate.getFullYear() === now.getFullYear()
+      );
+    }
+
+    if (filter === "year") {
+      return reportDate.getFullYear() === now.getFullYear();
+    }
+
+    return true; // "all"
+   
+  });
+}
+
+/* ============================================================
+   SEARCH FUNCTION
+============================================================ */
+document.querySelector('.search-group input').addEventListener('input', function() {
+  const term = this.value.toLowerCase();
+  document.querySelectorAll('.table-row').forEach(row => {
+    const reporter = "anonymous";
+    const issue = (row.dataset.issue || '').toLowerCase();
+    const status = (row.dataset.status || '').toLowerCase();
+    
+    row.style.display =
+      reporter.includes(term) || issue.includes(term) || status.includes(term)
+      ? 'grid' : 'none';
+  });
+});
+
+
+function updateStats() {
+  const rows = [...document.querySelectorAll('.table-row')];
+
+  document.getElementById('totalReportsCount').textContent = rows.length;
+
+  document.getElementById('inProgressReportsCount').textContent =
+    rows.filter(r => r.dataset.status === 'In Progress').length;
+
+  document.getElementById('resolvedReportsCount').textContent =
+    rows.filter(r => r.dataset.status === 'Resolved').length;
+
+  // ⭐ FIX: Prevent null error
+  const emptyState = document.getElementById('reportsEmptyState');
+  if (emptyState) {
+    emptyState.style.display = rows.length === 0 ? 'flex' : 'none';
+  }
+}
+/* ============================================================
+   OPEN REPORT MODAL (WITH IMAGE FETCH)
+============================================================ */
+function openReportModal(row) {
+
+  const reportId = row.dataset.id;
+
+  fetch(`http://localhost:8080/api/reports/${reportId}`)
+    .then(res => res.json())
+    .then(report => {
+
+      // BASIC INFO
+      document.getElementById('modalReporterName').textContent = "Anonymous";
+      document.getElementById('modalIssue').textContent = report.title;
+      document.getElementById('modalStatus').textContent = report.status;
+      document.getElementById('modalReportTitle').textContent = report.title;
+
+
+      const d = new Date(report.dateSubmitted);
+      document.getElementById('modalDateReported').textContent =
+        d.toLocaleDateString();
+      document.getElementById('modalTimeReported').textContent =
+        d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+      document.getElementById('modalAdditionalDetails').textContent =
+        report.description || "No additional details provided.";
+
+      // IMAGE HANDLING ⭐⭐⭐
+      const imgContainer = document.getElementById('adminReportImageContainer');
+      const img = document.getElementById('adminReportImage');
+
+      if (report.imageBase64) {
+        img.src = `data:image/jpeg;base64,${report.imageBase64}`;
+        imgContainer.style.display = "block";
+      } else {
+        imgContainer.style.display = "none";
+      }
+
+      // SHOW MODAL
+      document.getElementById('reportDetailsModal').classList.add('show');
+    })
+    .catch(err => {
+      console.error("Failed to load report details:", err);
+      alert("Failed to load report details.");
+    });
+}
+
+/* ============================================================
+   BUTTONS + STATUS DROPDOWNS
+============================================================ */
+function attachReportActions() {
+  document.querySelectorAll('.table-row').forEach(row => {
+    
+    // VIEW BUTTON
+    const viewBtn = row.querySelector('.view-btn');
+    if (viewBtn && !viewBtn.dataset.bound) {
+      viewBtn.dataset.bound = "1";
+      viewBtn.addEventListener("click", () => openReportModal(row));
+    }
+
+    // STATUS DROPDOWN
+    const select = row.querySelector('.status-select');
+    if (select && !select.dataset.bound) {
+      select.dataset.bound = "1";
+      select.addEventListener("change", () => {
+        const newStatus = select.value;
+        const id = row.dataset.id;
+
+        row.dataset.status = newStatus;
+        updateStats();
+
+        updateReportStatus(id, newStatus); // ⭐ REAL UPDATE FUNCTION
+      });
+    }
+
+  });
+}
+
+
+/* ============================================================
+   ⭐ REAL WORKING BACKEND STATUS UPDATE FUNCTION
+============================================================ */
+function updateReportStatus(id, newStatus) {
+
+  fetch(`http://localhost:8080/api/reports/update-status/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "text/plain" },
+    body: newStatus
+  })
+  .then(res => res.text())
+  .then(result => console.log("STATUS UPDATED:", result))
+  .catch(err => console.error("Update failed:", err));
+}
+
+</script>

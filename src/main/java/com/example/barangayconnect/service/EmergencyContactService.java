@@ -31,6 +31,11 @@ public class EmergencyContactService {
         return repository.save(existing);
     }
 
+    // ✅ ADD THIS
+    public EmergencyContact getById(Integer id) {
+        return repository.findById(id).orElse(null);
+    }
+
     public void delete(Integer id) {
         repository.deleteById(id);
     }
